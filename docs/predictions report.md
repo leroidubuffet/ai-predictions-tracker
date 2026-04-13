@@ -1,0 +1,41 @@
+# Informe de Predicciones sobre Inteligencia Artificial y Machine Learning
+
+## Introducción
+
+Este informe recopila y presenta las predicciones más destacadas realizadas por líderes de la industria y académicos en el campo de la Inteligencia Artificial (IA) y el Machine Learning (ML). El objetivo es ofrecer una visión consolidada de las expectativas y los plazos proyectados para el avance de estas tecnologías, incluyendo la llegada de la Inteligencia Artificial General (AGI) y su impacto en diversos sectores. Cada predicción se detalla con la fecha en que fue realizada, la fecha objetivo de cumplimiento, la cita exacta, la fuente original y la identificación del autor.
+
+## Predicciones Clave
+
+La siguiente tabla resume las predicciones de figuras influyentes en el ámbito de la IA y el ML:
+
+| Persona | Cargo y Empresa | Fecha de Predicción | Fecha Objetivo | Cita Exacta | Fuente |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Dario Amodei** | CEO, Anthropic | Octubre 2024 | 2026-2027 | "I think it could come as early as 2026, though there are also ways it could take much longer." [1] | [Machines of Loving Grace](https://darioamodei.com/essay/machines-of-loving-grace) |
+| **Jensen Huang** | CEO, NVIDIA | 29 de noviembre de 2023 | Noviembre 2028 | "If I gave an AI... every single test that you can possibly imagine, you make that list of tests and you put it in front of the computer science industry, I guess in five years time, we'll do well on every single one." [2] | [CNBC Interview](https://www.cnbc.com/2023/11/29/nvidia-ceo-ai-will-be-fairly-competitive-with-humans-in-5-years.html) |
+| **Ray Kurzweil** | Futurista e Investigador, Google | Junio 2024 (reiterado) | 2029 | "By 2029, computers will have emotional intelligence and be convincing as people." [3] | [The Guardian](https://www.theguardian.com/technology/article/2024/jun/29/ray-kurzweil-google-ai-the-singularity-is-nearer) |
+| **Sam Altman** | CEO, OpenAI | Diciembre 2024 | 2025 | "My guess is we will hit AGI sooner than most people in the world think and it will matter much less... AGI can get built in 2025." [4] | [TIME](https://time.com/7205596/sam-altman-superintelligence-agi/) |
+| **Demis Hassabis** | CEO, Google DeepMind | 17 de marzo de 2025 | 2030-2035 | "I think artificial general intelligence, or AGI, will emerge in the next five or 10 years." [5] | [CNBC Interview](https://www.cnbc.com/2025/03/17/human-level-ai-will-be-here-in-5-to-10-years-deepmind-ceo-says.html) |
+| **Geoffrey Hinton** | Profesor Emérito, Univ. Toronto (Ex-Google) | 28 de diciembre de 2025 | 2026 | "AI is reaching a critical turning point—not in some distant future, but in 2026... it will gain the ability to replace many other jobs." [6] | [Fortune](https://fortune.com/2025/12/28/geoffrey-hinton-godfather-of-ai-2026-prediction-human-worker-replacement/) |
+| **Yann LeCun** | Jefe de IA, Meta | 24 de octubre de 2024 | 2034 | "I think it's going to take a decade or more to get to human-level AI." [7] | [Reddit / Entrevistas](https://www.reddit.com/r/singularity/comments/1gb2d72/yann_lecun_still_dont_think_ai_is_at_an_animal/) |
+| **Bill Gates** | Cofundador, Microsoft | 26 de marzo de 2025 | 2035 | "Over the next decade, advances in artificial intelligence will mean that humans will no longer be needed 'for most things' in the world." [8] | [CNBC Interview](https://www.cnbc.com/2025/03/26/bill-gates-on-ai-humans-wont-be-needed-for-most-things.html) |
+| **Elon Musk** | CEO, Tesla y xAI | 8 de abril de 2024 | 2025-2026 | "If you define AGI as smarter than the smartest human, I think it's probably next year, within two years." [9] | [Reuters / X Interview](https://www.reuters.com/technology/teslas-musk-predicts-ai-will-be-smarter-than-smartest-human-next-year-2024-04-08/) |
+| **Andrew Ng** | Fundador, DeepLearning.AI | Abril 2024 | 2025 | "I think AI agentic workflows will drive a lot of progress this year—perhaps even more than the next generation of foundation models." [10] | [The Batch / LinkedIn](https://www.deeplearning.ai/the-batch/issue-333/) |
+| **Nick Bostrom** | Filósofo y Profesor, Univ. Oxford | 28 de abril de 2024 | 2025-2027 | "Superintelligence could happen in timelines as short as a year and is the last invention we will ever need to make." [11] | [Reddit / Entrevistas](https://www.reddit.com/r/singularity/comments/1cf0ol8/nick_bostrom_superintelligence_could_happeni_in/) |
+
+## Conclusión
+
+Las predicciones de los líderes y académicos en el campo de la IA y el ML varían en sus plazos y alcances, pero convergen en la idea de una transformación profunda impulsada por estas tecnologías. Desde la inminente llegada de la AGI hasta la reconfiguración del mercado laboral y la mejora de la calidad de vida, el consenso es que la IA continuará siendo una fuerza disruptiva y evolutiva en los próximos años. Es crucial seguir de cerca estos desarrollos y prepararse para los desafíos y oportunidades que presentarán.
+
+## Referencias
+
+[1] Amodei, D. (Octubre 2024). *Machines of Loving Grace*. Recuperado de [https://darioamodei.com/essay/machines-of-loving-grace](https://darioamodei.com/essay/machines-of-loving-grace)
+[2] CNBC. (29 de noviembre de 2023). *Nvidia CEO: AI will be 'fairly competitive' with humans in 5 years*. Recuperado de [https://www.cnbc.com/2023/11/29/nvidia-ceo-ai-will-be-fairly-competitive-with-humans-in-5-years.html](https://www.cnbc.com/2023/11/29/nvidia-ceo-ai-will-be-fairly-competitive-with-humans-in-5-years.html)
+[3] The Guardian. (29 de junio de 2024). *AI scientist Ray Kurzweil: 'We are going to expand'*. Recuperado de [https://www.theguardian.com/technology/article/2024/jun/29/ray-kurzweil-google-ai-the-singularity-is-nearer](https://www.theguardian.com/technology/article/2024/jun/29/ray-kurzweil-google-ai-the-singularity-is-nearer)
+[4] TIME. (8 de enero de 2025). *How OpenAI's Sam Altman Is Thinking About AGI and Superintelligence*. Recuperado de [https://time.com/7205596/sam-altman-superintelligence-agi/](https://time.com/7205596/sam-altman-superintelligence-agi/)
+[5] CNBC. (17 de marzo de 2025). *Human-level AI will be here in 5 to 10 years, DeepMind CEO says*. Recuperado de [https://www.cnbc.com/2025/03/17/human-level-ai-will-be-here-in-5-to-10-years-deepmind-ceo-says.html](https://www.cnbc.com/2025/03/17/human-level-ai-will-be-here-in-5-to-10-years-deepmind-ceo-says.html)
+[6] Fortune. (28 de diciembre de 2025). *Geoffrey Hinton: AI will even better in 2026 and...*. Recuperado de [https://fortune.com/2025/12/28/geoffrey-hinton-godfather-of-ai-2026-prediction-human-worker-replacement/](https://fortune.com/2025/12/28/geoffrey-hinton-godfather-of-ai-2026-prediction-human-worker-replacement/)
+[7] Reddit. (24 de octubre de 2024). *Yann Lecun still don't think AI is at an animal level*. Recuperado de [https://www.reddit.com/r/singularity/comments/1gb2d72/yann_lecun_still_dont_think_ai_is_at_an_animal/](https://www.reddit.com/r/singularity/comments/1gb2d72/yann_lecun_still_dont_think_ai_is_at_an_animal/)
+[8] CNBC. (26 de marzo de 2025). *Bill Gates on AI: Humans won't be needed 'for most things'*. Recuperado de [https://www.cnbc.com/2025/03/26/bill-gates-on-ai-humans-wont-be-needed-for-most-things.html](https://www.cnbc.com/2025/03/26/bill-gates-on-ai-humans-wont-be-needed-for-most-things.html)
+[9] Reuters. (8 de abril de 2024). *Tesla's Musk predicts AI will be smarter than the smartest human next year*. Recuperado de [https://www.reuters.com/technology/teslas-musk-predicts-ai-will-be-smarter-than-smartest-human-next-year-2024-04-08/](https://www.reuters.com/technology/teslas-musk-predicts-ai-will-be-smarter-than-smartest-human-next-year-2024-04-08/)
+[10] DeepLearning.AI. (Diciembre 2025). *Top Stories of 2025! Big AI Poaches Talent, Reasoning...*. Recuperado de [https://www.deeplearning.ai/the-batch/issue-333/](https://www.deeplearning.ai/the-batch/issue-333/)
+[11] Reddit. (28 de abril de 2024). *Nick Bostrom: superintelligence could happen in timelines as short as a year*. Recuperado de [https://www.reddit.com/r/singularity/comments/1cf0ol8/nick_bostrom_superintelligence_could_happen_in/](https://www.reddit.com/r/singularity/comments/1cf0ol8/nick_bostrom_superintelligence_could_happen_in/)
