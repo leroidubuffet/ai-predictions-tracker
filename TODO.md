@@ -45,29 +45,30 @@
 - [ ] Manual test: run the script, fill in a prediction, verify commit is created
 - [ ] Manual test: save an invalid file, verify the script aborts and does not commit
 
-## Phase 4 — New Prediction Bot
+## Phase 4 — New Prediction Bot ✓
 
 - [ ] Create Bluesky bot account
 - [ ] Add `BLUESKY_HANDLE` and `BLUESKY_APP_PASSWORD` to GitHub repository secrets
-- [ ] Write `scripts/post_new.py`:
-  - [ ] Accepts a YAML file path as argument
-  - [ ] Formats a Bluesky post: source name, prediction excerpt (truncated cleanly at word boundary to fit 300 chars), deadline if present
-  - [ ] Skips files where `skip_post: true`
-  - [ ] Posts via Bluesky API (atproto library)
-  - [ ] Exits non-zero on API failure
-- [ ] Write `scripts/post_new_test.py`:
-  - [ ] Post is formatted correctly with all optional fields present
-  - [ ] Post is formatted correctly when `deadline` is absent
-  - [ ] Post is formatted correctly when `deadline_fuzzy` is present but `deadline` is absent
-  - [ ] Post text does not exceed 300 characters
-  - [ ] Long `prediction_text` is truncated at a word boundary, not mid-word
-  - [ ] File with `skip_post: true` produces no API call (mock the API)
-  - [ ] API failure raises an exception and exits non-zero
-- [ ] Add `.github/workflows/post_new.yml`:
-  - [ ] Triggers on push to `main` affecting `predictions/*.yaml`
-  - [ ] Diffs HEAD vs HEAD~1 to find newly added files only (not edits)
-  - [ ] Calls `post_new.py` for each new file
-  - [ ] Does not re-post files that were modified but already existed
+- [x] Write `scripts/post_new.py`:
+  - [x] Accepts a YAML file path as argument
+  - [x] Formats a Bluesky post: source name, prediction excerpt (truncated cleanly at word boundary to fit 300 chars), deadline if present
+  - [x] Skips files where `skip_post: true`
+  - [x] Posts via Bluesky API (atproto library)
+  - [x] Exits non-zero on API failure
+- [x] Write `scripts/post_new_test.py` (24 tests, all passing):
+  - [x] Post is formatted correctly with all optional fields present
+  - [x] Post is formatted correctly when `deadline` is absent
+  - [x] Post is formatted correctly when `deadline_fuzzy` is present but `deadline` is absent
+  - [x] Post text does not exceed 300 characters
+  - [x] Long `prediction_text` is truncated at a word boundary, not mid-word
+  - [x] File with `skip_post: true` produces no API call (mock the API)
+  - [x] API failure raises an exception and exits non-zero
+  - [x] All 27 seed predictions produce valid posts within 300 chars
+- [x] Add `.github/workflows/post_new.yml`:
+  - [x] Triggers on push to `main` affecting `predictions/*.yaml`
+  - [x] Diffs HEAD vs HEAD~1 to find newly added files only (not edits)
+  - [x] Calls `post_new.py` for each new file
+  - [x] Does not re-post files that were modified but already existed
 - [ ] Integration test: add a real prediction, verify Bluesky post appears
 - [ ] Edge case test: fix a typo in an existing prediction, verify no duplicate post
 

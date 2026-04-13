@@ -1,0 +1,47 @@
+name: Post new predictions to Bluesky
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "predictions/*.yaml"
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # need HEAD and HEAD~1 to diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml atproto
+
+      - name: Find newly added prediction files
+        id: find_new
+        run: |
+          # List files added in this commit (A = added, not M = modified)
+          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'predictions/*.yaml')
+          echo "New files:"
+          echo "$NEW_FILES"
+          # Write to a temp file to handle newlines safely
+          echo "$NEW_FILES" > /tmp/new_predictions.txt
+
+      - name: Post each new prediction
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: |
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            echo "Processing: $file"
+            python scripts/post_new.py "$file"
+          done < /tmp/new_predictions.txt
