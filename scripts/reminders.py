@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """
 Scans predictions for upcoming deadlines and posts reminders to Bluesky.
-Fires at 30, 7, and 1 days before deadline for status: pending predictions.
+
+Reminder thresholds are tiered by prediction horizon:
+  Multi-year:  annual milestones (e.g. 365, 730 days out) + 30, 7, 1 days
+  < 1 year:    30, 7, 1 days
+
+Predictions whose deadline has already passed receive a single "expired" post.
+Predictions made ≥ 1 year ago are introduced with an age label ("2 years ago,
+they predicted:") to give readers context.
 
 Usage:
   python scripts/reminders.py           — live run
@@ -28,8 +35,11 @@ REPO_ROOT = Path(__file__).parent.parent
 PREDICTIONS_DIR = REPO_ROOT / "predictions"
 STATE_FILE = REPO_ROOT / "state" / "reminded.yaml"
 
-REMINDER_THRESHOLDS = [30, 7, 1]  # days before deadline
 BLUESKY_CHAR_LIMIT = 300
+HASHTAGS = "#AIPredictions"
+
+# Sentinel stored in state to record that an expired post was sent
+EXPIRED_KEY = "expired"
 
 
 # ── State management ──────────────────────────────────────────────────────────
@@ -90,6 +100,24 @@ def parse_deadline(value):
         return None
 
 
+# ── Threshold logic ───────────────────────────────────────────────────────────
+
+def get_thresholds(horizon_days):
+    """
+    Return reminder thresholds (days before deadline) based on prediction horizon.
+    Multi-year predictions get annual milestones added to the standard close-in set.
+    Thresholds are returned in descending order.
+    """
+    base = [30, 7, 1]
+    yearly = []
+    full_years = horizon_days // 365
+    for y in range(1, full_years + 1):
+        t = y * 365
+        if t > 30:
+            yearly.append(t)
+    return sorted(set(base + yearly), reverse=True)
+
+
 # ── Post formatting ───────────────────────────────────────────────────────────
 
 def truncate_to_fit(text, max_chars, ellipsis="…"):
@@ -100,33 +128,152 @@ def truncate_to_fit(text, max_chars, ellipsis="…"):
     return truncated + ellipsis
 
 
-def build_reminder_post(prediction, days_remaining):
+def prediction_age_label(prediction_date_str, today):
+    """
+    Returns a human-readable age string if the prediction is ≥ 1 year old.
+    Examples: "1 year ago", "2 years ago".
+    Returns None for predictions < 1 year old or unparseable dates.
+    """
+    if not prediction_date_str:
+        return None
+    try:
+        pred_date = date.fromisoformat(str(prediction_date_str))
+    except (ValueError, TypeError):
+        return None
+    days = (today - pred_date).days
+    if days < 365:
+        return None
+    whole_years = days // 365
+    remainder_days = days % 365
+    if remainder_days >= 335:
+        whole_years += 1
+    if whole_years == 1:
+        return "1 year ago"
+    return f"{whole_years} years ago"
+
+
+def days_label(days_remaining):
+    """Returns a human-readable countdown string."""
+    if days_remaining == 1:
+        return "Tomorrow"
+    if days_remaining >= 365 and days_remaining % 365 == 0:
+        years = days_remaining // 365
+        return f"{years} year{'s' if years != 1 else ''}"
+    return f"{days_remaining} days"
+
+
+def _deadline_label(prediction):
+    fuzzy = str(prediction.get("deadline_fuzzy") or "").strip()
+    if fuzzy:
+        return fuzzy
+    iso = str(prediction.get("deadline") or "").strip()
+    if iso:
+        try:
+            return date.fromisoformat(iso).strftime("%b %-d, %Y")
+        except ValueError:
+            return iso
+    return "the deadline"
+
+
+def build_reminder_post(prediction, days_remaining, today=None):
+    """
+    Build a countdown reminder post.
+    Predictions ≥ 1 year old include an age-framing line before the quote.
+
+    Format (with age):
+      {countdown} left on {source}'s prediction ({deadline}):
+
+      {N years ago}, they predicted:
+      "{excerpt}"
+
+      #AIPredictions
+
+    Format (without age):
+      {countdown} left on {source}'s prediction ({deadline}):
+
+      "{excerpt}"
+
+      #AIPredictions
+    """
+    if today is None:
+        today = date.today()
+
     source = str(prediction.get("source_name") or "Unknown").strip()
-    text = str(prediction.get("prediction_text") or "").strip()
+    raw_text = str(prediction.get("prediction_text") or "").strip()
+    text = " ".join(raw_text.split())
+
+    deadline_lbl = _deadline_label(prediction)
+    countdown = days_label(days_remaining)
+    age = prediction_age_label(prediction.get("prediction_date"), today)
 
     if days_remaining == 1:
-        countdown = "Tomorrow"
+        header = f"Tomorrow: {source}'s prediction deadline ({deadline_lbl}):"
     else:
-        countdown = f"{days_remaining} days"
+        header = f"{countdown} left on {source}'s prediction ({deadline_lbl}):"
 
-    deadline_fuzzy = str(prediction.get("deadline_fuzzy") or "").strip()
-    deadline_iso = str(prediction.get("deadline") or "").strip()
-    if deadline_fuzzy:
-        deadline_label = deadline_fuzzy
-    elif deadline_iso:
-        try:
-            deadline_label = date.fromisoformat(deadline_iso).strftime("%b %-d, %Y")
-        except ValueError:
-            deadline_label = deadline_iso
-    else:
-        deadline_label = "the deadline"
+    age_line = f"{age.capitalize()}, they predicted:" if age else ""
 
-    header = f"{countdown} until {source}'s prediction deadline ({deadline_label}):"
-    fixed_chars = len(header) + 2 + 1 + 1  # \n\n + " + "
-    available = BLUESKY_CHAR_LIMIT - fixed_chars
+    # Budget: {header}\n\n[{age_line}\n\n]"{excerpt}"\n\n{HASHTAGS}
+    fixed = len(header) + 2 + 2 + 2 + len(HASHTAGS)  # separators + quotes
+    if age_line:
+        fixed += len(age_line) + 2
+    available = BLUESKY_CHAR_LIMIT - fixed
 
     excerpt = truncate_to_fit(text, max(available, 20))
-    post = f'{header}\n\n"{excerpt}"'
+
+    parts = [header]
+    if age_line:
+        parts.append(age_line)
+    parts.append(f'"{excerpt}"')
+    parts.append(HASHTAGS)
+
+    post = "\n\n".join(parts)
+
+    if len(post) > BLUESKY_CHAR_LIMIT:
+        post = post[:BLUESKY_CHAR_LIMIT - 1] + "…"
+
+    return post
+
+
+def build_expired_post(prediction, today=None):
+    """
+    Build a one-time post for predictions whose deadline has passed.
+
+    Format:
+      {source}'s prediction deadline has passed ({deadline}):
+
+      {N years ago}, they predicted:
+      "{excerpt}"
+
+      #AIPredictions
+    """
+    if today is None:
+        today = date.today()
+
+    source = str(prediction.get("source_name") or "Unknown").strip()
+    raw_text = str(prediction.get("prediction_text") or "").strip()
+    text = " ".join(raw_text.split())
+
+    deadline_lbl = _deadline_label(prediction)
+    age = prediction_age_label(prediction.get("prediction_date"), today)
+
+    header = f"{source}'s prediction deadline has passed ({deadline_lbl}):"
+    age_line = f"{age.capitalize()}, they predicted:" if age else ""
+
+    fixed = len(header) + 2 + 2 + 2 + len(HASHTAGS)
+    if age_line:
+        fixed += len(age_line) + 2
+    available = BLUESKY_CHAR_LIMIT - fixed
+
+    excerpt = truncate_to_fit(text, max(available, 20))
+
+    parts = [header]
+    if age_line:
+        parts.append(age_line)
+    parts.append(f'"{excerpt}"')
+    parts.append(HASHTAGS)
+
+    post = "\n\n".join(parts)
 
     if len(post) > BLUESKY_CHAR_LIMIT:
         post = post[:BLUESKY_CHAR_LIMIT - 1] + "…"
@@ -177,7 +324,6 @@ def run(today=None, dry_run=False):
     for prediction in predictions:
         filename = prediction["_filename"]
 
-        # Skip ineligible predictions
         if prediction.get("status") != "pending":
             continue
         if prediction.get("skip_post"):
@@ -189,16 +335,43 @@ def run(today=None, dry_run=False):
 
         days_remaining = (deadline - today).days
 
-        for threshold in REMINDER_THRESHOLDS:
+        # ── Expired prediction ────────────────────────────────────────────────
+        if days_remaining < 0:
+            if already_reminded(state, filename, EXPIRED_KEY):
+                skipped_count += 1
+                continue
+            post = build_expired_post(prediction, today)
+            print(f"\n[expired] {filename}")
+            print("─" * 40)
+            print(post)
+            print(f"[{len(post)} chars]")
+            if dry_run:
+                print("(dry run — not posted)")
+            else:
+                if not handle or not app_password:
+                    print("ERROR: BLUESKY_HANDLE and BLUESKY_APP_PASSWORD must be set.", file=sys.stderr)
+                    sys.exit(1)
+                post_to_bluesky(post, handle, app_password)
+                mark_reminded(state, filename, EXPIRED_KEY)
+                print("Posted.")
+            posted_count += 1
+            continue
+
+        # ── Upcoming deadline reminders ───────────────────────────────────────
+        prediction_date = parse_deadline(prediction.get("prediction_date"))
+        horizon_days = (deadline - prediction_date).days if prediction_date else days_remaining
+        thresholds = get_thresholds(horizon_days)
+
+        for threshold in thresholds:
             if days_remaining != threshold:
                 continue
             if already_reminded(state, filename, threshold):
                 skipped_count += 1
-                print(f"  Already sent {threshold}d reminder for {filename}")
+                print(f"  Already sent {days_label(threshold)} reminder for {filename}")
                 continue
 
-            post = build_reminder_post(prediction, days_remaining)
-            print(f"\n[{threshold}d reminder] {filename}")
+            post = build_reminder_post(prediction, days_remaining, today)
+            print(f"\n[{days_label(threshold)} reminder] {filename}")
             print("─" * 40)
             print(post)
             print(f"[{len(post)} chars]")
