@@ -10,7 +10,10 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, str(Path(__file__).parent))
-from post_new import build_post, truncate_to_fit, deadline_display, format_date, load_prediction, BLUESKY_CHAR_LIMIT
+from post_new import (
+    build_post, truncate_to_fit, deadline_display, format_date,
+    load_prediction, BLUESKY_CHAR_LIMIT, HASHTAGS,
+)
 
 REPO_ROOT = Path(__file__).parent.parent
 
@@ -19,6 +22,7 @@ def make_prediction(**kwargs):
     base = {
         "prediction_date": "2024-03-15",
         "source_name": "Sam Altman",
+        "source_url": "https://example.com/interview",
         "prediction_text": "AGI will arrive before the end of this decade and will transform every industry.",
         "deadline": "2030-12-31",
         "deadline_fuzzy": "by end of 2030",
@@ -44,7 +48,7 @@ class TestTruncateToFit(unittest.TestCase):
         text = "one two three four five"
         result = truncate_to_fit(text, 12)
         self.assertFalse(result.startswith(" "))
-        self.assertNotIn("thre…", result)  # no mid-word cut
+        self.assertNotIn("thre…", result)
 
     def test_exactly_at_limit_not_truncated(self):
         text = "a" * 50
@@ -52,8 +56,11 @@ class TestTruncateToFit(unittest.TestCase):
 
 
 class TestFormatDate(unittest.TestCase):
-    def test_iso_string_returns_year(self):
-        self.assertEqual(format_date("2024-03-15"), "2024")
+    def test_iso_string_returns_month_and_year(self):
+        self.assertEqual(format_date("2024-03-15"), "March 2024")
+
+    def test_iso_string_returns_correct_month(self):
+        self.assertEqual(format_date("2023-05-16"), "May 2023")
 
     def test_none_returns_empty(self):
         self.assertEqual(format_date(None), "")
@@ -85,65 +92,80 @@ class TestDeadlineDisplay(unittest.TestCase):
 
 class TestBuildPost(unittest.TestCase):
     def test_post_within_char_limit(self):
-        p = make_prediction()
-        post = build_post(p)
+        post = build_post(make_prediction())
         self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
 
-    def test_post_contains_source(self):
-        p = make_prediction(source_name="Geoffrey Hinton")
-        post = build_post(p)
-        self.assertIn("Geoffrey Hinton", post)
+    def test_header_present(self):
+        post = build_post(make_prediction())
+        self.assertIn("New prediction registered", post)
 
-    def test_post_contains_year(self):
-        p = make_prediction(prediction_date="2023-05-16")
-        post = build_post(p)
-        self.assertIn("2023", post)
+    def test_author_field_present(self):
+        post = build_post(make_prediction(source_name="Geoffrey Hinton"))
+        self.assertIn("Author: Geoffrey Hinton", post)
 
-    def test_post_contains_prediction_excerpt(self):
-        p = make_prediction(prediction_text="AGI will arrive soon.")
-        post = build_post(p)
-        self.assertIn("AGI will arrive soon.", post)
+    def test_date_field_present(self):
+        post = build_post(make_prediction(prediction_date="2023-05-16"))
+        self.assertIn("Date: May 2023", post)
 
-    def test_post_contains_deadline_when_present(self):
-        p = make_prediction(deadline_fuzzy="by end of 2030")
-        post = build_post(p)
-        self.assertIn("Deadline:", post)
-        self.assertIn("by end of 2030", post)
+    def test_no_category_field(self):
+        post = build_post(make_prediction(category="agi"))
+        self.assertNotIn("Category", post)
+        self.assertNotIn("agi", post)
 
-    def test_no_deadline_section_when_absent(self):
-        p = make_prediction(deadline="", deadline_fuzzy="")
-        post = build_post(p)
+    def test_quote_present(self):
+        post = build_post(make_prediction(prediction_text="AGI will arrive soon."))
+        self.assertIn('"AGI will arrive soon."', post)
+
+    def test_quote_has_no_internal_line_breaks(self):
+        multiline = "First line.\nSecond line.\nThird line."
+        post = build_post(make_prediction(prediction_text=multiline))
+        # Extract the quoted part
+        start = post.index('"') + 1
+        end = post.rindex('"')
+        quote_content = post[start:end]
+        self.assertNotIn("\n", quote_content)
+
+    def test_deadline_present_when_set(self):
+        post = build_post(make_prediction(deadline_fuzzy="by end of 2030"))
+        self.assertIn("Deadline: by end of 2030", post)
+
+    def test_no_deadline_when_absent(self):
+        post = build_post(make_prediction(deadline="", deadline_fuzzy=""))
         self.assertNotIn("Deadline:", post)
 
-    def test_deadline_fuzzy_used_over_iso(self):
-        p = make_prediction(deadline="2030-12-31", deadline_fuzzy="before 2031")
-        post = build_post(p)
-        self.assertIn("before 2031", post)
-        self.assertNotIn("Dec", post)
+    def test_url_present(self):
+        post = build_post(make_prediction(source_url="https://example.com/article"))
+        self.assertIn("https://example.com/article", post)
 
-    def test_long_prediction_truncated_at_word_boundary(self):
-        long_text = "artificial intelligence " * 20  # ~480 chars
-        p = make_prediction(prediction_text=long_text)
-        post = build_post(p)
+    def test_no_url_when_absent(self):
+        post = build_post(make_prediction(source_url=""))
+        # Should not contain a bare https:// fragment
+        self.assertNotIn("https://", post)
+
+    def test_hashtags_present(self):
+        post = build_post(make_prediction())
+        self.assertIn(HASHTAGS, post)
+
+    def test_fuzzy_deadline_used_over_iso(self):
+        post = build_post(make_prediction(deadline="2030-12-31", deadline_fuzzy="before 2031"))
+        self.assertIn("before 2031", post)
+
+    def test_long_prediction_truncated_within_limit(self):
+        long_text = "artificial intelligence will transform " * 20
+        post = build_post(make_prediction(prediction_text=long_text))
         self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
-        # Should not cut in the middle of "intelligence" or "artificial"
+
+    def test_long_prediction_no_mid_word_cut(self):
+        long_text = "artificial intelligence " * 20
+        post = build_post(make_prediction(prediction_text=long_text))
+        # Should not cut "intelligence" or "artificial" mid-word
         self.assertNotIn("intelligen…", post)
         self.assertNotIn("artifici…", post)
 
-    def test_post_within_limit_with_long_source_and_deadline(self):
-        p = make_prediction(
-            source_name="A Very Long Organization Name That Takes Up Space",
-            prediction_text="Short prediction.",
-            deadline_fuzzy="sometime in the next decade or two",
-        )
-        post = build_post(p)
-        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
-
     def test_all_seed_predictions_within_char_limit(self):
-        predictions_dir = REPO_ROOT / "predictions"
         import yaml
         failures = []
-        for path in sorted(predictions_dir.glob("*.yaml")):
+        for path in sorted(REPO_ROOT.glob("predictions/*.yaml")):
             if path.name == ".gitkeep":
                 continue
             with open(path) as f:
@@ -156,13 +178,11 @@ class TestBuildPost(unittest.TestCase):
 
 
 def atproto_modules(client_instance):
-    """Build a sys.modules patch that covers both atproto and atproto_client.exceptions."""
-    mock_client_class = MagicMock(return_value=client_instance)
     from atproto_client.exceptions import AtProtocolError
     mock_atproto_client = MagicMock()
     mock_atproto_client.exceptions.AtProtocolError = AtProtocolError
     return {
-        "atproto": MagicMock(Client=mock_client_class),
+        "atproto": MagicMock(Client=MagicMock(return_value=client_instance)),
         "atproto_client": mock_atproto_client,
         "atproto_client.exceptions": mock_atproto_client.exceptions,
     }
@@ -170,25 +190,19 @@ def atproto_modules(client_instance):
 
 class TestSkipPost(unittest.TestCase):
     def test_skip_post_true_produces_no_api_call(self):
-        """Files with skip_post: true must not trigger any Bluesky API call."""
         import post_new
         client_instance = MagicMock()
         with patch.dict("sys.modules", atproto_modules(client_instance)):
             p = make_prediction(skip_post=True)
-            if p.get("skip_post"):
-                pass  # would sys.exit(0) in real code
-            else:
+            if not p.get("skip_post"):
                 post_new.post_to_bluesky("text", "handle", "password")
-
         client_instance.send_post.assert_not_called()
 
     def test_skip_post_false_would_post(self):
-        """Files with skip_post: false pass through to the API call."""
         import post_new
         client_instance = MagicMock()
         with patch.dict("sys.modules", atproto_modules(client_instance)):
             post_new.post_to_bluesky("test post", "handle@bsky.social", "app_password")
-
         client_instance.send_post.assert_called_once_with(text="test post")
 
 

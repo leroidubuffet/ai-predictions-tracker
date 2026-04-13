@@ -32,12 +32,13 @@ def load_prediction(path):
 
 
 def format_date(value):
+    """Return 'Month YYYY' string from an ISO date or date object."""
     if not value:
         return ""
     if isinstance(value, (date, datetime)):
-        return str(value.year)
+        return value.strftime("%B %Y")
     try:
-        return str(date.fromisoformat(str(value)).year)
+        return date.fromisoformat(str(value)).strftime("%B %Y")
     except ValueError:
         return str(value)
 
@@ -65,36 +66,56 @@ def truncate_to_fit(text, max_chars, ellipsis="…"):
     return truncated + ellipsis
 
 
+HASHTAGS = "#AIPredictions"
+
+
 def build_post(prediction):
     """
-    Build the Bluesky post text for a prediction.
+    Build the Bluesky post text for a new prediction.
     Returns the post string (≤ 300 chars).
 
     Format:
-      [Source] ([year]):
-      "[excerpt]"
+      New prediction registered
 
-      Deadline: [deadline]
+      Author: [source_name]
+      Date: [Month YYYY]
+
+      "[excerpt — no internal line breaks]"
+
+      Deadline: [deadline]     ← omitted if absent
+
+      [source_url]             ← omitted if absent
+
+      #AIPredictions
     """
     source = str(prediction.get("source_name") or "Unknown").strip()
-    year = format_date(prediction.get("prediction_date"))
-    text = str(prediction.get("prediction_text") or "").strip()
+    date_str = format_date(prediction.get("prediction_date"))
+    # Collapse internal line breaks in the prediction text to spaces
+    raw_text = str(prediction.get("prediction_text") or "").strip()
+    text = " ".join(raw_text.split())
     deadline = deadline_display(prediction)
+    url = str(prediction.get("source_url") or "").strip()
 
-    # Build the fixed parts to measure available space for the excerpt
-    header = f"{source} ({year}):"
-    deadline_line = f"\n\nDeadline: {deadline}" if deadline else ""
+    header = "New prediction registered"
+    byline = f"Author: {source}\nDate: {date_str}"
+    deadline_line = f"Deadline: {deadline}" if deadline else ""
+    footer_parts = [p for p in [deadline_line, url, HASHTAGS] if p]
+    footer = "\n\n".join(footer_parts)
 
-    # Account for header + newline + opening quote + closing quote + deadline
-    # Pattern: "{header}\n\"{excerpt}\"{deadline_line}"
-    fixed_chars = len(header) + 1 + 1 + 1 + len(deadline_line)  # \n + " + "
-    available = BLUESKY_CHAR_LIMIT - fixed_chars
+    # Measure fixed chars to calculate available space for the quote
+    # Pattern: "{header}\n\n{byline}\n\n\"{excerpt}\"\n\n{footer}"
+    fixed = len(header) + 2 + len(byline) + 2 + 2 + 2 + len(footer)  # quotes + separators
+    available = BLUESKY_CHAR_LIMIT - fixed
 
     excerpt = truncate_to_fit(text, max(available, 20))
 
-    post = f'{header}\n"{excerpt}"{deadline_line}'
+    parts = [header, byline, f'"{excerpt}"']
+    if footer:
+        parts.append(footer)
 
-    # Final safety clamp (should not be needed, but guards against edge cases)
+    post = "\n\n".join(parts)
+
+    # Safety clamp
     if len(post) > BLUESKY_CHAR_LIMIT:
         post = post[:BLUESKY_CHAR_LIMIT - 1] + "…"
 
