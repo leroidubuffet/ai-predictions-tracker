@@ -72,30 +72,32 @@
 - [ ] Integration test: add a real prediction, verify Bluesky post appears
 - [ ] Edge case test: fix a typo in an existing prediction, verify no duplicate post
 
-## Phase 5 — Reminder Bot
+## Phase 5 — Reminder Bot ✓
 
-- [ ] Write `scripts/reminders.py`:
-  - [ ] Scans all `predictions/*.yaml`
-  - [ ] Filters for `status: pending` with a parseable `deadline`
-  - [ ] Fires reminders at 30, 7, and 1 days before deadline
-  - [ ] Reads `state/reminded.yaml` to check which reminders have already been sent
-  - [ ] Writes sent reminders back to `state/reminded.yaml`
-  - [ ] Formats post: "N days until [source]'s prediction: [excerpt]"
-  - [ ] Does not post for `status: expired` or `status: notable`
-  - [ ] Does not post for predictions with `skip_post: true`
-- [ ] Write `scripts/reminders_test.py`:
-  - [ ] Prediction at exactly 30 days out triggers reminder
-  - [ ] Prediction at 29 days out does not trigger 30-day reminder
-  - [ ] Prediction already in `state/reminded.yaml` for this threshold is not re-posted
-  - [ ] `status: expired` prediction is skipped
-  - [ ] `status: notable` prediction is skipped
-  - [ ] `skip_post: true` prediction is skipped
-  - [ ] Prediction with no `deadline` field is skipped
-  - [ ] Prediction with unparseable `deadline` is skipped with a warning, not a crash
-  - [ ] Multiple thresholds in one run each fire independently
-  - [ ] `state/reminded.yaml` is written correctly after a run
-  - [ ] Dry-run mode prints what would be posted without calling the API
-- [ ] Add `.github/workflows/reminders.yml` — runs daily at a fixed UTC time
+- [x] Write `scripts/reminders.py`:
+  - [x] Scans all `predictions/*.yaml`
+  - [x] Filters for `status: pending` with a parseable `deadline`
+  - [x] Fires reminders at 30, 7, and 1 days before deadline
+  - [x] Reads `state/reminded.yaml` to check which reminders have already been sent
+  - [x] Writes sent reminders back to `state/reminded.yaml`
+  - [x] Formats post: "N days until [source]'s prediction deadline ([deadline]):"
+  - [x] Does not post for `status: expired` or `status: notable`
+  - [x] Does not post for predictions with `skip_post: true`
+  - [x] `--dry-run` flag prints what would be posted without calling the API
+- [x] Write `scripts/reminders_test.py` (34 tests, all passing):
+  - [x] Prediction at exactly 30 days out triggers reminder
+  - [x] Prediction at 29 days out does not trigger 30-day reminder
+  - [x] Prediction already in `state/reminded.yaml` for this threshold is not re-posted
+  - [x] `status: expired` prediction is skipped
+  - [x] `status: notable` prediction is skipped
+  - [x] `skip_post: true` prediction is skipped
+  - [x] Prediction with no `deadline` field is skipped
+  - [x] Prediction with unparseable `deadline` is skipped without a crash
+  - [x] Multiple thresholds in one run each fire independently
+  - [x] `state/reminded.yaml` is written correctly after a run
+  - [x] Dry-run does not post or write state
+  - [x] All 27 seed predictions produce valid reminder posts within 300 chars
+- [x] Add `.github/workflows/reminders.yml` — runs daily at 09:00 UTC, commits state
 - [ ] Integration test: set a prediction deadline to tomorrow, run reminders manually, verify post
 
 ## Phase 6 — Hardening
