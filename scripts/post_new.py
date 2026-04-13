@@ -12,6 +12,7 @@ Required environment variables:
 """
 
 import os
+import re
 import sys
 import time
 from datetime import date, datetime
@@ -122,6 +123,53 @@ def build_post(prediction):
     return post
 
 
+URL_RE = re.compile(r"https?://[^\s]+")
+HASHTAG_RE = re.compile(r"#(\w+)")
+
+
+def build_facets(text):
+    """
+    Scan post text and return a list of AT Protocol rich-text facets for
+    URLs (app.bsky.richtext.facet#link) and hashtags (facet#tag).
+    Byte offsets are computed from the UTF-8 encoding of the text.
+    """
+    try:
+        from atproto import models
+    except ImportError:
+        return []
+
+    text_bytes = text.encode("utf-8")
+    facets = []
+
+    for m in URL_RE.finditer(text):
+        byte_start = len(text[: m.start()].encode("utf-8"))
+        byte_end = len(text[: m.end()].encode("utf-8"))
+        facets.append(
+            models.AppBskyRichtextFacet.Main(
+                index=models.AppBskyRichtextFacet.ByteSlice(
+                    byte_start=byte_start,
+                    byte_end=byte_end,
+                ),
+                features=[models.AppBskyRichtextFacet.Link(uri=m.group())],
+            )
+        )
+
+    for m in HASHTAG_RE.finditer(text):
+        byte_start = len(text[: m.start()].encode("utf-8"))
+        byte_end = len(text[: m.end()].encode("utf-8"))
+        facets.append(
+            models.AppBskyRichtextFacet.Main(
+                index=models.AppBskyRichtextFacet.ByteSlice(
+                    byte_start=byte_start,
+                    byte_end=byte_end,
+                ),
+                features=[models.AppBskyRichtextFacet.Tag(tag=m.group(1))],
+            )
+        )
+
+    return facets
+
+
 def post_to_bluesky(text, handle, app_password, retries=3, backoff=5):
     try:
         from atproto import Client
@@ -132,13 +180,13 @@ def post_to_bluesky(text, handle, app_password, retries=3, backoff=5):
 
     client = Client()
     client.login(handle, app_password)
+    facets = build_facets(text)
 
     for attempt in range(1, retries + 1):
         try:
-            client.send_post(text=text)
+            client.send_post(text=text, facets=facets if facets else None)
             return
         except AtProtocolError as e:
-            # Rate limited or transient server error — retry with backoff
             if attempt < retries and ("RateLimitExceeded" in str(e) or "502" in str(e) or "503" in str(e)):
                 wait = backoff * attempt
                 print(f"  API error on attempt {attempt}/{retries}: {e}. Retrying in {wait}s...", file=sys.stderr)

@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, str(Path(__file__).parent))
 from post_new import (
-    build_post, truncate_to_fit, deadline_display, format_date,
+    build_post, build_facets, truncate_to_fit, deadline_display, format_date,
     load_prediction, BLUESKY_CHAR_LIMIT, HASHTAGS,
 )
 
@@ -177,6 +177,72 @@ class TestBuildPost(unittest.TestCase):
             self.fail("Posts exceed char limit:\n" + "\n".join(failures))
 
 
+class TestBuildFacets(unittest.TestCase):
+    def test_url_produces_link_facet(self):
+        text = "Check this out\n\nhttps://example.com\n\n#AIPredictions"
+        facets = build_facets(text)
+        link_facets = [f for f in facets if hasattr(f.features[0], "uri")]
+        self.assertEqual(len(link_facets), 1)
+        self.assertEqual(link_facets[0].features[0].uri, "https://example.com")
+
+    def test_url_byte_offsets_correct(self):
+        url = "https://example.com"
+        text = f"Before\n\n{url}"
+        facets = build_facets(text)
+        link_facets = [f for f in facets if hasattr(f.features[0], "uri")]
+        self.assertEqual(len(link_facets), 1)
+        f = link_facets[0]
+        self.assertEqual(f.index.byte_start, len("Before\n\n".encode("utf-8")))
+        self.assertEqual(f.index.byte_end, len(f"Before\n\n{url}".encode("utf-8")))
+
+    def test_hashtag_produces_tag_facet(self):
+        text = "Some text\n\n#AIPredictions"
+        facets = build_facets(text)
+        tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
+        self.assertEqual(len(tag_facets), 1)
+        self.assertEqual(tag_facets[0].features[0].tag, "AIPredictions")
+
+    def test_hashtag_byte_offsets_correct(self):
+        text = "Before\n\n#AIPredictions"
+        facets = build_facets(text)
+        tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
+        self.assertEqual(len(tag_facets), 1)
+        f = tag_facets[0]
+        self.assertEqual(f.index.byte_start, len("Before\n\n".encode("utf-8")))
+        self.assertEqual(f.index.byte_end, len("Before\n\n#AIPredictions".encode("utf-8")))
+
+    def test_unicode_url_byte_offsets_correct(self):
+        # Non-ASCII before the URL shifts byte offsets
+        prefix = "Prédit\n\n"
+        url = "https://example.com"
+        text = f"{prefix}{url}"
+        facets = build_facets(text)
+        link_facets = [f for f in facets if hasattr(f.features[0], "uri")]
+        self.assertEqual(len(link_facets), 1)
+        f = link_facets[0]
+        self.assertEqual(f.index.byte_start, len(prefix.encode("utf-8")))
+        self.assertEqual(f.index.byte_end, len(f"{prefix}{url}".encode("utf-8")))
+
+    def test_no_urls_no_link_facets(self):
+        facets = build_facets("No links here at all.")
+        link_facets = [f for f in facets if hasattr(f.features[0], "uri")]
+        self.assertEqual(link_facets, [])
+
+    def test_no_hashtags_no_tag_facets(self):
+        facets = build_facets("No hashtags here.")
+        tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
+        self.assertEqual(tag_facets, [])
+
+    def test_full_post_produces_both_facets(self):
+        p = make_prediction(source_url="https://example.com/article")
+        post = build_post(p)
+        facets = build_facets(post)
+        link_facets = [f for f in facets if hasattr(f.features[0], "uri")]
+        tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
+        self.assertEqual(len(link_facets), 1)
+        self.assertEqual(len(tag_facets), 1)
+
+
 def atproto_modules(client_instance):
     from atproto_client.exceptions import AtProtocolError
     mock_atproto_client = MagicMock()
@@ -203,7 +269,9 @@ class TestSkipPost(unittest.TestCase):
         client_instance = MagicMock()
         with patch.dict("sys.modules", atproto_modules(client_instance)):
             post_new.post_to_bluesky("test post", "handle@bsky.social", "app_password")
-        client_instance.send_post.assert_called_once_with(text="test post")
+        client_instance.send_post.assert_called_once()
+        call_kwargs = client_instance.send_post.call_args
+        self.assertEqual(call_kwargs.kwargs.get("text") or call_kwargs.args[0], "test post")
 
 
 class TestAPIFailure(unittest.TestCase):
