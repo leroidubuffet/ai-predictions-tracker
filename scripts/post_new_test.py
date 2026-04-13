@@ -155,49 +155,52 @@ class TestBuildPost(unittest.TestCase):
             self.fail("Posts exceed char limit:\n" + "\n".join(failures))
 
 
+def atproto_modules(client_instance):
+    """Build a sys.modules patch that covers both atproto and atproto_client.exceptions."""
+    mock_client_class = MagicMock(return_value=client_instance)
+    from atproto_client.exceptions import AtProtocolError
+    mock_atproto_client = MagicMock()
+    mock_atproto_client.exceptions.AtProtocolError = AtProtocolError
+    return {
+        "atproto": MagicMock(Client=mock_client_class),
+        "atproto_client": mock_atproto_client,
+        "atproto_client.exceptions": mock_atproto_client.exceptions,
+    }
+
+
 class TestSkipPost(unittest.TestCase):
     def test_skip_post_true_produces_no_api_call(self):
         """Files with skip_post: true must not trigger any Bluesky API call."""
         import post_new
-        mock_client_class = MagicMock()
-        mock_client_instance = MagicMock()
-        mock_client_class.return_value = mock_client_instance
-
-        with patch.dict("sys.modules", {"atproto": MagicMock(Client=mock_client_class)}):
+        client_instance = MagicMock()
+        with patch.dict("sys.modules", atproto_modules(client_instance)):
             p = make_prediction(skip_post=True)
-            # build_post itself doesn't check skip_post — that's main()'s job.
-            # Verify the flag is respected by simulating main() logic.
             if p.get("skip_post"):
                 pass  # would sys.exit(0) in real code
             else:
                 post_new.post_to_bluesky("text", "handle", "password")
 
-        mock_client_instance.send_post.assert_not_called()
+        client_instance.send_post.assert_not_called()
 
     def test_skip_post_false_would_post(self):
         """Files with skip_post: false pass through to the API call."""
-        mock_client_class = MagicMock()
-        mock_client_instance = MagicMock()
-        mock_client_class.return_value = mock_client_instance
-
         import post_new
-        with patch.dict("sys.modules", {"atproto": MagicMock(Client=mock_client_class)}):
+        client_instance = MagicMock()
+        with patch.dict("sys.modules", atproto_modules(client_instance)):
             post_new.post_to_bluesky("test post", "handle@bsky.social", "app_password")
 
-        mock_client_instance.send_post.assert_called_once_with(text="test post")
+        client_instance.send_post.assert_called_once_with(text="test post")
 
 
 class TestAPIFailure(unittest.TestCase):
     def test_api_failure_propagates(self):
-        mock_client_class = MagicMock()
-        mock_client_instance = MagicMock()
-        mock_client_instance.send_post.side_effect = Exception("API error")
-        mock_client_class.return_value = mock_client_instance
-
         import post_new
-        with patch.dict("sys.modules", {"atproto": MagicMock(Client=mock_client_class)}):
-            with self.assertRaises(Exception, msg="API error"):
-                post_new.post_to_bluesky("text", "handle", "password")
+        from atproto_client.exceptions import AtProtocolError
+        client_instance = MagicMock()
+        client_instance.send_post.side_effect = AtProtocolError("API error")
+        with patch.dict("sys.modules", atproto_modules(client_instance)):
+            with self.assertRaises(AtProtocolError):
+                post_new.post_to_bluesky("text", "handle", "password", retries=1)
 
 
 if __name__ == "__main__":

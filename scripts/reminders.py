@@ -14,6 +14,7 @@ Required environment variables (for live run):
 
 import os
 import sys
+import time
 from datetime import date, datetime
 from pathlib import Path
 
@@ -135,15 +136,28 @@ def build_reminder_post(prediction, days_remaining):
 
 # ── Bluesky posting ───────────────────────────────────────────────────────────
 
-def post_to_bluesky(text, handle, app_password):
+def post_to_bluesky(text, handle, app_password, retries=3, backoff=5):
     try:
         from atproto import Client
+        from atproto_client.exceptions import AtProtocolError
     except ImportError:
         print("ERROR: atproto not installed.", file=sys.stderr)
         sys.exit(2)
+
     client = Client()
     client.login(handle, app_password)
-    client.send_post(text=text)
+
+    for attempt in range(1, retries + 1):
+        try:
+            client.send_post(text=text)
+            return
+        except AtProtocolError as e:
+            if attempt < retries and ("RateLimitExceeded" in str(e) or "502" in str(e) or "503" in str(e)):
+                wait = backoff * attempt
+                print(f"  API error on attempt {attempt}/{retries}: {e}. Retrying in {wait}s...", file=sys.stderr)
+                time.sleep(wait)
+            else:
+                raise
 
 
 # ── Main logic ────────────────────────────────────────────────────────────────

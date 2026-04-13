@@ -100,13 +100,14 @@
 - [x] Add `.github/workflows/reminders.yml` — runs daily at 09:00 UTC, commits state
 - [ ] Integration test: set a prediction deadline to tomorrow, run reminders manually, verify post
 
-## Phase 6 — Hardening
+## Phase 6 — Hardening ✓
 
-- [ ] Add rate limit handling to both bot scripts (retry with backoff on 429)
-- [ ] Add `scripts/check_state.py` — detects if `state/reminded.yaml` has drifted from `predictions/`
-- [ ] Test GitHub Actions workflows run cleanly on a fresh clone with no cached state
+- [x] Add rate limit handling to both bot scripts (retry with backoff on 429)
+- [x] Add `scripts/check_state.py` — detects if `state/reminded.yaml` has drifted from `predictions/`
+- [x] Expand `validate.yml` to run all three test suites on every push
+- [ ] Create Bluesky bot account and add secrets to GitHub repo
 - [ ] Test the full new-prediction flow end-to-end: script → commit → Actions → Bluesky
-- [ ] Test the full reminder flow end-to-end: prediction with near deadline → cron → Bluesky
+- [ ] Test the full reminder flow end-to-end: `--dry-run` locally, then live with a near deadline
 - [ ] Document the `BLUESKY_APP_PASSWORD` rotation process in CLAUDE.md
 
 ## Ongoing

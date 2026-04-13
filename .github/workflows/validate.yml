@@ -5,12 +5,12 @@ on:
     paths:
       - "predictions/**"
       - "categories.yaml"
-      - "scripts/validate.py"
+      - "scripts/**"
   pull_request:
     paths:
       - "predictions/**"
       - "categories.yaml"
-      - "scripts/validate.py"
+      - "scripts/**"
 
 jobs:
   validate:
@@ -26,10 +26,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyyaml
+          pip install pyyaml atproto
 
-      - name: Run validation
+      - name: Validate all predictions
         run: python scripts/validate.py
 
-      - name: Run tests
-        run: python scripts/validate_test.py
+      - name: Run all tests
+        run: |
+          python scripts/validate_test.py
+          python scripts/post_new_test.py
+          python scripts/reminders_test.py
