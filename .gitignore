@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+site/_site/
+site/.jekyll-cache/

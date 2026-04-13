@@ -1,0 +1,39 @@
+# Copy this file to predictions/YYYY-MM-DD-source-slug.yaml and fill it in.
+# Run: ./new_prediction.sh "Source Name"
+
+# When the prediction was made (ISO date, required)
+prediction_date: YYYY-MM-DD
+
+# Who made it — person or organization (required)
+source_name: ""
+
+# Link to the original source: interview, article, tweet, paper, etc. (optional but strongly encouraged)
+source_url: ""
+
+# The full verbatim or closely paraphrased prediction. Multi-line is fine. (required)
+prediction_text: |
+
+
+# ISO date for when the prediction is supposed to come true (optional)
+# Use deadline_fuzzy for vague statements like "within a decade"
+deadline: ""
+
+# Human-readable form of the deadline, for display (optional)
+deadline_fuzzy: ""
+
+# Must match an entry in categories.yaml (required)
+category: ""
+
+# pending | expired | notable (required)
+# pending:  deadline hasn't passed
+# expired:  deadline passed, nothing notable to record
+# notable:  something worth noting happened — add context in notes
+status: pending
+
+# Additional context: source details, related claims, outcome notes (optional)
+notes: |
+
+
+# Set true for historical/seed data to prevent the bot from posting it on import.
+# Leave false for new predictions you want posted to Bluesky. (required)
+skip_post: false

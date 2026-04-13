@@ -1,0 +1,12 @@
+# Valid category slugs for predictions.
+# All lowercase, hyphenated. Add new entries here before using them in prediction files.
+
+categories:
+  - agi           # Predictions about artificial general intelligence arrival or definition
+  - capabilities  # Specific model or system capability milestones
+  - jobs          # Employment, automation, and labor market impact
+  - regulation    # Laws, policy, and government action on AI
+  - safety        # Existential risk, alignment, and AI safety outcomes
+  - timelines     # General timeline predictions not covered by other categories
+  - hardware      # Chips, compute, and infrastructure
+  - alignment     # Technical alignment research progress and outcomes

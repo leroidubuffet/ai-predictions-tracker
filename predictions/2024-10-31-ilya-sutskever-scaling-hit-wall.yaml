@@ -1,0 +1,17 @@
+prediction_date: 2024-10-31
+source_name: Ilya Sutskever
+source_url: https://www.reuters.com/technology/artificial-intelligence/openai-co-founder-ilya-sutskever-says-pre-training-hit-a-wall-2024-12-12/
+prediction_text: |
+  Pre-training as we know it has reached its limits. The data is what it is,
+  and there isn't going to be more. The paradigm of scaling up pre-training
+  compute to improve model capabilities is plateauing.
+deadline: ""
+deadline_fuzzy: "already true at time of statement"
+category: capabilities
+status: notable
+notes: |
+  Said at NeurIPS 2024 after leaving OpenAI to found SSI (Safe Superintelligence).
+  Contrasts with Altman's continued scaling optimism. Influential because it
+  came from someone central to the original scaling hypothesis. Post-training
+  methods (RLHF, RL, chain-of-thought) are now framed as the new frontier.
+skip_post: true

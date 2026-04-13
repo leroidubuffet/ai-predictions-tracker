@@ -1,0 +1,18 @@
+prediction_date: 2025-01-21
+source_name: Sam Altman
+source_url: https://blog.samaltman.com/reflections
+prediction_text: |
+  AI agents will join the workforce and materially change the output of
+  companies. It is possible that 2025 will be the year we see the first
+  AI agent that could fully do the job of a software engineer.
+deadline: 2025-12-31
+deadline_fuzzy: "during 2025"
+category: jobs
+status: expired
+notes: |
+  From Altman's January 2025 blog post. By end of 2025, several AI coding
+  agents had been released (Devin, Claude Code, Cursor, GitHub Copilot Workspace)
+  but industry consensus on whether they "fully do the job" of an engineer
+  remained contested. The prediction is notable for influencing the 2025
+  AI agent investment wave.
+skip_post: true

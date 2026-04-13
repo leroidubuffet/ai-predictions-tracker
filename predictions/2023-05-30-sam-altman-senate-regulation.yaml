@@ -1,0 +1,18 @@
+prediction_date: 2023-05-30
+source_name: Sam Altman
+source_url: https://www.c-span.org/video/?528117-1/openai-ceo-testifies-artificial-intelligence
+prediction_text: |
+  Government intervention and regulation of AI is critical and necessary.
+  If this technology goes wrong it can go quite wrong, and we want to work
+  with the government to prevent that from happening. Altman called for
+  a new federal agency to license AI development.
+deadline: ""
+deadline_fuzzy: ""
+category: regulation
+status: pending
+notes: |
+  Testimony to the US Senate Judiciary Subcommittee on Privacy, Technology
+  and the Law. No dedicated US federal AI licensing agency has been created
+  as of 2026. Altman's position on regulation has evolved publicly since
+  this testimony.
+skip_post: true

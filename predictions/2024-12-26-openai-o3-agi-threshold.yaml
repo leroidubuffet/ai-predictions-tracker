@@ -1,0 +1,18 @@
+prediction_date: 2024-12-26
+source_name: OpenAI
+source_url: https://openai.com/index/deliberative-alignment/
+prediction_text: |
+  OpenAI's o3 model scores 87.5% on ARC-AGI, a benchmark specifically designed
+  to resist AI, suggesting that AI systems are approaching or crossing thresholds
+  previously considered meaningful markers of general intelligence.
+deadline: ""
+deadline_fuzzy: "already demonstrated at time of statement"
+category: capabilities
+status: notable
+notes: |
+  ARC-AGI was created by François Chollet specifically to test abstract
+  reasoning that couldn't be solved by memorization. o3's score of 87.5%
+  on the public eval set (with high compute) significantly exceeded prior
+  records. Chollet's own commentary: this is progress but not AGI.
+  The benchmark arms race implication is significant.
+skip_post: true

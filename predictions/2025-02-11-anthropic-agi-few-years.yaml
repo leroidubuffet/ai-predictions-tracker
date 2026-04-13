@@ -1,0 +1,17 @@
+prediction_date: 2025-02-11
+source_name: Anthropic
+source_url: https://www.anthropic.com/news/core-views-on-ai-safety
+prediction_text: |
+  We believe we may be building one of the most transformative and potentially
+  dangerous technologies in human history, and that AI significantly more
+  powerful than current systems could arrive within a few years.
+deadline: 2028-12-31
+deadline_fuzzy: "within a few years of 2025"
+category: agi
+status: pending
+notes: |
+  From Anthropic's updated core views document. Noteworthy because it is
+  a corporate safety statement that also serves as a timeline prediction.
+  The framing of "transformative and potentially dangerous" while continuing
+  development reflects their stated "race to the top" rationale.
+skip_post: true

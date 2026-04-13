@@ -1,0 +1,17 @@
+prediction_date: 2023-03-22
+source_name: Future of Life Institute (open letter signatories)
+source_url: https://futureoflife.org/open-letter/pause-giant-ai-experiments/
+prediction_text: |
+  AI labs must immediately pause for at least 6 months the training of AI
+  systems more powerful than GPT-4. If a pause cannot be enacted quickly,
+  governments should step in and institute a moratorium.
+deadline: 2023-09-22
+deadline_fuzzy: "6-month pause requested from March 2023"
+category: regulation
+status: expired
+notes: |
+  Signed by Musk, Wozniak, Yoshua Bengio, and thousands of others.
+  The pause did not happen. Training of more powerful models continued
+  uninterrupted. No government moratorium was enacted within the proposed
+  window. The letter is notable as a failed coordination attempt.
+skip_post: true

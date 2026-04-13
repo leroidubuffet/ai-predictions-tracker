@@ -1,0 +1,17 @@
+prediction_date: 2023-11-18
+source_name: Yann LeCun
+source_url: https://twitter.com/ylecun/status/1725730624789741026
+prediction_text: |
+  LLMs will never achieve human-level intelligence. They are fundamentally
+  limited by their autoregressive token prediction architecture and will be
+  superseded by world-model-based systems before reaching AGI.
+deadline: ""
+deadline_fuzzy: "no specific deadline given"
+category: agi
+status: pending
+notes: |
+  LeCun has made this argument consistently throughout 2023-2024, often in
+  public debates with figures like Yann LeCun vs. the broader scaling-is-enough
+  camp. He specifically argues for a "Joint Embedding Predictive Architecture"
+  (JEPA) as the path forward.
+skip_post: true
