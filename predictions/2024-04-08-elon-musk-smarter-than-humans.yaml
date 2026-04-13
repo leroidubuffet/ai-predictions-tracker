@@ -1,0 +1,16 @@
+prediction_date: 2024-04-08
+source_name: Elon Musk
+source_url: https://www.reuters.com/technology/teslas-musk-predicts-ai-will-be-smarter-than-smartest-human-next-year-2024-04-08/
+prediction_text: |
+  If you define AGI as smarter than the smartest human, I think it's probably
+  next year, within two years at the outside.
+deadline: 2026-04-08
+deadline_fuzzy: "by 2025–2026"
+category: agi
+status: expired
+notes: |
+  Said in an interview posted to X. The 2025 window has passed without
+  consensus that AI surpassed the smartest human. This is a separate,
+  more specific statement than his September 2023 prediction. Musk has
+  consistently revised AGI timelines upward while building Grok at xAI.
+skip_post: true

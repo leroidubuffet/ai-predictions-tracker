@@ -1,0 +1,16 @@
+prediction_date: 2024-10-24
+source_name: Yann LeCun
+source_url: https://www.reddit.com/r/singularity/comments/1gb2d72/yann_lecun_still_dont_think_ai_is_at_an_animal/
+prediction_text: |
+  I think it's going to take a decade or more to get to human-level AI.
+  Current AI systems are not even at the level of a cat or rat in terms
+  of understanding the world.
+deadline: 2034-10-24
+deadline_fuzzy: "a decade or more from October 2024"
+category: agi
+status: pending
+notes: |
+  Consistent with his ongoing position that LLMs are insufficient for AGI
+  and that world-model-based architectures (JEPA) are required. His "not even
+  at the level of a cat" framing is a direct rebuttal to AGI-is-near claims.
+skip_post: true

@@ -1,0 +1,15 @@
+prediction_date: 2025-03-26
+source_name: Bill Gates
+source_url: https://www.cnbc.com/2025/03/26/bill-gates-on-ai-humans-wont-be-needed-for-most-things.html
+prediction_text: |
+  Over the next decade, advances in artificial intelligence will mean that
+  humans will no longer be needed for most things in the world.
+deadline: 2035-03-26
+deadline_fuzzy: "within the next decade from March 2025"
+category: jobs
+status: pending
+notes: |
+  Said in a CNBC interview. Gates has become increasingly vocal about AI's
+  transformative impact since stepping back from Microsoft. The "most things"
+  framing is deliberately broad and will be difficult to evaluate precisely.
+skip_post: true

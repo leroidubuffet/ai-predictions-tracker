@@ -1,0 +1,16 @@
+prediction_date: 2024-04-28
+source_name: Nick Bostrom
+source_url: https://www.reddit.com/r/singularity/comments/1cf0ol8/nick_bostrom_superintelligence_could_happen_in/
+prediction_text: |
+  Superintelligence could happen in timelines as short as a year and is
+  the last invention we will ever need to make.
+deadline: 2025-04-28
+deadline_fuzzy: "as short as one year from April 2024"
+category: agi
+status: expired
+notes: |
+  The lower bound of his stated range (one year) has passed. Bostrom is
+  the author of "Superintelligence" (2014), which shaped much of the early
+  existential risk discourse. The "last invention" framing refers to
+  recursive self-improvement making further human invention unnecessary.
+skip_post: true
