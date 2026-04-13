@@ -11,8 +11,8 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, str(Path(__file__).parent))
 from post_new import (
-    build_post, build_facets, truncate_to_fit, deadline_display, format_date,
-    load_prediction, BLUESKY_CHAR_LIMIT, HASHTAGS,
+    build_post, build_facets, build_embed, truncate_to_fit, deadline_display,
+    format_date, load_prediction, BLUESKY_CHAR_LIMIT, HASHTAGS,
 )
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -97,11 +97,11 @@ class TestBuildPost(unittest.TestCase):
 
     def test_header_present(self):
         post = build_post(make_prediction())
-        self.assertIn("New prediction registered", post)
+        self.assertIn("New prediction", post)
 
     def test_author_field_present(self):
         post = build_post(make_prediction(source_name="Geoffrey Hinton"))
-        self.assertIn("Author: Geoffrey Hinton", post)
+        self.assertIn("Geoffrey Hinton", post)
 
     def test_date_field_present(self):
         post = build_post(make_prediction(prediction_date="2023-05-16"))
@@ -133,14 +133,18 @@ class TestBuildPost(unittest.TestCase):
         post = build_post(make_prediction(deadline="", deadline_fuzzy=""))
         self.assertNotIn("Deadline:", post)
 
-    def test_url_present(self):
+    def test_url_not_in_post_text(self):
+        # URL is attached as an embed card, not in the post text
         post = build_post(make_prediction(source_url="https://example.com/article"))
-        self.assertIn("https://example.com/article", post)
+        self.assertNotIn("https://example.com/article", post)
 
-    def test_no_url_when_absent(self):
-        post = build_post(make_prediction(source_url=""))
-        # Should not contain a bare https:// fragment
-        self.assertNotIn("https://", post)
+    def test_long_url_does_not_shrink_quote(self):
+        # A very long URL must not reduce the available quote space
+        long_url = "https://www.example.com/" + "a" * 80
+        short_url = "https://x.com/s"
+        post_long = build_post(make_prediction(source_url=long_url))
+        post_short = build_post(make_prediction(source_url=short_url))
+        self.assertEqual(post_long, post_short)
 
     def test_hashtags_present(self):
         post = build_post(make_prediction())
@@ -233,14 +237,28 @@ class TestBuildFacets(unittest.TestCase):
         tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
         self.assertEqual(tag_facets, [])
 
-    def test_full_post_produces_both_facets(self):
+    def test_full_post_has_hashtag_facet_only(self):
+        # URL is in embed, not post text — only the hashtag facet appears
         p = make_prediction(source_url="https://example.com/article")
         post = build_post(p)
         facets = build_facets(post)
         link_facets = [f for f in facets if hasattr(f.features[0], "uri")]
         tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
-        self.assertEqual(len(link_facets), 1)
+        self.assertEqual(len(link_facets), 0)
         self.assertEqual(len(tag_facets), 1)
+
+
+class TestBuildEmbed(unittest.TestCase):
+    def test_url_produces_embed(self):
+        embed = build_embed("https://example.com")
+        self.assertIsNotNone(embed)
+        self.assertEqual(embed.external.uri, "https://example.com")
+
+    def test_empty_url_returns_none(self):
+        self.assertIsNone(build_embed(""))
+
+    def test_none_url_returns_none(self):
+        self.assertIsNone(build_embed(None))
 
 
 def atproto_modules(client_instance):

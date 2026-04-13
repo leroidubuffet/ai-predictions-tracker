@@ -73,6 +73,8 @@ HASHTAGS = "#AIPredictions"
 def build_post(prediction):
     """
     Build the Bluesky post text for a new prediction.
+    The source URL is NOT included in the text — it is attached as an embed
+    card by post_to_bluesky(), so it costs zero characters here.
     Returns the post string (≤ 300 chars).
 
     Format:
@@ -81,11 +83,9 @@ def build_post(prediction):
       Author: [source_name]
       Date: [Month YYYY]
 
-      "[excerpt — no internal line breaks]"
+      "[full excerpt — no internal line breaks]"
 
       Deadline: [deadline]     ← omitted if absent
-
-      [source_url]             ← omitted if absent
 
       #AIPredictions
     """
@@ -95,12 +95,11 @@ def build_post(prediction):
     raw_text = str(prediction.get("prediction_text") or "").strip()
     text = " ".join(raw_text.split())
     deadline = deadline_display(prediction)
-    url = str(prediction.get("source_url") or "").strip()
 
-    header = "New prediction registered"
-    byline = f"Author: {source}\nDate: {date_str}"
+    header = "🔮 New prediction 🔮"
+    byline = f"By: {source}\nDate: {date_str}"
     deadline_line = f"Deadline: {deadline}" if deadline else ""
-    footer_parts = [p for p in [deadline_line, url, HASHTAGS] if p]
+    footer_parts = [p for p in [deadline_line, HASHTAGS] if p]
     footer = "\n\n".join(footer_parts)
 
     # Measure fixed chars to calculate available space for the quote
@@ -170,7 +169,24 @@ def build_facets(text):
     return facets
 
 
-def post_to_bluesky(text, handle, app_password, retries=3, backoff=5):
+def build_embed(url):
+    """Return an external embed card for the given URL, or None if url is empty."""
+    if not url:
+        return None
+    try:
+        from atproto import models
+        return models.AppBskyEmbedExternal.Main(
+            external=models.AppBskyEmbedExternal.External(
+                uri=url,
+                title="",
+                description="",
+            )
+        )
+    except ImportError:
+        return None
+
+
+def post_to_bluesky(text, handle, app_password, url="", retries=3, backoff=5):
     try:
         from atproto import Client
         from atproto_client.exceptions import AtProtocolError
@@ -181,10 +197,15 @@ def post_to_bluesky(text, handle, app_password, retries=3, backoff=5):
     client = Client()
     client.login(handle, app_password)
     facets = build_facets(text)
+    embed = build_embed(url)
 
     for attempt in range(1, retries + 1):
         try:
-            client.send_post(text=text, facets=facets if facets else None)
+            client.send_post(
+                text=text,
+                facets=facets if facets else None,
+                embed=embed,
+            )
             return
         except AtProtocolError as e:
             if attempt < retries and ("RateLimitExceeded" in str(e) or "502" in str(e) or "503" in str(e)):
@@ -225,7 +246,8 @@ def main():
         print("ERROR: BLUESKY_HANDLE and BLUESKY_APP_PASSWORD must be set.", file=sys.stderr)
         sys.exit(1)
 
-    post_to_bluesky(post, handle, app_password)
+    url = str(prediction.get("source_url") or "").strip()
+    post_to_bluesky(post, handle, app_password, url=url)
     print(f"Posted: {path.name}")
 
 
