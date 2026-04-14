@@ -13,9 +13,10 @@ from unittest.mock import MagicMock, patch, call
 sys.path.insert(0, str(Path(__file__).parent))
 import reminders
 from reminders import (
-    build_reminder_post, build_expired_post, truncate_to_fit, parse_deadline,
-    already_reminded, mark_reminded, run, get_thresholds,
-    prediction_age_label, days_label, BLUESKY_CHAR_LIMIT, HASHTAGS, EXPIRED_KEY,
+    build_reminder_post, build_expired_post, build_anniversary_post,
+    truncate_to_fit, parse_deadline, already_reminded, mark_reminded, run,
+    get_thresholds, get_anniversary_year, prediction_age_label, days_label,
+    BLUESKY_CHAR_LIMIT, HASHTAGS, EXPIRED_KEY,
 )
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -397,6 +398,106 @@ class TestBuildExpiredPost(unittest.TestCase):
             self.fail("Expired posts exceed char limit:\n" + "\n".join(failures))
 
 
+class TestGetAnniversaryYear(unittest.TestCase):
+    def test_exactly_one_year(self):
+        pred = date(2025, 4, 14)
+        today = date(2026, 4, 14)
+        self.assertEqual(get_anniversary_year(pred, today), 1)
+
+    def test_exactly_two_years(self):
+        pred = date(2024, 4, 14)
+        today = date(2026, 4, 14)
+        self.assertEqual(get_anniversary_year(pred, today), 2)
+
+    def test_not_anniversary(self):
+        pred = date(2025, 4, 14)
+        today = date(2026, 4, 15)
+        self.assertIsNone(get_anniversary_year(pred, today))
+
+    def test_less_than_one_year(self):
+        pred = date(2026, 1, 1)
+        today = date(2026, 4, 14)
+        self.assertIsNone(get_anniversary_year(pred, today))
+
+    def test_same_day(self):
+        today = date(2026, 4, 14)
+        self.assertIsNone(get_anniversary_year(today, today))
+
+    def test_none_input(self):
+        self.assertIsNone(get_anniversary_year(None, date.today()))
+
+    def test_feb29_fires_on_feb28_in_non_leap_year(self):
+        pred = date(2024, 2, 29)  # 2024 is a leap year
+        today = date(2025, 2, 28)  # 2025 is not
+        self.assertEqual(get_anniversary_year(pred, today), 1)
+
+    def test_feb29_fires_on_feb29_in_leap_year(self):
+        pred = date(2020, 2, 29)
+        today = date(2024, 2, 29)
+        self.assertEqual(get_anniversary_year(pred, today), 4)
+
+
+class TestBuildAnniversaryPost(unittest.TestCase):
+    def test_within_char_limit(self):
+        p = make_prediction()
+        post = build_anniversary_post(p, 1)
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+
+    def test_one_year_singular(self):
+        p = make_prediction(source_name="Geoffrey Hinton")
+        post = build_anniversary_post(p, 1)
+        self.assertIn("1 year ago", post)
+        self.assertNotIn("1 years ago", post)
+
+    def test_two_years_plural(self):
+        p = make_prediction(source_name="Geoffrey Hinton")
+        post = build_anniversary_post(p, 2)
+        self.assertIn("2 years ago", post)
+
+    def test_contains_source(self):
+        p = make_prediction(source_name="Yann LeCun")
+        post = build_anniversary_post(p, 1)
+        self.assertIn("Yann LeCun", post)
+
+    def test_contains_excerpt(self):
+        p = make_prediction(prediction_text="LLMs are a dead end.")
+        post = build_anniversary_post(p, 1)
+        self.assertIn("LLMs are a dead end.", post)
+
+    def test_hashtags_present(self):
+        p = make_prediction()
+        post = build_anniversary_post(p, 1)
+        self.assertIn(HASHTAGS, post)
+
+    def test_long_text_within_limit(self):
+        p = make_prediction(prediction_text="word " * 100)
+        post = build_anniversary_post(p, 1)
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+
+    def test_no_deadline_needed(self):
+        p = make_prediction()
+        p["deadline"] = ""
+        p["deadline_fuzzy"] = ""
+        post = build_anniversary_post(p, 1)
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+
+    def test_all_seed_predictions_within_char_limit(self):
+        import yaml
+        failures = []
+        for path in sorted(REPO_ROOT.glob("predictions/*.yaml")):
+            if path.name == ".gitkeep":
+                continue
+            with open(path) as f:
+                prediction = yaml.safe_load(f)
+            prediction["_filename"] = path.name
+            for years in [1, 2, 5]:
+                post = build_anniversary_post(prediction, years)
+                if len(post) > BLUESKY_CHAR_LIMIT:
+                    failures.append(f"{path.name} ({years}y): {len(post)} chars")
+        if failures:
+            self.fail("Anniversary posts exceed char limit:\n" + "\n".join(failures))
+
+
 class TestRunLogic(unittest.TestCase):
     """Tests for the run() function using mocked Bluesky API and state."""
 
@@ -439,10 +540,10 @@ class TestRunLogic(unittest.TestCase):
         mock_post.assert_called_once()
 
     def test_yearly_threshold_fires_for_multi_year_prediction(self):
-        # horizon = ~3 years → thresholds include 365, 730, 1095 + base
-        # days_remaining = 365 → should fire
-        two_years_ago = (TODAY - timedelta(days=730)).isoformat()
-        p = make_prediction(days_from_now=365, prediction_date=two_years_ago)
+        # Use a prediction_date that is NOT on an anniversary with TODAY,
+        # so only the 365-day threshold fires (not also an anniversary post).
+        non_anniversary = date(TODAY.year - 2, TODAY.month, TODAY.day) + timedelta(days=1)
+        p = make_prediction(days_from_now=365, prediction_date=non_anniversary.isoformat())
         count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
         self.assertEqual(count, 1)
         mock_post.assert_called_once()
@@ -531,6 +632,57 @@ class TestRunLogic(unittest.TestCase):
 
     def test_dry_run_expired_not_posted(self):
         p = make_prediction(days_from_now=-5)
+        count, mock_post, _, saved = self._run_with_mock([p], today=TODAY, dry_run=True)
+        mock_post.assert_not_called()
+        self.assertEqual(count, 1)
+        self.assertEqual(len(saved), 0)
+
+    def test_anniversary_fires_on_exact_date(self):
+        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
+        p = make_prediction(days_from_now=365, prediction_date=pred_date.isoformat())
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertGreaterEqual(count, 1)
+        mock_post.assert_called()
+
+    def test_anniversary_not_fired_on_wrong_day(self):
+        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day) - timedelta(days=1)
+        p = make_prediction(days_from_now=30, prediction_date=pred_date.isoformat())
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        # May fire for 30d reminder but not anniversary
+        anniversary_key = f"anniversary_1"
+        # Verify state does NOT contain anniversary key
+        _, _, state, saved = self._run_with_mock([p], today=TODAY)
+        reminded = saved[0]["reminders"].get(p["_filename"], []) if saved else []
+        self.assertNotIn(anniversary_key, reminded)
+
+    def test_anniversary_fires_for_prediction_without_deadline(self):
+        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
+        p = make_prediction(days_from_now=30, prediction_date=pred_date.isoformat())
+        p["deadline"] = ""
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertEqual(count, 1)
+        mock_post.assert_called_once()
+
+    def test_anniversary_state_marked(self):
+        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
+        p = make_prediction(days_from_now=400, prediction_date=pred_date.isoformat())
+        _, _, _, saved = self._run_with_mock([p], today=TODAY)
+        reminded = saved[0]["reminders"].get(p["_filename"], [])
+        self.assertIn("anniversary_1", reminded)
+
+    def test_anniversary_not_reposted(self):
+        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
+        p = make_prediction(days_from_now=400, prediction_date=pred_date.isoformat())
+        p["deadline"] = ""  # no deadline so only anniversary could fire
+        initial = {"reminders": {p["_filename"]: ["anniversary_1"]}}
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY, initial_state=initial)
+        self.assertEqual(count, 0)
+        mock_post.assert_not_called()
+
+    def test_dry_run_anniversary_not_posted(self):
+        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
+        p = make_prediction(days_from_now=400, prediction_date=pred_date.isoformat())
+        p["deadline"] = ""
         count, mock_post, _, saved = self._run_with_mock([p], today=TODAY, dry_run=True)
         mock_post.assert_not_called()
         self.assertEqual(count, 1)

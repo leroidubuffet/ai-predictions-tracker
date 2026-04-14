@@ -100,6 +100,29 @@ def parse_deadline(value):
         return None
 
 
+# ── Anniversary logic ────────────────────────────────────────────────────────
+
+def get_anniversary_year(prediction_date, today):
+    """
+    Returns the anniversary year number if today is exactly N years after
+    prediction_date (N ≥ 1), otherwise None.
+    Feb 29 predictions are celebrated on Feb 28 in non-leap years.
+    """
+    if not isinstance(prediction_date, date):
+        return None
+    if today.month == prediction_date.month and today.day == prediction_date.day:
+        years = today.year - prediction_date.year
+        return years if years >= 1 else None
+    # Handle Feb 29 predictions: fire on Feb 28 in non-leap years
+    if prediction_date.month == 2 and prediction_date.day == 29:
+        if today.month == 2 and today.day == 28:
+            import calendar
+            if not calendar.isleap(today.year):
+                years = today.year - prediction_date.year
+                return years if years >= 1 else None
+    return None
+
+
 # ── Threshold logic ───────────────────────────────────────────────────────────
 
 def get_thresholds(horizon_days):
@@ -235,6 +258,38 @@ def build_reminder_post(prediction, days_remaining, today=None):
     return post
 
 
+def build_anniversary_post(prediction, years):
+    """
+    Build a yearly anniversary post for any prediction, with or without a deadline.
+
+    Format:
+      N year(s) ago, {source} predicted:
+
+      "{excerpt}"
+
+      #AIPredictions
+    """
+    source = str(prediction.get("source_name") or "Unknown").strip()
+    raw_text = str(prediction.get("prediction_text") or "").strip()
+    text = " ".join(raw_text.split())
+
+    if years == 1:
+        header = f"1 year ago, {source} predicted:"
+    else:
+        header = f"{years} years ago, {source} predicted:"
+
+    fixed = len(header) + 2 + 2 + 2 + len(HASHTAGS)
+    available = BLUESKY_CHAR_LIMIT - fixed
+
+    excerpt = truncate_to_fit(text, max(available, 20))
+    post = "\n\n".join([header, f'"{excerpt}"', HASHTAGS])
+
+    if len(post) > BLUESKY_CHAR_LIMIT:
+        post = post[:BLUESKY_CHAR_LIMIT - 1] + "…"
+
+    return post
+
+
 def build_expired_post(prediction, today=None):
     """
     Build a one-time post for predictions whose deadline has passed.
@@ -329,6 +384,31 @@ def run(today=None, dry_run=False):
         if prediction.get("skip_post"):
             continue
 
+        prediction_date = parse_deadline(prediction.get("prediction_date"))
+
+        # ── Anniversary post (fires for all predictions, deadline or not) ─────
+        years = get_anniversary_year(prediction_date, today) if prediction_date else None
+        if years:
+            key = f"anniversary_{years}"
+            if not already_reminded(state, filename, key):
+                post = build_anniversary_post(prediction, years)
+                print(f"\n[{years}y anniversary] {filename}")
+                print("─" * 40)
+                print(post)
+                print(f"[{len(post)} chars]")
+                if dry_run:
+                    print("(dry run — not posted)")
+                else:
+                    if not handle or not app_password:
+                        print("ERROR: BLUESKY_HANDLE and BLUESKY_APP_PASSWORD must be set.", file=sys.stderr)
+                        sys.exit(1)
+                    post_to_bluesky(post, handle, app_password)
+                    mark_reminded(state, filename, key)
+                    print("Posted.")
+                posted_count += 1
+            else:
+                skipped_count += 1
+
         deadline = parse_deadline(prediction.get("deadline"))
         if deadline is None:
             continue
@@ -358,7 +438,6 @@ def run(today=None, dry_run=False):
             continue
 
         # ── Upcoming deadline reminders ───────────────────────────────────────
-        prediction_date = parse_deadline(prediction.get("prediction_date"))
         horizon_days = (deadline - prediction_date).days if prediction_date else days_remaining
         thresholds = get_thresholds(horizon_days)
 
