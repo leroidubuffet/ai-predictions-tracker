@@ -1,5 +1,1 @@
-# Tracks which deadline reminders have been sent.
-# Keys are prediction filenames (without path), values are lists of thresholds already posted.
-# Managed automatically by scripts/reminders.py — do not edit manually.
-
 reminders: {}
