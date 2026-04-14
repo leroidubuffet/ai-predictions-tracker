@@ -23,6 +23,7 @@ conflict_of_interest: false
 status: pending
 notes: |
   ...
+hashtags: ""
 skip_post: false
 ```
 
@@ -43,6 +44,16 @@ skip_post: false
 - `conflict_of_interest`: `true` if the source has a direct financial stake in the prediction being believed (e.g. a CEO promoting their product, a VC hyping their portfolio); `false` otherwise
 - `status`: always `pending`
 - `notes`: 2–3 sentences — who is this person, what context makes this prediction notable or worth tracking
+- `hashtags`: 1–3 space-separated hashtags for the Bluesky post. Always include `#AIPredictions`. Add up to 2 more from this list based on the prediction content:
+  - `#AGI` — predictions about AGI arrival, definition, or threshold crossing
+  - `#AITimelines` — predictions with a specific year or window attached
+  - `#AISafety` — existential risk, dangerous AI, alignment failure
+  - `#AIJobs` — employment impact, job displacement, automation of roles
+  - `#AIRegulation` — government action, policy, moratoriums, law
+  - `#LLM` — predictions specifically about language models or scaling laws
+  - `#AIAgents` — agentic systems, AI replacing knowledge workers
+  - `#Automation` — broad economic automation beyond individual jobs
+  - `#ExistentialRisk` — extinction-level or civilisation-scale risk claims
 - `skip_post`: always `false`
 
 If the article contains multiple predictions, pick the most specific and falsifiable one.
