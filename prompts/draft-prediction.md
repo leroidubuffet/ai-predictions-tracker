@@ -18,6 +18,8 @@ prediction_text: |
 deadline: ""
 deadline_fuzzy: ""
 category: ""
+source_type: ""
+conflict_of_interest: false
 status: pending
 notes: |
   ...
@@ -32,6 +34,13 @@ skip_post: false
 - `deadline`: ISO date (YYYY-MM-DD) only if a concrete year or date is stated; otherwise leave empty string
 - `deadline_fuzzy`: human-readable timeframe if any is mentioned — e.g. `"within 5 years"`, `"by end of 2027"`, `"this decade"`; leave empty if none
 - `category`: pick one from: `agi`, `capabilities`, `jobs`, `regulation`, `safety`, `timelines`, `hardware`, `alignment`
+- `source_type`: pick one from: `researcher`, `practitioner`, `executive`, `investor`, `pundit`
+  - `researcher` — academic or lab scientist
+  - `practitioner` — engineer or scientist at an AI organisation
+  - `executive` — CEO, C-suite, or senior leadership
+  - `investor` — VC, fund manager, or financial stakeholder
+  - `pundit` — journalist, commentator, or analyst without direct involvement
+- `conflict_of_interest`: `true` if the source has a direct financial stake in the prediction being believed (e.g. a CEO promoting their product, a VC hyping their portfolio); `false` otherwise
 - `status`: always `pending`
 - `notes`: 2–3 sentences — who is this person, what context makes this prediction notable or worth tracking
 - `skip_post`: always `false`

@@ -26,6 +26,8 @@ REQUIRED_FIELDS = [
     "source_name",
     "prediction_text",
     "category",
+    "source_type",
+    "conflict_of_interest",
     "status",
     "skip_post",
 ]
@@ -39,7 +41,7 @@ def load_valid_categories():
         sys.exit(2)
     with open(CATEGORIES_FILE) as f:
         data = yaml.safe_load(f)
-    return set(data.get("categories", []))
+    return set(data.get("categories", [])), set(data.get("source_types", []))
 
 
 def validate_iso_date(value, field_name):
@@ -58,7 +60,7 @@ def validate_iso_date(value, field_name):
     return None
 
 
-def validate_file(path, valid_categories):
+def validate_file(path, valid_categories, valid_source_types):
     errors = []
     path = Path(path)
 
@@ -80,9 +82,9 @@ def validate_file(path, valid_categories):
     for field in REQUIRED_FIELDS:
         if field not in data:
             errors.append(f"  {field}: missing required field")
-        elif field == "skip_post":
+        elif field in ("skip_post", "conflict_of_interest"):
             if not isinstance(data[field], bool):
-                errors.append(f"  skip_post: must be a boolean (true/false), got {type(data[field]).__name__}")
+                errors.append(f"  {field}: must be a boolean (true/false), got {type(data[field]).__name__}")
         elif field != "prediction_date":  # prediction_date checked separately below
             value = data.get(field)
             if value is None or (isinstance(value, str) and not value.strip()):
@@ -110,6 +112,11 @@ def validate_file(path, valid_categories):
         if data["category"] not in valid_categories:
             errors.append(f"  category: '{data['category']}' is not in categories.yaml (valid: {sorted(valid_categories)})")
 
+    # source_type: must be in controlled vocabulary
+    if "source_type" in data and data["source_type"]:
+        if data["source_type"] not in valid_source_types:
+            errors.append(f"  source_type: '{data['source_type']}' is not valid (valid: {sorted(valid_source_types)})")
+
     # status: must be one of the allowed values
     if "status" in data and data["status"]:
         if data["status"] not in VALID_STATUSES:
@@ -119,7 +126,7 @@ def validate_file(path, valid_categories):
 
 
 def main():
-    valid_categories = load_valid_categories()
+    valid_categories, valid_source_types = load_valid_categories()
 
     if len(sys.argv) > 1:
         files = [Path(f) for f in sys.argv[1:]]
@@ -135,7 +142,7 @@ def main():
     failed = 0
     for path in files:
         total += 1
-        errors = validate_file(path, valid_categories)
+        errors = validate_file(path, valid_categories, valid_source_types)
         if errors:
             failed += 1
             print(f"FAIL {path.name}")

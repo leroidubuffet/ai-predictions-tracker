@@ -6,6 +6,8 @@ prediction_text: |
 deadline: ""
 deadline_fuzzy: "by 2029"
 category: timelines
+source_type: researcher
+conflict_of_interest: false
 status: pending
 notes: |
   Ray Kurzweil is Google's principal researcher and AI visionary, a longtime techno-optimist and author of the 2005 bestseller "The Singularity Is Near" whose new book updates his forecasts.

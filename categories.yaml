@@ -10,3 +10,11 @@ categories:
   - timelines     # General timeline predictions not covered by other categories
   - hardware      # Chips, compute, and infrastructure
   - alignment     # Technical alignment research progress and outcomes
+
+# Valid source_type values for predictions.
+source_types:
+  - researcher    # Academic or lab scientist — primary research role
+  - practitioner  # Engineer or scientist at an AI organisation
+  - executive     # CEO, C-suite, or senior leadership
+  - investor      # VC, fund manager, or financial stakeholder
+  - pundit        # Journalist, commentator, or analyst without direct involvement

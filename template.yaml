@@ -24,6 +24,14 @@ deadline_fuzzy: ""
 # Must match an entry in categories.yaml (required)
 category: ""
 
+# Role of the person making the prediction (required)
+# researcher | practitioner | executive | investor | pundit
+source_type: ""
+
+# Set true if the source has a direct financial stake in the prediction being believed.
+# e.g. a CEO promoting their product, a VC hyping their portfolio. (required)
+conflict_of_interest: false
+
 # pending | expired | notable (required)
 # pending:  deadline hasn't passed
 # expired:  deadline passed, nothing notable to record

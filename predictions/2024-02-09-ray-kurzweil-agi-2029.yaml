@@ -8,6 +8,8 @@ prediction_text: |
 deadline: 2029-12-31
 deadline_fuzzy: "by 2029"
 category: agi
+source_type: researcher
+conflict_of_interest: false
 status: pending
 notes: |
   Reaffirmed in his 2024 book "The Singularity Is Nearer". Originally predicted
