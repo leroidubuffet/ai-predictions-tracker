@@ -18,3 +18,9 @@ source_types:
   - executive     # CEO, C-suite, or senior leadership
   - investor      # VC, fund manager, or financial stakeholder
   - pundit        # Journalist, commentator, or analyst without direct involvement
+
+# Valid importance levels for no-deadline predictions.
+# Controls how often elapsed-time reminders fire.
+importance_levels:
+  - high    # reminder every 6 months (183 days)
+  - low     # reminder every 1 year (365 days)

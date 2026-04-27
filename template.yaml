@@ -42,6 +42,19 @@ status: pending
 notes: |
 
 
+# Custom hashtags for Bluesky posts. Overrides the default #AIPredictions.
+# Space-separated, e.g. "#AIPredictions #AGI". Leave empty to use the default. (optional)
+hashtags: ""
+
 # Set true for historical/seed data to prevent the bot from posting it on import.
 # Leave false for new predictions you want posted to Bluesky. (required)
 skip_post: false
+
+# For predictions with no deadline: how often elapsed-time reminders fire (optional, default: low).
+# high: every 6 months | low: every year
+importance: low
+
+# Path to a screenshot of the original source, relative to the repo root.
+# Store the file under predictions/assets/. Attached to the Bluesky post when present.
+# e.g. predictions/assets/2024-03-15-altman-tweet.png (optional)
+screenshot: ""

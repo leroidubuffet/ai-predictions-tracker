@@ -41,7 +41,11 @@ def load_valid_categories():
         sys.exit(2)
     with open(CATEGORIES_FILE) as f:
         data = yaml.safe_load(f)
-    return set(data.get("categories", [])), set(data.get("source_types", []))
+    return (
+        set(data.get("categories", [])),
+        set(data.get("source_types", [])),
+        set(data.get("importance_levels", [])),
+    )
 
 
 def validate_iso_date(value, field_name):
@@ -60,7 +64,7 @@ def validate_iso_date(value, field_name):
     return None
 
 
-def validate_file(path, valid_categories, valid_source_types):
+def validate_file(path, valid_categories, valid_source_types, valid_importance_levels):
     errors = []
     path = Path(path)
 
@@ -117,16 +121,33 @@ def validate_file(path, valid_categories, valid_source_types):
         if data["source_type"] not in valid_source_types:
             errors.append(f"  source_type: '{data['source_type']}' is not valid (valid: {sorted(valid_source_types)})")
 
+    # importance: optional, must be in controlled vocabulary if present
+    if "importance" in data and data["importance"]:
+        if data["importance"] not in valid_importance_levels:
+            errors.append(f"  importance: '{data['importance']}' must be one of {sorted(valid_importance_levels)}")
+
     # status: must be one of the allowed values
     if "status" in data and data["status"]:
         if data["status"] not in VALID_STATUSES:
             errors.append(f"  status: '{data['status']}' must be one of {sorted(VALID_STATUSES)}")
 
+    # screenshot: optional, but if present must be a string, have an image extension, and the file must exist
+    if "screenshot" in data and data["screenshot"]:
+        screenshot = data["screenshot"]
+        if not isinstance(screenshot, str):
+            errors.append(f"  screenshot: must be a string path, got {type(screenshot).__name__}")
+        else:
+            VALID_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+            if Path(screenshot).suffix.lower() not in VALID_IMAGE_EXTENSIONS:
+                errors.append(f"  screenshot: '{screenshot}' must have an image extension ({', '.join(sorted(VALID_IMAGE_EXTENSIONS))})")
+            elif not (REPO_ROOT / screenshot).exists():
+                errors.append(f"  screenshot: file not found at '{screenshot}'")
+
     return errors
 
 
 def main():
-    valid_categories, valid_source_types = load_valid_categories()
+    valid_categories, valid_source_types, valid_importance_levels = load_valid_categories()
 
     if len(sys.argv) > 1:
         files = [Path(f) for f in sys.argv[1:]]
@@ -142,7 +163,7 @@ def main():
     failed = 0
     for path in files:
         total += 1
-        errors = validate_file(path, valid_categories, valid_source_types)
+        errors = validate_file(path, valid_categories, valid_source_types, valid_importance_levels)
         if errors:
             failed += 1
             print(f"FAIL {path.name}")

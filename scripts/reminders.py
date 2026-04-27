@@ -38,6 +38,12 @@ STATE_FILE = REPO_ROOT / "state" / "reminded.yaml"
 BLUESKY_CHAR_LIMIT = 300
 HASHTAGS = "#AIPredictions"
 
+
+def get_hashtags(prediction):
+    """Return the prediction's custom hashtags, or the default if not set."""
+    custom = str(prediction.get("hashtags") or "").strip()
+    return custom if custom else HASHTAGS
+
 # Sentinel stored in state to record that an expired post was sent
 EXPIRED_KEY = "expired"
 
@@ -236,8 +242,10 @@ def build_reminder_post(prediction, days_remaining, today=None):
 
     age_line = f"{age.capitalize()}, they predicted:" if age else ""
 
-    # Budget: {header}\n\n[{age_line}\n\n]"{excerpt}"\n\n{HASHTAGS}
-    fixed = len(header) + 2 + 2 + 2 + len(HASHTAGS)  # separators + quotes
+    hashtags = get_hashtags(prediction)
+
+    # Budget: {header}\n\n[{age_line}\n\n]"{excerpt}"\n\n{hashtags}
+    fixed = len(header) + 2 + 2 + 2 + len(hashtags)  # separators + quotes
     if age_line:
         fixed += len(age_line) + 2
     available = BLUESKY_CHAR_LIMIT - fixed
@@ -248,7 +256,7 @@ def build_reminder_post(prediction, days_remaining, today=None):
     if age_line:
         parts.append(age_line)
     parts.append(f'"{excerpt}"')
-    parts.append(HASHTAGS)
+    parts.append(hashtags)
 
     post = "\n\n".join(parts)
 
@@ -278,11 +286,12 @@ def build_anniversary_post(prediction, years):
     else:
         header = f"{years} years ago, {source} predicted:"
 
-    fixed = len(header) + 2 + 2 + 2 + len(HASHTAGS)
+    hashtags = get_hashtags(prediction)
+    fixed = len(header) + 2 + 2 + 2 + len(hashtags)
     available = BLUESKY_CHAR_LIMIT - fixed
 
     excerpt = truncate_to_fit(text, max(available, 20))
-    post = "\n\n".join([header, f'"{excerpt}"', HASHTAGS])
+    post = "\n\n".join([header, f'"{excerpt}"', hashtags])
 
     if len(post) > BLUESKY_CHAR_LIMIT:
         post = post[:BLUESKY_CHAR_LIMIT - 1] + "…"
@@ -315,7 +324,8 @@ def build_expired_post(prediction, today=None):
     header = f"{source}'s prediction deadline has passed ({deadline_lbl}):"
     age_line = f"{age.capitalize()}, they predicted:" if age else ""
 
-    fixed = len(header) + 2 + 2 + 2 + len(HASHTAGS)
+    hashtags = get_hashtags(prediction)
+    fixed = len(header) + 2 + 2 + 2 + len(hashtags)
     if age_line:
         fixed += len(age_line) + 2
     available = BLUESKY_CHAR_LIMIT - fixed
@@ -326,13 +336,54 @@ def build_expired_post(prediction, today=None):
     if age_line:
         parts.append(age_line)
     parts.append(f'"{excerpt}"')
-    parts.append(HASHTAGS)
+    parts.append(hashtags)
 
     post = "\n\n".join(parts)
 
     if len(post) > BLUESKY_CHAR_LIMIT:
         post = post[:BLUESKY_CHAR_LIMIT - 1] + "…"
 
+    return post
+
+
+# ── Elapsed-time reminders (no-deadline predictions) ─────────────────────────
+
+def get_elapsed_interval(importance):
+    """Return the reminder interval in days for no-deadline predictions."""
+    return 183 if importance == "high" else 365
+
+
+def elapsed_label(days):
+    """Return a human-readable elapsed-time label: '6 months', '1 year', '18 months', etc."""
+    months = round(days / 30.44)
+    if months % 12 == 0:
+        years = months // 12
+        return f"{years} year{'s' if years != 1 else ''}"
+    return f"{months} months"
+
+
+def build_elapsed_post(prediction, age_label):
+    """
+    Build a periodic reminder post for a prediction with no deadline.
+
+    Format:
+      {age_label} ago, {source} predicted:
+
+      "{excerpt}"
+
+      #AIPredictions
+    """
+    source = str(prediction.get("source_name") or "Unknown").strip()
+    raw_text = str(prediction.get("prediction_text") or "").strip()
+    text = " ".join(raw_text.split())
+    header = f"{age_label} ago, {source} predicted:"
+    hashtags = get_hashtags(prediction)
+    fixed = len(header) + 2 + 2 + 2 + len(hashtags)
+    available = BLUESKY_CHAR_LIMIT - fixed
+    excerpt = truncate_to_fit(text, max(available, 20))
+    post = "\n\n".join([header, f'"{excerpt}"', hashtags])
+    if len(post) > BLUESKY_CHAR_LIMIT:
+        post = post[:BLUESKY_CHAR_LIMIT - 1] + "…"
     return post
 
 
@@ -385,8 +436,40 @@ def run(today=None, dry_run=False):
             continue
 
         prediction_date = parse_deadline(prediction.get("prediction_date"))
+        deadline = parse_deadline(prediction.get("deadline"))
 
-        # ── Anniversary post (fires for all predictions, deadline or not) ─────
+        # ── No-deadline predictions: elapsed-time reminders ───────────────────
+        if deadline is None:
+            if prediction_date:
+                days_elapsed = (today - prediction_date).days
+                importance = str(prediction.get("importance") or "low").strip()
+                interval = get_elapsed_interval(importance)
+                threshold = interval
+                while threshold <= days_elapsed:
+                    key = f"elapsed_{threshold}"
+                    if not already_reminded(state, filename, key):
+                        label = elapsed_label(threshold)
+                        post = build_elapsed_post(prediction, label)
+                        print(f"\n[{label} elapsed] {filename}")
+                        print("─" * 40)
+                        print(post)
+                        print(f"[{len(post)} chars]")
+                        if dry_run:
+                            print("(dry run — not posted)")
+                        else:
+                            if not handle or not app_password:
+                                print("ERROR: BLUESKY_HANDLE and BLUESKY_APP_PASSWORD must be set.", file=sys.stderr)
+                                sys.exit(1)
+                            post_to_bluesky(post, handle, app_password)
+                            mark_reminded(state, filename, key)
+                            print("Posted.")
+                        posted_count += 1
+                    else:
+                        skipped_count += 1
+                    threshold += interval
+            continue
+
+        # ── Anniversary post (fires for predictions with a deadline) ──────────
         years = get_anniversary_year(prediction_date, today) if prediction_date else None
         if years:
             key = f"anniversary_{years}"
@@ -408,10 +491,6 @@ def run(today=None, dry_run=False):
                 posted_count += 1
             else:
                 skipped_count += 1
-
-        deadline = parse_deadline(prediction.get("deadline"))
-        if deadline is None:
-            continue
 
         days_remaining = (deadline - today).days
 

@@ -18,6 +18,8 @@ import time
 from datetime import date, datetime
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).parent.parent
+
 try:
     import yaml
 except ImportError:
@@ -70,6 +72,12 @@ def truncate_to_fit(text, max_chars, ellipsis="…"):
 HASHTAGS = "#AIPredictions"
 
 
+def get_hashtags(prediction):
+    """Return the prediction's custom hashtags, or the default if not set."""
+    custom = str(prediction.get("hashtags") or "").strip()
+    return custom if custom else HASHTAGS
+
+
 def build_post(prediction):
     """
     Build the Bluesky post text for a new prediction.
@@ -98,8 +106,9 @@ def build_post(prediction):
 
     header = "🔮 New prediction 🔮"
     byline = f"By: {source}\nDate: {date_str}"
+    hashtags = get_hashtags(prediction)
     deadline_line = f"Deadline: {deadline}" if deadline else ""
-    footer_parts = [p for p in [deadline_line, HASHTAGS] if p]
+    footer_parts = [p for p in [deadline_line, hashtags] if p]
     footer = "\n\n".join(footer_parts)
 
     # Measure fixed chars to calculate available space for the quote
@@ -186,7 +195,27 @@ def build_embed(url):
         return None
 
 
-def post_to_bluesky(text, handle, app_password, url="", retries=3, backoff=5):
+def upload_screenshot(client, path):
+    """Upload an image file and return an AppBskyEmbedImages embed, or None on failure."""
+    try:
+        from atproto import models
+        with open(path, "rb") as f:
+            data = f.read()
+        response = client.upload_blob(data)
+        return models.AppBskyEmbedImages.Main(
+            images=[
+                models.AppBskyEmbedImages.Image(
+                    image=response.blob,
+                    alt="Screenshot of original source",
+                )
+            ]
+        )
+    except Exception as e:
+        print(f"WARNING: Could not upload screenshot: {e}", file=sys.stderr)
+        return None
+
+
+def post_to_bluesky(text, handle, app_password, url="", screenshot_path=None, retries=3, backoff=5):
     try:
         from atproto import Client
         from atproto_client.exceptions import AtProtocolError
@@ -197,7 +226,10 @@ def post_to_bluesky(text, handle, app_password, url="", retries=3, backoff=5):
     client = Client()
     client.login(handle, app_password)
     facets = build_facets(text)
-    embed = build_embed(url)
+    if screenshot_path:
+        embed = upload_screenshot(client, screenshot_path) or build_embed(url)
+    else:
+        embed = build_embed(url)
 
     for attempt in range(1, retries + 1):
         try:
@@ -247,7 +279,9 @@ def main():
         sys.exit(1)
 
     url = str(prediction.get("source_url") or "").strip()
-    post_to_bluesky(post, handle, app_password, url=url)
+    screenshot = str(prediction.get("screenshot") or "").strip()
+    screenshot_path = (REPO_ROOT / screenshot) if screenshot else None
+    post_to_bluesky(post, handle, app_password, url=url, screenshot_path=screenshot_path)
     print(f"Posted: {path.name}")
 
 

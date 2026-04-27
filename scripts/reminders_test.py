@@ -14,8 +14,10 @@ sys.path.insert(0, str(Path(__file__).parent))
 import reminders
 from reminders import (
     build_reminder_post, build_expired_post, build_anniversary_post,
+    build_elapsed_post, get_elapsed_interval, elapsed_label,
     truncate_to_fit, parse_deadline, already_reminded, mark_reminded, run,
-    get_thresholds, get_anniversary_year, prediction_age_label, days_label,
+    get_thresholds, get_anniversary_year, get_hashtags,
+    prediction_age_label, days_label,
     BLUESKY_CHAR_LIMIT, HASHTAGS, EXPIRED_KEY,
 )
 
@@ -37,6 +39,24 @@ def make_prediction(days_from_now=30, **kwargs):
         "deadline_fuzzy": "",
         "category": "agi",
         "status": "pending",
+        "skip_post": False,
+    }
+    base.update(kwargs)
+    return base
+
+
+def make_no_deadline_prediction(days_old, importance="low", **kwargs):
+    prediction_date = (TODAY - timedelta(days=days_old)).isoformat()
+    base = {
+        "_filename": "2024-03-15-test-source.yaml",
+        "prediction_date": prediction_date,
+        "source_name": "Test Source",
+        "prediction_text": "AI will surpass human intelligence within the next few years.",
+        "deadline": "",
+        "deadline_fuzzy": "",
+        "category": "capabilities",
+        "status": "pending",
+        "importance": importance,
         "skip_post": False,
     }
     base.update(kwargs)
@@ -398,6 +418,41 @@ class TestBuildExpiredPost(unittest.TestCase):
             self.fail("Expired posts exceed char limit:\n" + "\n".join(failures))
 
 
+class TestGetHashtags(unittest.TestCase):
+    def test_default_when_absent(self):
+        self.assertEqual(get_hashtags({}), HASHTAGS)
+
+    def test_default_when_empty_string(self):
+        self.assertEqual(get_hashtags({"hashtags": ""}), HASHTAGS)
+
+    def test_default_when_none(self):
+        self.assertEqual(get_hashtags({"hashtags": None}), HASHTAGS)
+
+    def test_custom_hashtags_returned(self):
+        self.assertEqual(get_hashtags({"hashtags": "#AIPredictions #AGI"}), "#AIPredictions #AGI")
+
+    def test_custom_hashtags_in_reminder_post(self):
+        p = make_prediction(hashtags="#AIPredictions #AGI")
+        post = build_reminder_post(p, 30)
+        self.assertIn("#AGI", post)
+
+    def test_custom_hashtags_in_anniversary_post(self):
+        p = make_prediction(hashtags="#AIPredictions #Safety")
+        post = build_anniversary_post(p, 1)
+        self.assertIn("#Safety", post)
+
+    def test_custom_hashtags_in_expired_post(self):
+        today = date(2026, 4, 14)
+        p = make_prediction(days_from_now=-10, hashtags="#AIPredictions #Timelines", prediction_date="2024-01-01")
+        post = build_expired_post(p, today)
+        self.assertIn("#Timelines", post)
+
+    def test_custom_hashtags_within_char_limit(self):
+        p = make_prediction(hashtags="#AIPredictions #AGI #Timelines #Safety #Alignment")
+        post = build_reminder_post(p, 30)
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+
+
 class TestGetAnniversaryYear(unittest.TestCase):
     def test_exactly_one_year(self):
         pred = date(2025, 4, 14)
@@ -655,10 +710,8 @@ class TestRunLogic(unittest.TestCase):
         reminded = saved[0]["reminders"].get(p["_filename"], []) if saved else []
         self.assertNotIn(anniversary_key, reminded)
 
-    def test_anniversary_fires_for_prediction_without_deadline(self):
-        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
-        p = make_prediction(days_from_now=30, prediction_date=pred_date.isoformat())
-        p["deadline"] = ""
+    def test_elapsed_fires_for_no_deadline_prediction(self):
+        p = make_no_deadline_prediction(days_old=365)
         count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
         self.assertEqual(count, 1)
         mock_post.assert_called_once()
@@ -670,23 +723,175 @@ class TestRunLogic(unittest.TestCase):
         reminded = saved[0]["reminders"].get(p["_filename"], [])
         self.assertIn("anniversary_1", reminded)
 
-    def test_anniversary_not_reposted(self):
-        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
-        p = make_prediction(days_from_now=400, prediction_date=pred_date.isoformat())
-        p["deadline"] = ""  # no deadline so only anniversary could fire
-        initial = {"reminders": {p["_filename"]: ["anniversary_1"]}}
+    def test_elapsed_not_reposted(self):
+        p = make_no_deadline_prediction(days_old=365)
+        initial = {"reminders": {p["_filename"]: ["elapsed_365"]}}
         count, mock_post, _, _ = self._run_with_mock([p], today=TODAY, initial_state=initial)
         self.assertEqual(count, 0)
         mock_post.assert_not_called()
 
-    def test_dry_run_anniversary_not_posted(self):
-        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
-        p = make_prediction(days_from_now=400, prediction_date=pred_date.isoformat())
-        p["deadline"] = ""
+    def test_dry_run_elapsed_not_posted(self):
+        p = make_no_deadline_prediction(days_old=365)
         count, mock_post, _, saved = self._run_with_mock([p], today=TODAY, dry_run=True)
         mock_post.assert_not_called()
         self.assertEqual(count, 1)
         self.assertEqual(len(saved), 0)
+
+
+class TestElapsedLabel(unittest.TestCase):
+    def test_six_months(self):
+        self.assertEqual(elapsed_label(183), "6 months")
+
+    def test_one_year(self):
+        self.assertEqual(elapsed_label(365), "1 year")
+
+    def test_one_year_high_interval(self):
+        self.assertEqual(elapsed_label(366), "1 year")
+
+    def test_eighteen_months(self):
+        self.assertEqual(elapsed_label(549), "18 months")
+
+    def test_two_years(self):
+        self.assertEqual(elapsed_label(730), "2 years")
+
+    def test_three_years(self):
+        self.assertEqual(elapsed_label(1095), "3 years")
+
+
+class TestGetElapsedInterval(unittest.TestCase):
+    def test_high_is_183(self):
+        self.assertEqual(get_elapsed_interval("high"), 183)
+
+    def test_low_is_365(self):
+        self.assertEqual(get_elapsed_interval("low"), 365)
+
+    def test_unknown_defaults_to_365(self):
+        self.assertEqual(get_elapsed_interval("unknown"), 365)
+
+
+class TestBuildElapsedPost(unittest.TestCase):
+    def _make(self, **kwargs):
+        p = make_no_deadline_prediction(days_old=365)
+        p.update(kwargs)
+        return p
+
+    def test_within_char_limit(self):
+        post = build_elapsed_post(self._make(), "6 months")
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+
+    def test_contains_age_label(self):
+        post = build_elapsed_post(self._make(), "6 months")
+        self.assertIn("6 months ago", post)
+
+    def test_contains_source(self):
+        post = build_elapsed_post(self._make(source_name="Yann LeCun"), "1 year")
+        self.assertIn("Yann LeCun", post)
+
+    def test_contains_predicted(self):
+        post = build_elapsed_post(self._make(), "1 year")
+        self.assertIn("predicted", post)
+
+    def test_contains_excerpt(self):
+        post = build_elapsed_post(self._make(prediction_text="LLMs are a dead end."), "1 year")
+        self.assertIn("LLMs are a dead end.", post)
+
+    def test_hashtags_present(self):
+        post = build_elapsed_post(self._make(), "1 year")
+        self.assertIn(HASHTAGS, post)
+
+    def test_long_text_truncated_within_limit(self):
+        post = build_elapsed_post(self._make(prediction_text="word " * 100), "1 year")
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+
+    def test_all_seed_predictions_within_char_limit(self):
+        import yaml
+        failures = []
+        for path in sorted(REPO_ROOT.glob("predictions/*.yaml")):
+            if path.name == ".gitkeep":
+                continue
+            with open(path) as f:
+                prediction = yaml.safe_load(f)
+            prediction["_filename"] = path.name
+            if prediction.get("deadline"):
+                continue
+            for label in ["6 months", "1 year", "18 months", "2 years"]:
+                post = build_elapsed_post(prediction, label)
+                if len(post) > BLUESKY_CHAR_LIMIT:
+                    failures.append(f"{path.name} ({label}): {len(post)} chars")
+        if failures:
+            self.fail("Elapsed posts exceed char limit:\n" + "\n".join(failures))
+
+
+class TestElapsedRunLogic(unittest.TestCase):
+    def _run_with_mock(self, predictions, today, dry_run=False, initial_state=None):
+        state = initial_state if initial_state is not None else {"reminders": {}}
+        saved_states = []
+        with patch.object(reminders, "load_predictions", return_value=predictions), \
+             patch.object(reminders, "load_state", return_value=state), \
+             patch.object(reminders, "save_state", side_effect=lambda s: saved_states.append(dict(s))), \
+             patch.object(reminders, "post_to_bluesky") as mock_post, \
+             patch.dict("os.environ", {"BLUESKY_HANDLE": "bot.bsky.social", "BLUESKY_APP_PASSWORD": "pw"}):
+            count = run(today=today, dry_run=dry_run)
+        return count, mock_post, state, saved_states
+
+    def test_low_importance_fires_at_one_year(self):
+        p = make_no_deadline_prediction(days_old=365, importance="low")
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertEqual(count, 1)
+        mock_post.assert_called_once()
+
+    def test_low_importance_does_not_fire_at_six_months(self):
+        p = make_no_deadline_prediction(days_old=183, importance="low")
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertEqual(count, 0)
+        mock_post.assert_not_called()
+
+    def test_high_importance_fires_at_six_months(self):
+        p = make_no_deadline_prediction(days_old=183, importance="high")
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertEqual(count, 1)
+        mock_post.assert_called_once()
+
+    def test_high_importance_fires_twice_at_one_year(self):
+        p = make_no_deadline_prediction(days_old=366, importance="high")
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertEqual(count, 2)
+        self.assertEqual(mock_post.call_count, 2)
+
+    def test_elapsed_state_uses_correct_key(self):
+        p = make_no_deadline_prediction(days_old=365, importance="low")
+        _, _, _, saved = self._run_with_mock([p], today=TODAY)
+        reminded = saved[0]["reminders"].get(p["_filename"], [])
+        self.assertIn("elapsed_365", reminded)
+
+    def test_elapsed_state_uses_correct_key_high(self):
+        p = make_no_deadline_prediction(days_old=183, importance="high")
+        _, _, _, saved = self._run_with_mock([p], today=TODAY)
+        reminded = saved[0]["reminders"].get(p["_filename"], [])
+        self.assertIn("elapsed_183", reminded)
+
+    def test_no_prediction_date_no_post(self):
+        p = make_no_deadline_prediction(days_old=365)
+        p["prediction_date"] = ""
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertEqual(count, 0)
+        mock_post.assert_not_called()
+
+    def test_anniversary_does_not_fire_for_no_deadline_prediction(self):
+        pred_date = date(TODAY.year - 1, TODAY.month, TODAY.day)
+        p = make_no_deadline_prediction(days_old=365, importance="low")
+        p["prediction_date"] = pred_date.isoformat()
+        _, _, _, saved = self._run_with_mock([p], today=TODAY)
+        reminded = saved[0]["reminders"].get(p["_filename"], []) if saved else []
+        self.assertNotIn("anniversary_1", reminded)
+        self.assertIn("elapsed_365", reminded)
+
+    def test_default_importance_is_low(self):
+        p = make_no_deadline_prediction(days_old=365)
+        del p["importance"]
+        count, mock_post, _, _ = self._run_with_mock([p], today=TODAY)
+        self.assertEqual(count, 1)
+        mock_post.assert_called_once()
 
 
 if __name__ == "__main__":

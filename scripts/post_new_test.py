@@ -11,8 +11,9 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, str(Path(__file__).parent))
 from post_new import (
-    build_post, build_facets, build_embed, truncate_to_fit, deadline_display,
-    format_date, load_prediction, BLUESKY_CHAR_LIMIT, HASHTAGS,
+    build_post, build_facets, build_embed, upload_screenshot, truncate_to_fit,
+    deadline_display, format_date, load_prediction, get_hashtags,
+    BLUESKY_CHAR_LIMIT, HASHTAGS,
 )
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -150,6 +151,23 @@ class TestBuildPost(unittest.TestCase):
         post = build_post(make_prediction())
         self.assertIn(HASHTAGS, post)
 
+    def test_custom_hashtags_used(self):
+        post = build_post(make_prediction(hashtags="#AIPredictions #AGI"))
+        self.assertIn("#AGI", post)
+
+    def test_custom_hashtags_replaces_default(self):
+        post = build_post(make_prediction(hashtags="#AGI"))
+        self.assertIn("#AGI", post)
+        self.assertNotIn(HASHTAGS, post)
+
+    def test_empty_hashtags_uses_default(self):
+        post = build_post(make_prediction(hashtags=""))
+        self.assertIn(HASHTAGS, post)
+
+    def test_custom_hashtags_within_char_limit(self):
+        post = build_post(make_prediction(hashtags="#AIPredictions #AGI #Timelines #Safety"))
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+
     def test_fuzzy_deadline_used_over_iso(self):
         post = build_post(make_prediction(deadline="2030-12-31", deadline_fuzzy="before 2031"))
         self.assertIn("before 2031", post)
@@ -259,6 +277,92 @@ class TestBuildEmbed(unittest.TestCase):
 
     def test_none_url_returns_none(self):
         self.assertIsNone(build_embed(None))
+
+
+class TestUploadScreenshot(unittest.TestCase):
+    def test_returns_image_embed_on_success(self):
+        import tempfile, os
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
+            f.write(b"\x89PNG\r\n")
+            tmp_path = f.name
+        try:
+            client = MagicMock()
+            blob_ref = MagicMock()
+            client.upload_blob.return_value = MagicMock(blob=blob_ref)
+            expected_embed = MagicMock()
+            mock_models = MagicMock()
+            mock_models.AppBskyEmbedImages.Main.return_value = expected_embed
+            with patch.dict("sys.modules", {"atproto": MagicMock(models=mock_models)}):
+                embed = upload_screenshot(client, tmp_path)
+            self.assertIsNotNone(embed)
+            self.assertEqual(embed, expected_embed)
+            mock_models.AppBskyEmbedImages.Image.assert_called_once_with(
+                image=blob_ref, alt="Screenshot of original source"
+            )
+        finally:
+            os.unlink(tmp_path)
+
+    def test_returns_none_on_file_not_found(self):
+        client = MagicMock()
+        embed = upload_screenshot(client, "/nonexistent/path/image.png")
+        self.assertIsNone(embed)
+
+    def test_returns_none_on_upload_error(self):
+        import tempfile, os
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
+            f.write(b"\x89PNG\r\n")
+            tmp_path = f.name
+        try:
+            client = MagicMock()
+            client.upload_blob.side_effect = Exception("network error")
+            with patch.dict("sys.modules", {"atproto": MagicMock()}):
+                embed = upload_screenshot(client, tmp_path)
+            self.assertIsNone(embed)
+        finally:
+            os.unlink(tmp_path)
+
+
+class TestPostToBlueskyScreenshot(unittest.TestCase):
+    def test_uses_image_embed_when_screenshot_provided(self):
+        import post_new
+        client_instance = MagicMock()
+        blob_ref = MagicMock()
+        client_instance.upload_blob.return_value = MagicMock(blob=blob_ref)
+        tmp_image = REPO_ROOT / "predictions" / "assets" / "_test_screenshot.png"
+        tmp_image.write_bytes(b"\x89PNG\r\n")
+        try:
+            with patch.dict("sys.modules", atproto_modules(client_instance)):
+                post_new.post_to_bluesky(
+                    "text", "handle", "password",
+                    url="https://example.com",
+                    screenshot_path=tmp_image,
+                )
+            call_kwargs = client_instance.send_post.call_args.kwargs
+            embed = call_kwargs.get("embed")
+            self.assertIsNotNone(embed)
+            self.assertTrue(hasattr(embed, "images"), "embed should be an image embed")
+        finally:
+            tmp_image.unlink(missing_ok=True)
+
+    def test_falls_back_to_url_embed_when_screenshot_upload_fails(self):
+        import post_new
+        client_instance = MagicMock()
+        client_instance.upload_blob.side_effect = Exception("upload failed")
+        tmp_image = REPO_ROOT / "predictions" / "assets" / "_test_screenshot.png"
+        tmp_image.write_bytes(b"\x89PNG\r\n")
+        try:
+            with patch.dict("sys.modules", atproto_modules(client_instance)):
+                post_new.post_to_bluesky(
+                    "text", "handle", "password",
+                    url="https://example.com",
+                    screenshot_path=tmp_image,
+                )
+            call_kwargs = client_instance.send_post.call_args.kwargs
+            embed = call_kwargs.get("embed")
+            self.assertIsNotNone(embed)
+            self.assertTrue(hasattr(embed, "external"), "should fall back to URL embed")
+        finally:
+            tmp_image.unlink(missing_ok=True)
 
 
 def atproto_modules(client_instance):
