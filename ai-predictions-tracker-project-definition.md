@@ -9,10 +9,10 @@ A Bluesky bot that tracks AI-related predictions made by industry figures, resea
 Create an accountability layer for AI discourse by recording:
 - What was claimed, and when
 - Who made the claim
-- What timeframe was specified
+- What timeframe was specified (when applicable)
 - What actually happened (when notable)
 
-The core value is **reminders near deadlines**, not initial posts. A prediction logged in 2024 matters most in 2026 when the deadline arrives.
+The core vaule is **accountability**. The bot reminds what was predicted, helping the public remember about it and make claimers accountable for their predictions.
 
 ## Scope
 
@@ -20,7 +20,7 @@ Solo-maintained project. Sustainability requires that data entry stays fast and 
 
 ## Target Audience
 
-Bluesky followers interested in AI industry accountability and the gap between what was claimed and what happened.
+Bluesky followers interested in AI industry accountability and the gap between what was claimed and what happens and what happened.
 
 ---
 

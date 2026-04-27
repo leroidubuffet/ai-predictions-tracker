@@ -44,10 +44,15 @@ prediction_text: |
 deadline: 2027-12-31        # ISO date, optional
 deadline_fuzzy: "end of 2027"  # Human-readable, optional
 category: agi               # Must match an entry in categories.yaml
+source_type: executive      # researcher | practitioner | executive | investor | pundit
+conflict_of_interest: false # true if source has financial stake in the prediction being believed
 status: pending             # pending | expired | notable
 notes: |
   Optional context, clarifications, or outcome notes.
+hashtags: ""                # Overrides default #AIPredictions; space-separated, optional
 skip_post: false            # Set true for seed/historical data
+importance: low             # high | low — elapsed-time reminder interval for no-deadline predictions (optional, default: low)
+screenshot: ""              # Path to source screenshot, relative to repo root (e.g. predictions/assets/2024-03-15-altman-tweet.png), optional
 ```
 
 ## Valid categories
@@ -55,6 +60,16 @@ skip_post: false            # Set true for seed/historical data
 Defined in `categories.yaml`. Always lowercase hyphenated slugs. Do not invent new categories without adding them to that file first.
 
 Current vocabulary: `agi`, `capabilities`, `jobs`, `regulation`, `safety`, `timelines`, `hardware`, `alignment`
+
+## Valid source types
+
+Defined in `categories.yaml` under `source_types`. Required on every prediction.
+
+- `researcher` — academic or lab scientist, primary research role
+- `practitioner` — engineer or scientist at an AI organisation
+- `executive` — CEO, C-suite, or senior leadership
+- `investor` — VC, fund manager, or financial stakeholder
+- `pundit` — journalist, commentator, or analyst without direct involvement
 
 ## Adding a prediction
 
@@ -84,6 +99,8 @@ Two separate scripts with different triggers:
 `scripts/validate.py` runs in CI on every push:
 - All required fields present and non-empty
 - `category` is in `categories.yaml`
+- `source_type` is one of the allowed values in `categories.yaml`
+- `conflict_of_interest` is a boolean
 - `status` is one of the allowed values
 - `deadline` is a valid ISO date if present
 - `prediction_date` is a valid ISO date

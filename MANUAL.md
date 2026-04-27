@@ -44,11 +44,37 @@ prediction_text: |                 # required — verbatim or close paraphrase
 deadline: 2027-12-31               # optional — ISO date
 deadline_fuzzy: "by end of 2027"   # optional — human-readable form
 category: agi                      # required — must be in categories.yaml
+source_type: executive             # required — researcher | practitioner | executive | investor | pundit
+conflict_of_interest: false        # required — true if source has financial stake in the prediction being believed
 status: pending                    # required — pending | expired | notable
 notes: |                           # optional — context, outcome notes
   Any extra context.
+hashtags: ""                       # optional — overrides default #AIPredictions, space-separated
 skip_post: false                   # required — true for historical/seed data
+importance: low                    # optional — high | low (only used when no deadline is set)
+screenshot: ""                     # optional — path relative to repo root, e.g.
+                                   # predictions/assets/2026-04-26-altman-tweet.png
 ```
+
+### Importance (no-deadline predictions)
+
+For predictions without a deadline, the reminder bot fires periodically based on elapsed time since `prediction_date`. The `importance` field controls the interval:
+
+| Value | Reminder interval |
+|---|---|
+| `low` (default) | Every 1 year (365 days) |
+| `high` | Every 6 months (183 days) |
+
+Posts are formatted as *"6 months ago, [name] predicted: …"* and catch up on missed intervals — if the bot was offline for a stretch, all un-sent intervals fire on the next run.
+
+### Screenshots
+
+To archive a screenshot of the original source (useful when the source may be deleted):
+
+1. Save the image file under `predictions/assets/` using a descriptive name matching the prediction filename.
+2. Set `screenshot: predictions/assets/your-file.png` in the YAML.
+
+When the prediction is posted to Bluesky, the screenshot is attached as an image. If the upload fails, the post falls back to attaching the `source_url` as a link card instead. Supported formats: `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`.
 
 ### Status values
 
@@ -87,7 +113,7 @@ For predictions made in the past that you don't want posted to Bluesky:
 skip_post: true
 ```
 
-The new-prediction bot skips these entirely. The reminder bot still fires for them as their deadlines approach — which is the intended behaviour.
+Both bots skip `skip_post: true` predictions entirely — no initial post, no reminders, no elapsed-time posts. Use this for historical data you want in the archive but not on the feed.
 
 ---
 
@@ -95,27 +121,56 @@ The new-prediction bot skips these entirely. The reminder bot still fires for th
 
 ### New prediction bot
 
-Triggers automatically on every push to `main` that adds a file to `predictions/`. It diffs `HEAD~1..HEAD` to find newly added files — editing an existing prediction does not re-post it.
+Triggers automatically on every push to `main` that adds a file to `predictions/`. It diffs `HEAD~1..HEAD` to find newly added files — editing an existing prediction does not re-post it. Skips `skip_post: true`.
 
-Posts in this format:
+If the prediction has a `screenshot` field pointing to a file in `predictions/assets/`, the image is attached to the post. Otherwise the `source_url` is attached as a link card.
+
+Post format:
 ```
-Sam Altman (2024):
+🔮 New prediction 🔮
+
+By: Sam Altman
+Date: December 2024
+
 "My guess is we will hit AGI sooner than most people think..."
 
 Deadline: during 2025
+
+#AIPredictions
 ```
 
 ### Reminder bot
 
-Runs daily at 09:00 UTC via GitHub Actions. Scans all `status: pending` predictions with a `deadline` and fires reminders at **30, 7, and 1 days** before the deadline.
+Runs daily at 09:00 UTC via GitHub Actions. Skips `skip_post: true` and non-`pending` predictions. State is tracked in `state/reminded.yaml` and committed back after each run.
 
-Each reminder is posted once — state is tracked in `state/reminded.yaml` and committed back to the repo automatically after each run.
+**Predictions with a deadline** fire reminders at **30, 7, and 1 days** before the deadline. Multi-year predictions also get annual milestone reminders (1 year out, 2 years out, etc.). When the deadline passes, a one-time expired post fires.
 
-Post format:
 ```
-30 days until Sam Altman's prediction deadline (Dec 31, 2025):
+30 days left on Sam Altman's prediction (Dec 31, 2025):
 
 "My guess is we will hit AGI sooner than most people think..."
+
+#AIPredictions
+```
+
+On the calendar anniversary of any deadline-based prediction, an anniversary post fires:
+
+```
+1 year ago, Sam Altman predicted:
+
+"My guess is we will hit AGI sooner than most people think..."
+
+#AIPredictions
+```
+
+**Predictions without a deadline** get elapsed-time reminders based on `importance` (every 6 months for `high`, every year for `low`). All un-sent intervals are caught up on each run.
+
+```
+1 year ago, Sam Altman predicted:
+
+"i am switching to polyphasic sleep because GPT-5.5 in codex is so good…"
+
+#AIPredictions
 ```
 
 To preview what would fire today without posting anything:

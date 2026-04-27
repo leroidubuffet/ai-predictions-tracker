@@ -55,7 +55,7 @@
   - [x] Skips files where `skip_post: true`
   - [x] Posts via Bluesky API (atproto library)
   - [x] Exits non-zero on API failure
-- [x] Write `scripts/post_new_test.py` (24 tests, all passing):
+- [x] Write `scripts/post_new_test.py` (51 tests, all passing):
   - [x] Post is formatted correctly with all optional fields present
   - [x] Post is formatted correctly when `deadline` is absent
   - [x] Post is formatted correctly when `deadline_fuzzy` is present but `deadline` is absent
@@ -63,12 +63,18 @@
   - [x] Long `prediction_text` is truncated at a word boundary, not mid-word
   - [x] File with `skip_post: true` produces no API call (mock the API)
   - [x] API failure raises an exception and exits non-zero
-  - [x] All 27 seed predictions produce valid posts within 300 chars
+  - [x] All seed predictions produce valid posts within 300 chars
+  - [x] Screenshot upload produces image embed; failed upload falls back to URL embed
 - [x] Add `.github/workflows/post_new.yml`:
   - [x] Triggers on push to `main` affecting `predictions/*.yaml`
   - [x] Diffs HEAD vs HEAD~1 to find newly added files only (not edits)
   - [x] Calls `post_new.py` for each new file
   - [x] Does not re-post files that were modified but already existed
+- [x] Support screenshot attachments on new-prediction posts:
+  - [x] Optional `screenshot` field in schema — path relative to repo root under `predictions/assets/`
+  - [x] `post_new.py` uploads the image blob and attaches it as an image embed
+  - [x] Falls back to URL embed card if screenshot upload fails
+  - [x] `validate.py` checks extension and file existence when field is set
 - [ ] Integration test: add a real prediction, verify Bluesky post appears
 - [ ] Edge case test: fix a typo in an existing prediction, verify no duplicate post
 
@@ -115,3 +121,4 @@
 - [ ] After first 30 days of real use: review category taxonomy, rename slugs if needed
 - [ ] After first deadline reminder fires: assess post format, adjust tone/length
 - [ ] Periodic: update `status` of predictions past their deadline to `expired` or `notable`
+- [x] Decide strategy for predictions with no precise deadline: elapsed-time reminders based on `importance` field (high = 6 months, low = 1 year), format "X ago, [name] predicted:"
