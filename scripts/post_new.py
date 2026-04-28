@@ -130,7 +130,7 @@ def build_post(prediction):
     text = " ".join(raw_text.split())
     deadline = deadline_display(prediction)
 
-    header = "🔮 New prediction 🔮"
+    header = "🔮 New prediction registered 🔮"
     byline = f"By: {source}\nDate: {date_str}"
     hashtags = get_hashtags(prediction)
     deadline_line = f"Deadline: {deadline}" if deadline else ""
