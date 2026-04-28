@@ -11,7 +11,8 @@ The value is in the **reminders**: a prediction logged today becomes interesting
 ```
 predictions/          # One YAML file per prediction
   YYYY-MM-DD-slug.yaml
-categories.yaml       # Controlled vocabulary for categories
+  assets/             # Screenshot images referenced by prediction files
+categories.yaml       # Controlled vocabulary, source types, category hashtags
 template.yaml         # Copy this when adding a new prediction
 new_prediction.sh     # Data entry helper script
 state/
@@ -28,6 +29,7 @@ scripts/
   post_new_test.py    # Post formatting tests
   reminders.py        # Deadline reminder scanner and poster
   reminders_test.py   # Reminder logic tests
+docs/                 # Project documentation and primers
 requirements.txt
 ```
 
@@ -87,12 +89,15 @@ Two separate scripts with different triggers:
 - Diffs HEAD vs HEAD~1 to find new YAML files only (not edits)
 - Skips any with `skip_post: true`
 - Posts to Bluesky: source, prediction excerpt (truncated to fit 300 chars), deadline if present
+- Attaches screenshot image if `screenshot` path is set and the file exists; falls back to URL card embed
+- Hashtags: uses per-prediction `hashtags` field if set; otherwise prepends `#AIPredictions` to category-specific tags from `categories.yaml`
 
 **`scripts/reminders.py`** — runs on daily cron
-- Scans all `predictions/` files
-- Posts reminders at 30, 7, and 1 days before `deadline`
-- Tracks reminder state in `state/reminded.yaml` to avoid duplicates
-- Only fires for `status: pending` predictions without `skip_post: true`
+- Scans all `predictions/` files; only fires for `status: pending` predictions without `skip_post: true`
+- **Deadline reminders**: posts at 30, 7, and 1 days before `deadline`
+- **Anniversary posts** (deadline predictions only): posts on the 1-year anniversary of the prediction date with "1 year ago…" framing
+- **Elapsed-time reminders** (no-deadline predictions): posts every 6 months for `importance: high`, every 12 months for `importance: low` (default); format: "X months/years ago, [source] predicted:…"
+- Tracks all reminder state in `state/reminded.yaml` using keys like `30d`, `7d`, `1d`, `anniversary_1`, `elapsed_183`, `elapsed_365` to avoid duplicates
 
 ## Validation
 
@@ -105,6 +110,8 @@ Two separate scripts with different triggers:
 - `deadline` is a valid ISO date if present
 - `prediction_date` is a valid ISO date
 - `skip_post` is a boolean
+- `importance` is one of the allowed values in `categories.yaml` if present
+- `screenshot` path has a valid image extension and the file exists if present
 - Filename matches `YYYY-MM-DD-*.yaml` format
 
 ## Status field
@@ -130,6 +137,12 @@ python3 -m venv .venv
 - `BLUESKY_APP_PASSWORD` — Bluesky app password (not main password)
 
 Set these in GitHub repository secrets.
+
+## Hashtag strategy
+
+The campaign tag `#AIPredictions` appears on every post. Category-specific topic tags are defined in `categories.yaml` under `category_hashtags` and are appended automatically.
+
+Per-prediction `hashtags` field takes full precedence — if set, it replaces everything (including the campaign tag). Leave it empty to use the category defaults.
 
 ## What to avoid
 

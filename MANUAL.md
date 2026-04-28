@@ -129,7 +129,7 @@ If the prediction has a `screenshot` field pointing to a file in `predictions/as
 
 Post format:
 ```
-🔮 New prediction 🔮
+🔮 New prediction registered 🔮
 
 By: Sam Altman
 Date: December 2024
