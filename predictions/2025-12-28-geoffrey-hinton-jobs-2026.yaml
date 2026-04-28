@@ -1,0 +1,21 @@
+prediction_date: 2025-12-28
+source_name: Geoffrey Hinton
+source_url: https://fortune.com/2025/12/28/geoffrey-hinton-godfather-of-ai-2026-prediction-human-worker-replacement/
+prediction_text: |
+  In 2026 "I think we’re going to see AI get even better, It’s already extremely good.
+  We’re going to see it having the capabilities to replace many, many jobs.
+  It’s already able to replace jobs in call centers,
+  but it’s going to be able to replace many other jobs."
+deadline: 2026-12-31
+deadline_fuzzy: "during 2026"
+category: jobs
+source_type: researcher
+conflict_of_interest: false
+status: pending
+notes: |
+  Said in a Fortune interview at end of 2025. More specific and near-term
+  than his 2023 existential risk statements. Hinton shifts focus here from
+  extinction risk to near-term labor displacement, with a concrete one-year
+  horizon.
+hashtags: "#AIPredictions #AIJobs #AITimelines"
+skip_post: true
