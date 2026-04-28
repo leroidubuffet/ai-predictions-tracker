@@ -20,6 +20,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
 CATEGORIES_FILE = REPO_ROOT / "categories.yaml"
+POSTED_FILE = REPO_ROOT / "state" / "posted.yaml"
 
 
 def _load_category_hashtags():
@@ -40,6 +41,24 @@ except ImportError:
     sys.exit(2)
 
 BLUESKY_CHAR_LIMIT = 300
+
+
+def load_posted():
+    if not POSTED_FILE.exists():
+        return {"posts": {}}
+    with open(POSTED_FILE) as f:
+        data = yaml.safe_load(f) or {}
+    if "posts" not in data:
+        data["posts"] = {}
+    return data
+
+
+def record_post(filename):
+    data = load_posted()
+    data["posts"][filename] = {"posted_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")}
+    POSTED_FILE.parent.mkdir(exist_ok=True)
+    with open(POSTED_FILE, "w") as f:
+        yaml.dump(data, f, default_flow_style=False, allow_unicode=True)
 
 
 def load_prediction(path):
@@ -308,6 +327,7 @@ def main():
     screenshot = str(prediction.get("screenshot") or "").strip()
     screenshot_path = (REPO_ROOT / screenshot) if screenshot else None
     post_to_bluesky(post, handle, app_password, url=url, screenshot_path=screenshot_path)
+    record_post(path.name)
     print(f"Posted: {path.name}")
 
 
