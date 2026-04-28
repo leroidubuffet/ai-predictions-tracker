@@ -6,6 +6,12 @@ on:
       - main
     paths:
       - "predictions/*.yaml"
+  workflow_dispatch:
+    inputs:
+      file:
+        description: "Prediction file to post (e.g. predictions/2024-03-15-sam-altman.yaml)"
+        required: true
+        type: string
 
 jobs:
   post:
@@ -25,15 +31,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyyaml atproto
 
-      - name: Find newly added prediction files
+      - name: Find prediction files to post
         id: find_new
         run: |
-          # List files added in this commit (A = added, not M = modified)
-          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'predictions/*.yaml')
-          echo "New files:"
-          echo "$NEW_FILES"
-          # Write to a temp file to handle newlines safely
-          echo "$NEW_FILES" > /tmp/new_predictions.txt
+          if [ -n "${{ inputs.file }}" ]; then
+            echo "${{ inputs.file }}" > /tmp/new_predictions.txt
+          else
+            # List files added in this commit (A = added, not M = modified)
+            NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'predictions/*.yaml')
+            echo "$NEW_FILES" > /tmp/new_predictions.txt
+          fi
+          echo "Files to post:"
+          cat /tmp/new_predictions.txt
 
       - name: Post each new prediction
         env:

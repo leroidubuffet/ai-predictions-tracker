@@ -25,6 +25,8 @@ notes: |
   ...
 hashtags: ""
 skip_post: false
+importance: low
+screenshot: ""
 ```
 
 **Field rules:**
@@ -55,6 +57,8 @@ skip_post: false
   - `#Automation` — broad economic automation beyond individual jobs
   - `#ExistentialRisk` — extinction-level or civilisation-scale risk claims
 - `skip_post`: always `false`
+- `importance`: `high` if the prediction is about existential risk, AGI arrival, or large-scale societal impact; `low` for everything else. Controls how often elapsed-time reminders fire (high = every 6 months, low = every 12 months). Only relevant when `deadline` is empty.
+- `screenshot`: leave as empty string — you cannot attach a file
 
 If the article contains multiple predictions, pick the most specific and falsifiable one.
 
