@@ -19,6 +19,18 @@ source_types:
   - investor      # VC, fund manager, or financial stakeholder
   - pundit        # Journalist, commentator, or analyst without direct involvement
 
+# Default hashtags per category. Campaign tag (#AIPredictions) is always prepended automatically.
+# Per-prediction `hashtags` field overrides these entirely.
+category_hashtags:
+  agi:          "#AGI #ASI"
+  capabilities: "#AI #MachineLearning"
+  jobs:         "#AIJobs"
+  regulation:   "#AIPolicy #AIRegulation"
+  safety:       "#AISafety #AIRisk"
+  timelines:    "#AITimelines"
+  hardware:     "#AI #Semiconductors"
+  alignment:    "#AISafety #AIAlignment"
+
 # Valid importance levels for no-deadline predictions.
 # Controls how often elapsed-time reminders fire.
 importance_levels:

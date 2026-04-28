@@ -34,15 +34,41 @@ except ImportError:
 REPO_ROOT = Path(__file__).parent.parent
 PREDICTIONS_DIR = REPO_ROOT / "predictions"
 STATE_FILE = REPO_ROOT / "state" / "reminded.yaml"
+CATEGORIES_FILE = REPO_ROOT / "categories.yaml"
 
 BLUESKY_CHAR_LIMIT = 300
-HASHTAGS = "#AIPredictions"
+CAMPAIGN_TAG = "#AIPredictions"
+HASHTAGS = CAMPAIGN_TAG  # retained for test compatibility
 
 
-def get_hashtags(prediction):
-    """Return the prediction's custom hashtags, or the default if not set."""
+def _load_category_hashtags():
+    try:
+        with open(CATEGORIES_FILE) as f:
+            data = yaml.safe_load(f)
+        return data.get("category_hashtags", {})
+    except Exception:
+        return {}
+
+
+_CATEGORY_HASHTAGS = _load_category_hashtags()
+
+
+def get_hashtags(prediction, category_hashtags=None):
+    """Return hashtags for this prediction.
+
+    Priority: per-prediction override → category defaults → campaign tag only.
+    The campaign tag is always prepended to category defaults automatically.
+    """
     custom = str(prediction.get("hashtags") or "").strip()
-    return custom if custom else HASHTAGS
+    if custom:
+        return custom
+    if category_hashtags is None:
+        category_hashtags = _CATEGORY_HASHTAGS
+    category = str(prediction.get("category") or "").strip()
+    topic_tags = (category_hashtags.get(category) or "").strip()
+    if topic_tags:
+        return f"{CAMPAIGN_TAG} {topic_tags}"
+    return CAMPAIGN_TAG
 
 # Sentinel stored in state to record that an expired post was sent
 EXPIRED_KEY = "expired"

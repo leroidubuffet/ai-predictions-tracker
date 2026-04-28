@@ -39,4 +39,5 @@ jobs:
           git add state/reminded.yaml
           # Only commit if there are changes
           git diff --cached --quiet || git commit -m "chore: update reminder state [skip ci]"
+          git pull --rebase
           git push

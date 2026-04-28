@@ -255,15 +255,15 @@ class TestBuildFacets(unittest.TestCase):
         tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
         self.assertEqual(tag_facets, [])
 
-    def test_full_post_has_hashtag_facet_only(self):
-        # URL is in embed, not post text — only the hashtag facet appears
+    def test_full_post_has_no_link_facets_and_at_least_one_tag_facet(self):
+        # URL is in embed, not post text — only hashtag facets appear
         p = make_prediction(source_url="https://example.com/article")
         post = build_post(p)
         facets = build_facets(post)
         link_facets = [f for f in facets if hasattr(f.features[0], "uri")]
         tag_facets = [f for f in facets if hasattr(f.features[0], "tag")]
         self.assertEqual(len(link_facets), 0)
-        self.assertEqual(len(tag_facets), 1)
+        self.assertGreaterEqual(len(tag_facets), 1)
 
 
 class TestBuildEmbed(unittest.TestCase):

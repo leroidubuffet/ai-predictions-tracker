@@ -19,6 +19,19 @@ from datetime import date, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
+CATEGORIES_FILE = REPO_ROOT / "categories.yaml"
+
+
+def _load_category_hashtags():
+    try:
+        with open(CATEGORIES_FILE) as f:
+            data = yaml.safe_load(f)
+        return data.get("category_hashtags", {})
+    except Exception:
+        return {}
+
+
+_CATEGORY_HASHTAGS = _load_category_hashtags()
 
 try:
     import yaml
@@ -69,13 +82,26 @@ def truncate_to_fit(text, max_chars, ellipsis="…"):
     return truncated + ellipsis
 
 
-HASHTAGS = "#AIPredictions"
+CAMPAIGN_TAG = "#AIPredictions"
+HASHTAGS = CAMPAIGN_TAG  # retained for test compatibility
 
 
-def get_hashtags(prediction):
-    """Return the prediction's custom hashtags, or the default if not set."""
+def get_hashtags(prediction, category_hashtags=None):
+    """Return hashtags for this prediction.
+
+    Priority: per-prediction override → category defaults → campaign tag only.
+    The campaign tag is always prepended to category defaults automatically.
+    """
     custom = str(prediction.get("hashtags") or "").strip()
-    return custom if custom else HASHTAGS
+    if custom:
+        return custom
+    if category_hashtags is None:
+        category_hashtags = _CATEGORY_HASHTAGS
+    category = str(prediction.get("category") or "").strip()
+    topic_tags = (category_hashtags.get(category) or "").strip()
+    if topic_tags:
+        return f"{CAMPAIGN_TAG} {topic_tags}"
+    return CAMPAIGN_TAG
 
 
 def build_post(prediction):
