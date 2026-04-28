@@ -1,0 +1,27 @@
+prediction_date: 2024-10-01
+source_name: "Dario Amodei"
+source_url: "https://darioamodei.com/essay/machines-of-loving-grace"
+prediction_text: |
+  AI-enabled biology and medicine will allow us to compress the progress that
+  human biologists would have achieved over the next 50–100 years into just
+  5–10 years after powerful AI is developed — a "compressed 21st century"
+  that delivers near-elimination of most cancers, prevention of Alzheimer's,
+  effective cures for most genetic disease, and a doubling of the human
+  lifespan to around 150 years.
+deadline: ""
+deadline_fuzzy: "5–10 years after powerful AI is developed"
+category: capabilities
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Dario Amodei is CEO of Anthropic, one of the leading frontier AI labs. The
+  essay is his personal attempt to articulate the positive upside of powerful
+  AI, which he defines as a system smarter than a Nobel Prize winner across
+  most fields, capable of running millions of instances autonomously. He
+  explicitly acknowledges the prediction is speculative but grounds it in his
+  background as a biologist and his analysis of historical biomedical progress.
+hashtags: "#AIPredictions"
+skip_post: false
+importance: high
+screenshot: ""
