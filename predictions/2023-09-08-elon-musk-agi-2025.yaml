@@ -5,7 +5,7 @@ prediction_text: |
   AI will probably be smarter than any single human next year.
   By 2029, AI is probably smarter than all humans combined.
 deadline: 2029-12-31
-deadline_fuzzy: "by 2025"
+deadline_fuzzy: "by 2029"
 category: agi
 source_type: executive
 conflict_of_interest: true
