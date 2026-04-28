@@ -44,13 +44,13 @@ prediction_text: |                 # required — verbatim or close paraphrase
 deadline: 2027-12-31               # optional — ISO date
 deadline_fuzzy: "by end of 2027"   # optional — human-readable form
 category: agi                      # required — must be in categories.yaml
-source_type: executive             # required — researcher | practitioner | executive | investor | pundit
+source_type: executive             # required — researcher | practitioner | executive | investor | expert
 conflict_of_interest: false        # required — true if source has financial stake in the prediction being believed
 status: pending                    # required — pending | expired | notable
 notes: |                           # optional — context, outcome notes
   Any extra context.
 hashtags: ""                       # optional — overrides default #AIPredictions, space-separated
-skip_post: false                   # required — true for historical/seed data
+skip_post: false                   # required — false: post to Bluesky on commit; true: archive only, never post
 importance: low                    # optional — high | low (only used when no deadline is set)
 screenshot: ""                     # optional — path relative to repo root, e.g.
                                    # predictions/assets/2026-04-26-altman-tweet.png
@@ -105,15 +105,17 @@ To add a new category, add the slug to `categories.yaml` first — validation wi
 
 ---
 
-## Seed / historical data
+## skip_post: archive vs. broadcast
 
-For predictions made in the past that you don't want posted to Bluesky:
+Every prediction file is either **broadcast** (`skip_post: false`) or **archive-only** (`skip_post: true`).
 
-```yaml
-skip_post: true
-```
+**Broadcast** (`false`, the default): when you push the file, the new-prediction bot posts it to Bluesky. The reminder bot will also post reminders and elapsed-time posts as time passes. This is what you want for predictions you're adding in real time.
 
-Both bots skip `skip_post: true` predictions entirely — no initial post, no reminders, no elapsed-time posts. Use this for historical data you want in the archive but not on the feed.
+**Archive-only** (`true`): the file lives in the repo as a permanent record but both bots ignore it completely — no initial post, no reminders, nothing. This is what you want when:
+- You're backfilling historical predictions (adding a dozen old claims at once — you don't want to flood the feed with ancient news)
+- You want to record something for personal reference without broadcasting it
+
+The archive still has value: the data is versioned, searchable, and available for future use. It just doesn't go to Bluesky.
 
 ---
 
