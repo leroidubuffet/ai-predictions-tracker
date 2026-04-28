@@ -3,9 +3,8 @@ source_name: Sam Altman
 source_url: https://x.com/sama/status/2048426122854228141
 prediction_text: |
   "post-AGI, no one is going to work and the economy is going to collapse"
-
-  that i can't afford to be sleeping for such long stretches and miss out
-  on working"
+  "i am switching to polyphasic sleep because GPT-5.5 in codex is so good
+  that i can't afford to be sleeping for such long stretches and miss out on working"
 deadline: ""
 deadline_fuzzy: ""
 category: capabilities
@@ -19,4 +18,4 @@ notes: |
   good enough to justify restructuring sleep around it.
 hashtags: "#AGI"
 skip_post: false
-screenshot: "2026-04-26-sam-altman-gpt55-codex-polyphasic.png"
+screenshot: "predictions/assets/2026-04-26-sam-altman-gpt55-codex-polyphasic.png"
