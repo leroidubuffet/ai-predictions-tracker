@@ -1,0 +1,21 @@
+prediction_date: 2025-11-26
+source_name: Enrique Lores
+source_url: https://arstechnica.com/information-technology/2025/11/hp-plans-to-save-millions-by-laying-off-thousands-ramping-up-ai-use/
+prediction_text: |
+  HP will lay off 4,000 to 6,000 employees in favor of AI deployments,
+  saving $1 billion in annualized gross run rate by the end of fiscal 2028.
+  The reductions will largely hit product development, internal operations,
+  and customer support.
+deadline: 2028-10-31
+deadline_fuzzy: "end of HP fiscal year 2028 (October 2028)"
+category: jobs
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Statement from HP CEO Enrique Lores during an earnings call on November 26, 2025.
+  HP's fiscal year ends October 31; fiscal 2028 ends October 31, 2028.
+  This is a corporate plan, not just a forecast — HP has committed to the layoffs.
+hashtags: "#AIPredictions #AIJobs"
+skip_post: false
+screenshot: "predictions/assets/2025-11-26-hp-savings.png"
