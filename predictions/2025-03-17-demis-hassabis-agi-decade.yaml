@@ -1,0 +1,19 @@
+prediction_date: 2025-03-17
+source_name: Demis Hassabis
+source_url: https://www.cnbc.com/2025/03/17/human-level-ai-will-be-here-in-5-to-10-years-deepmind-ceo-says.html
+prediction_text: |
+  over the next five to 10 years […]
+  we’ll start moving towards what we call artificial general intelligence
+deadline: 2035-03-17
+deadline_fuzzy: "within 5–10 years of March 2025"
+category: agi
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Said in a CNBC interview. Consistent with his June 2024 statement. Hassabis
+  has historically been among the more measured voices on timelines; this
+  represents a tighter range than many peers. He received the 2024 Nobel Prize
+  in Chemistry for AlphaFold.
+hashtags: "#AIPredictions #AGI"
+skip_post: false
