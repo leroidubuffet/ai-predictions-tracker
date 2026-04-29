@@ -1,3 +1,12 @@
 reminders:
+  2024-04-08-elon-musk-agi.yaml:
+  - elapsed_365
+  - elapsed_730
   2024-06-29-ray-kurzweil-agi-2029-guardian.yaml:
   - elapsed_365
+  2024-09-23-dario-amodei-powerful-ai-two-years.yaml:
+  - elapsed_183
+  - elapsed_366
+  - elapsed_549
+  2026-04-29-Elon-Musk-AGI-2025.yaml:
+  - expired
