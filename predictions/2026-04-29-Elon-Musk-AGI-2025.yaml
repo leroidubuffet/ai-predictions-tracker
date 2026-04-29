@@ -1,0 +1,19 @@
+prediction_date: 2026-04-29
+source_name: Elon Musk
+source_url: https://x.com/elonmusk/status/1794240517875920935
+prediction_text: |
+  AGI by 2025
+deadline: "2025-04-25"
+deadline_fuzzy: ""
+category: capabilities
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  “How long until AGI?” asked Logan Kilpatrick, the head of product at Google
+  AI Studio, in May 2024. “Next year,” Musk replied, to which Kipatrick
+  responded, “Big if true.”
+
+hashtags: "#AGI"
+skip_post: false
+screenshot: "predictions/assets/2024-05-25-Elon-Musk-AGI.png
