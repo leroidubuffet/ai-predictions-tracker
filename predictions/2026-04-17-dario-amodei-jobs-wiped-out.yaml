@@ -1,0 +1,19 @@
+prediction_date: 2026-04-17
+source_name: Dario Amodei
+source_url: https://x.com/TFTC21/status/2045250949216895058
+prediction_text: |
+  50% of all tech jobs, entry-level lawyers, consultants, and finance
+  professionals will be completely wiped out within 1–5 years.
+deadline: 2031-04-17
+deadline_fuzzy: "within 1–5 years (by April 2031)"
+category: jobs
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Statement attributed to Anthropic CEO Dario Amodei, posted April 17, 2026.
+  The 1–5 year window runs from approximately April 2027 to April 2031.
+  Deadline set to the outer bound (5 years).
+hashtags: "#AIPredictions #AGI"
+skip_post: false
+screenshot: "predictions/assets/2024-04-17 Darmio-Amodei-50percent-of-all-tech-jobs.png"
