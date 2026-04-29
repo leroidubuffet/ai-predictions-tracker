@@ -2,8 +2,8 @@ prediction_date: 2024-06-29
 source_name: Ray Kurzweil
 source_url: https://www.theguardian.com/technology/article/2024/jun/29/ray-kurzweil-google-ai-the-singularity-is-nearer
 prediction_text: |
-  Human-level intelligence and Artificial General Intelligence will be achieved the and the Turing test will be passed by 2029.
-deadline: ""
+  Human-level intelligence and Artificial General Intelligence will be achieved and the Turing test will be passed by 2029.
+deadline: "2029-12-31"
 deadline_fuzzy: "by 2029"
 category: timelines
 source_type: researcher
@@ -13,4 +13,5 @@ notes: |
   Ray Kurzweil is Google's principal researcher and AI visionary, a longtime techno-optimist and author of the 2005 bestseller "The Singularity Is Near" whose new book updates his forecasts.
   This prediction is a direct reaffirmation of his decades-long timeline for AGI and human-level AI, notable for its specificity and testability against real-world milestones like the Turing test.
   It is worth tracking as 2029 approaches, given Kurzweil's strong historical track record on computing and technology trends.
+hashtags: "#AIPredictions #AGI #AITimelines"
 skip_post: false
