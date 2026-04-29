@@ -1,0 +1,23 @@
+prediction_date: 2025-06-15
+source_name: Allison Kirkby
+source_url: https://www.reuters.com/business/media-telecom/bt-ceo-eyes-deeper-job-cuts-ai-becomes-more-powerful-ft-reports-2025-06-15/
+prediction_text: |
+  BT's existing plan to cut more than 40,000 jobs and strip out £3 billion
+  in costs by end of the decade 'did not reflect the full potential of AI.'
+  Depending on what AI delivers, 'there may be an opportunity for BT to be
+  even smaller by the end of the decade.'
+deadline: 2030-12-31
+deadline_fuzzy: "end of the decade (by 2030)"
+category: jobs
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Statement by BT Group CEO Allison Kirkby in a Financial Times interview,
+  reported by Reuters on June 15, 2025.
+  BT had already announced up to 55,000 job cuts by 2030 under previous CEO
+  Philip Jansen in 2023. Kirkby is signalling AI could push reductions beyond
+  that already significant target.
+hashtags: ""
+skip_post: false
+screenshot: ""
