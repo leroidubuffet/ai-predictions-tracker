@@ -1,0 +1,18 @@
+prediction_date: 2020-10-01
+source_name: World Economic Forum
+source_url: https://www3.weforum.org/docs/WEF_Future_of_Jobs_2020.pdf
+prediction_text: |
+  By 2025, the capabilities of machines and algorithms will be more broadly employed than in previous
+  years, and the work hours performed by machine will match the time spent working by human beings.
+deadline: 2025-12-31
+deadline_fuzzy: "by 2025"
+category: jobs
+source_type: researcher
+conflict_of_interest: false
+status: expired
+notes: |
+  From the WEF Future of Jobs Report 2020, published October 2020.
+  The 2025 deadline has passed.
+hashtags: "#jobs"
+skip_post: false
+screenshot: ""

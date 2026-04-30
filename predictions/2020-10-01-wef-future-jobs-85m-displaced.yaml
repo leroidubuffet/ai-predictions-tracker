@@ -1,0 +1,23 @@
+prediction_date: 2020-10-01
+source_name: World Economic Forum
+source_url: https://www3.weforum.org/docs/WEF_Future_of_Jobs_2020.pdf
+prediction_text: |
+  By 2025, automation will displace 85 million jobs globally while 97 million
+  new roles will emerge. A net creation of 12 million jobs, but with massive
+  churn in between requiring large-scale reskilling of the workforce.
+deadline: 2025-12-31
+deadline_fuzzy: "by 2025"
+category: jobs
+source_type: researcher
+conflict_of_interest: false
+status: expired
+notes: |
+  From the WEF Future of Jobs Report 2020, published October 2020.
+  The 2025 deadline has passed. Exact verification of the 85M/97M figures
+  is contested — job market disruption accelerated significantly with
+  generative AI from 2023 onward, arguably faster than the report modelled.
+  The net job creation framing was broadly accepted but the displacement
+  numbers were not systematically tracked against a single baseline.
+hashtags: "#jobs"
+skip_post: false
+screenshot: ""

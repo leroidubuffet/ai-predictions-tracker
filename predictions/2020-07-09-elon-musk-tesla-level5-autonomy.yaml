@@ -1,0 +1,21 @@
+prediction_date: 2020-07-09
+source_name: Elon Musk
+source_url: https://electrek.co/2020/07/09/tesla-tsla-elon-musk-level-5-autonomy-complete/
+prediction_text: |
+  "I think that I remain confident that we will have basic functionality
+  for level 5 autonomy this year."
+deadline: 2020-12-31
+deadline_fuzzy: "end of 2020"
+category: capabilities
+source_type: executive
+conflict_of_interest: true
+status: expired
+notes: |
+  Statement made during a virtual Q&A at the World Artificial Intelligence
+  Conference (WAIC) in Shanghai, July 9, 2020. Level 5 autonomy was not
+  achieved by end of 2020. Tesla FSD remains a supervised driver-assistance
+  system (Level 2) as of 2026. This was one in a long series of annual
+  "next year" autonomy predictions from Musk dating back to 2014.
+hashtags: ""
+skip_post: false
+screenshot: "#AIPredictions #Tesla #ElonMusk"
