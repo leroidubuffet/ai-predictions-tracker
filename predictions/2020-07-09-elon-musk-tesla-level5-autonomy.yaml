@@ -2,8 +2,8 @@ prediction_date: 2020-07-09
 source_name: Elon Musk
 source_url: https://electrek.co/2020/07/09/tesla-tsla-elon-musk-level-5-autonomy-complete/
 prediction_text: |
-  "I think that I remain confident that we will have basic functionality
-  for level 5 autonomy this year."
+  I think that I remain confident that we will have basic functionality
+  for level 5 autonomy this year.
 deadline: 2020-12-31
 deadline_fuzzy: "end of 2020"
 category: capabilities
