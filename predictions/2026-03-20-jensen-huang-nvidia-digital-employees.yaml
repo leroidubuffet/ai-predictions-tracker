@@ -1,0 +1,23 @@
+prediction_date: 2026-03-20
+source_name: Jensen Huang
+source_url: https://www.cnbc.com/2026/03/20/nvidia-ai-agents-tokens-human-workers-engineer-jobs-unemployment-jensen-huang.html
+prediction_text: |
+  "I have 42,000 biological employees, and I'm going to have hundreds of
+  thousands of digital employees." Nvidia will one day employ hundreds of
+  thousands of AI agents, far outnumbering its human workforce.
+deadline: ""
+deadline_fuzzy: ""
+category: jobs
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Statement made at Nvidia's GTC conference and in a prior CNBC interview
+  (February 2026). Huang also proposed giving engineers AI token budgets
+  worth roughly half their base salary as a productivity multiplier.
+  Conflict of interest: Nvidia sells the chips and infrastructure that AI
+  agents run on — Huang has a direct financial stake in this vision being believed.
+hashtags: ""
+skip_post: false
+importance: high
+screenshot: ""
