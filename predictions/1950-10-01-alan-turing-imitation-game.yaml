@@ -19,5 +19,5 @@ notes: |
   roughly 20-25 years late. The 10^9-bit storage requirement (~125 MB) was
   exceeded by consumer hardware decades before the capability arrived.
 hashtags: ""
-skip_post: true
+skip_post: false
 screenshot: ""
