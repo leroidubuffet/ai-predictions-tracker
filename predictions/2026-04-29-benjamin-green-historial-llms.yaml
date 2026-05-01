@@ -1,0 +1,22 @@
+prediction_date: 2026-04-29
+source_name: Benjamin Breen
+source_url: https://resobscura.substack.com/p/are-vintage-llms-the-start-of-a-new
+prediction_text: |
+  Historical LLMs will, by sometime in the 2030s, be part of an entirely
+  new field of humanistic research.
+deadline: ""
+deadline_fuzzy: "by the 2030s"
+category: capabilities
+source_type: pundit
+conflict_of_interest: false
+status: pending
+notes: |
+  Benjamin Breen is a historian at UC Santa Cruz and writer of the Res Obscura
+  Substack, focused on early modern history and the history of science. He
+  beta-tested Talkie-1930 and consulted with its creators. The prediction is
+  notable as a humanist's take on AI's long-term disciplinary impact, distinct
+  from the usual industry-insider forecasts.
+hashtags: "#AIPredictions #AITimelines"
+skip_post: false
+importance: low
+screenshot: ""
