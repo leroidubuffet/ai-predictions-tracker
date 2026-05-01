@@ -26,6 +26,7 @@ notes: |
 hashtags: ""
 skip_post: false
 importance: low
+post_excerpt: ""
 screenshot: ""
 ```
 
@@ -49,6 +50,7 @@ screenshot: ""
 - `hashtags`: leave as empty string `""` in almost all cases — the bot automatically uses `#AIPredictions` plus the category-specific tag. Only set this field if you need to override the defaults entirely (e.g. a prediction that spans multiple categories or needs a one-off tag). If you do override, include `#AIPredictions` manually since the field replaces everything.
 - `skip_post`: always `false`
 - `importance`: `high` if the prediction is about existential risk, AGI arrival, or large-scale societal impact; `low` for everything else. Controls how often elapsed-time reminders fire (high = every 6 months, low = every 12 months). Only relevant when `deadline` is empty.
+- `post_excerpt`: optional short version for the Bluesky post. Set this only when `prediction_text` is a long multi-sentence quote and you want to control exactly what appears in the post. Should be one complete, self-contained sentence (≤ 120 chars is ideal). Leave empty otherwise.
 - `screenshot`: leave as empty string — you cannot attach a file
 
 If the article contains multiple predictions, pick the most specific and falsifiable one.

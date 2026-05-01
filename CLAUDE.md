@@ -54,6 +54,7 @@ notes: |
 hashtags: ""                # Overrides default #AIPredictions; space-separated, optional
 skip_post: false            # Set true for seed/historical data
 importance: low             # high | low — elapsed-time reminder interval for no-deadline predictions (optional, default: low)
+post_excerpt: ""            # Short version for Bluesky posts; optional — omit to use prediction_text (auto-truncated if needed)
 screenshot: ""              # Path to source screenshot, relative to repo root (e.g. predictions/assets/2024-03-15-altman-tweet.png), optional
 ```
 

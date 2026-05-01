@@ -54,6 +54,11 @@ skip_post: false
 # high: every 6 months | low: every year
 importance: low
 
+# Short version of the prediction for Bluesky posts. Optional — only set this
+# when prediction_text is too long and you want to control what gets posted.
+# If absent, prediction_text is used and truncated automatically if needed.
+post_excerpt: ""
+
 # Path to a screenshot of the original source, relative to the repo root.
 # Store the file under predictions/assets/. Attached to the Bluesky post when present.
 # e.g. predictions/assets/2024-03-15-altman-tweet.png (optional)

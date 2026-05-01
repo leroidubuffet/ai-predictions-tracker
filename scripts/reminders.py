@@ -175,6 +175,12 @@ def get_thresholds(horizon_days):
 
 # ── Post formatting ───────────────────────────────────────────────────────────
 
+def get_post_text(prediction):
+    """Return post_excerpt if set, else prediction_text."""
+    excerpt = str(prediction.get("post_excerpt") or "").strip()
+    return excerpt if excerpt else str(prediction.get("prediction_text") or "").strip()
+
+
 def truncate_to_fit(text, max_chars, ellipsis="…"):
     """Truncate text to max_chars, preferring sentence then word boundaries."""
     text = text.strip()
@@ -260,7 +266,7 @@ def build_reminder_post(prediction, days_remaining, today=None):
         today = date.today()
 
     source = str(prediction.get("source_name") or "Unknown").strip()
-    raw_text = str(prediction.get("prediction_text") or "").strip()
+    raw_text = get_post_text(prediction)
     text = " ".join(raw_text.split())
 
     deadline_lbl = _deadline_label(prediction)
@@ -310,7 +316,7 @@ def build_anniversary_post(prediction, years):
       #AIPredictions
     """
     source = str(prediction.get("source_name") or "Unknown").strip()
-    raw_text = str(prediction.get("prediction_text") or "").strip()
+    raw_text = get_post_text(prediction)
     text = " ".join(raw_text.split())
 
     if years == 1:
@@ -347,7 +353,7 @@ def build_expired_post(prediction, today=None):
         today = date.today()
 
     source = str(prediction.get("source_name") or "Unknown").strip()
-    raw_text = str(prediction.get("prediction_text") or "").strip()
+    raw_text = get_post_text(prediction)
     text = " ".join(raw_text.split())
 
     deadline_lbl = _deadline_label(prediction)
@@ -406,7 +412,7 @@ def build_elapsed_post(prediction, age_label):
       #AIPredictions
     """
     source = str(prediction.get("source_name") or "Unknown").strip()
-    raw_text = str(prediction.get("prediction_text") or "").strip()
+    raw_text = get_post_text(prediction)
     text = " ".join(raw_text.split())
     header = f"{age_label} ago, {source} predicted:"
     hashtags = get_hashtags(prediction)

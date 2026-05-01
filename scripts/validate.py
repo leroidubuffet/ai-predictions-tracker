@@ -131,6 +131,13 @@ def validate_file(path, valid_categories, valid_source_types, valid_importance_l
         if data["status"] not in VALID_STATUSES:
             errors.append(f"  status: '{data['status']}' must be one of {sorted(VALID_STATUSES)}")
 
+    # post_excerpt: optional, but if present must be a non-empty string
+    if "post_excerpt" in data and data["post_excerpt"] is not None:
+        if not isinstance(data["post_excerpt"], str):
+            errors.append(f"  post_excerpt: must be a string, got {type(data['post_excerpt']).__name__}")
+        elif data["post_excerpt"].strip() == "":
+            errors.append("  post_excerpt: must not be an empty string if set (remove the field or omit it instead)")
+
     # screenshot: optional, but if present must be a string, have an image extension, and the file must exist
     if "screenshot" in data and data["screenshot"]:
         screenshot = data["screenshot"]

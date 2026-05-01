@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 sys.path.insert(0, str(Path(__file__).parent))
 from post_new import (
     build_post, build_facets, build_embed, upload_screenshot, truncate_to_fit,
-    deadline_display, format_date, load_prediction, get_hashtags,
+    deadline_display, format_date, load_prediction, get_hashtags, get_post_text,
     BLUESKY_CHAR_LIMIT, HASHTAGS,
 )
 
@@ -66,6 +66,39 @@ class TestTruncateToFit(unittest.TestCase):
         self.assertLessEqual(len(result), 15)
         self.assertTrue(result.endswith("…"))
         self.assertNotIn("thre…", result)
+
+
+class TestGetPostText(unittest.TestCase):
+    def test_uses_post_excerpt_when_set(self):
+        p = make_prediction(
+            prediction_text="Long full verbatim quote that goes on and on.",
+            post_excerpt="Short curated excerpt.",
+        )
+        self.assertEqual(get_post_text(p), "Short curated excerpt.")
+
+    def test_falls_back_to_prediction_text_when_no_excerpt(self):
+        p = make_prediction(prediction_text="The full prediction text.")
+        self.assertEqual(get_post_text(p), "The full prediction text.")
+
+    def test_falls_back_when_post_excerpt_empty_string(self):
+        p = make_prediction(prediction_text="The full prediction text.", post_excerpt="")
+        self.assertEqual(get_post_text(p), "The full prediction text.")
+
+    def test_post_excerpt_used_in_build_post(self):
+        p = make_prediction(
+            prediction_text="A very long verbatim quote that would be truncated.",
+            post_excerpt="A short excerpt.",
+        )
+        post = build_post(p)
+        self.assertIn('"A short excerpt."', post)
+        self.assertNotIn("verbatim", post)
+
+    def test_long_prediction_text_with_short_excerpt_fits(self):
+        long_text = "word " * 200
+        p = make_prediction(prediction_text=long_text, post_excerpt="Short.")
+        post = build_post(p)
+        self.assertLessEqual(len(post), BLUESKY_CHAR_LIMIT)
+        self.assertIn('"Short."', post)
 
 
 class TestFormatDate(unittest.TestCase):

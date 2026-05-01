@@ -128,6 +128,12 @@ def get_hashtags(prediction, category_hashtags=None):
     return CAMPAIGN_TAG
 
 
+def get_post_text(prediction):
+    """Return post_excerpt if set, else prediction_text."""
+    excerpt = str(prediction.get("post_excerpt") or "").strip()
+    return excerpt if excerpt else str(prediction.get("prediction_text") or "").strip()
+
+
 def build_post(prediction):
     """
     Build the Bluesky post text for a new prediction.
@@ -149,8 +155,7 @@ def build_post(prediction):
     """
     source = str(prediction.get("source_name") or "Unknown").strip()
     date_str = format_date(prediction.get("prediction_date"))
-    # Collapse internal line breaks in the prediction text to spaces
-    raw_text = str(prediction.get("prediction_text") or "").strip()
+    raw_text = get_post_text(prediction)
     text = " ".join(raw_text.split())
     deadline = deadline_display(prediction)
 

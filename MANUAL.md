@@ -70,6 +70,8 @@ notes: |                           # optional — context, outcome notes
 hashtags: ""                       # optional — overrides default #AIPredictions, space-separated
 skip_post: false                   # required — false: post to Bluesky on commit; true: archive only, never post
 importance: low                    # optional — high | low (only used when no deadline is set)
+post_excerpt: ""                   # optional — short version for Bluesky posts; omit to use
+                                   # prediction_text (auto-truncated at sentence boundary if needed)
 screenshot: ""                     # optional — path relative to repo root, e.g.
                                    # predictions/assets/2026-04-26-altman-tweet.png
 ```
@@ -160,6 +162,8 @@ Deadline: during 2025
 ```
 
 If `prediction_text` is too long to fit in 300 characters, it is truncated automatically — first at a sentence boundary (`.`, `!`, `?`) if one exists within budget, then at a word boundary. Store the full text in the YAML; the bot handles the rest.
+
+For long or multi-sentence quotes where auto-truncation produces an awkward result, set `post_excerpt` to a curated one-sentence version. The full quote stays in `prediction_text` as the archival record; `post_excerpt` is used only for posting.
 
 ### Reminder bot
 
