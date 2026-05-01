@@ -55,6 +55,18 @@ class TestTruncateToFit(unittest.TestCase):
         text = "a" * 50
         self.assertEqual(truncate_to_fit(text, 50), text)
 
+    def test_prefers_sentence_boundary_over_word(self):
+        text = "First sentence. Second sentence that is much longer than the limit."
+        result = truncate_to_fit(text, 25)
+        self.assertEqual(result, "First sentence.…")
+
+    def test_falls_back_to_word_if_no_sentence_boundary(self):
+        text = "one two three four five six seven eight"
+        result = truncate_to_fit(text, 15)
+        self.assertLessEqual(len(result), 15)
+        self.assertTrue(result.endswith("…"))
+        self.assertNotIn("thre…", result)
+
 
 class TestFormatDate(unittest.TestCase):
     def test_iso_string_returns_month_and_year(self):

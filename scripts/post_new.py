@@ -93,12 +93,17 @@ def deadline_display(prediction):
 
 
 def truncate_to_fit(text, max_chars, ellipsis="…"):
-    """Truncate text to max_chars at a word boundary."""
+    """Truncate text to max_chars, preferring sentence then word boundaries."""
     text = text.strip()
     if len(text) <= max_chars:
         return text
-    truncated = text[:max_chars - len(ellipsis)].rsplit(" ", 1)[0]
-    return truncated + ellipsis
+    budget = max_chars - len(ellipsis)
+    chunk = text[:budget]
+    for punct in (".", "!", "?"):
+        idx = chunk.rfind(punct)
+        if idx > budget // 3:
+            return chunk[:idx + 1] + ellipsis
+    return chunk.rsplit(" ", 1)[0] + ellipsis
 
 
 CAMPAIGN_TAG = "#AIPredictions"
