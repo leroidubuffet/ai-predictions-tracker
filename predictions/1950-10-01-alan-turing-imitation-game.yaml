@@ -1,0 +1,23 @@
+prediction_date: 1950-10-01
+source_name: Alan Turing
+source_url: https://academic.oup.com/mind/article/LIX/236/433/986238
+prediction_text: |
+  "[…] in about fifty years' time it will be possible, to programme computers […] to play the imitation game so well that an average interrogator
+  will not have more than 70 per cent chance of making the right identification after five minutes of
+  questioning."
+deadline: 2000-12-31
+deadline_fuzzy: "about fifty years from 1950 (by ~2000)"
+category: capabilities
+source_type: researcher
+conflict_of_interest: false
+status: notable
+notes: |
+  From "Computing Machinery and Intelligence," Mind, Vol. LIX, No. 236,
+  October 1950 — the paper that introduced the Turing Test. The 2000 deadline
+  passed without the prediction being clearly met. By the mid-2020s, large
+  language models routinely satisfy the 70% threshold Turing described,
+  roughly 20-25 years late. The 10^9-bit storage requirement (~125 MB) was
+  exceeded by consumer hardware decades before the capability arrived.
+hashtags: ""
+skip_post: true
+screenshot: ""
