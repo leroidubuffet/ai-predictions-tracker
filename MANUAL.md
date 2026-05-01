@@ -28,6 +28,24 @@ Always use the project's virtual environment:
 .venv/bin/python scripts/check_state.py            # check for state drift
 ```
 
+### Manually posting a prediction
+
+The bot posts automatically on push, but you can trigger a post manually two ways.
+
+**Via GitHub Actions** (recommended — uses stored secrets, no local setup):
+```bash
+gh workflow run post_new.yml --field file="predictions/2024-03-15-sam-altman.yaml"
+```
+
+**Locally** (requires env vars):
+```bash
+BLUESKY_HANDLE=yourhandle.bsky.social \
+BLUESKY_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx \
+.venv/bin/python scripts/post_new.py predictions/2024-03-15-sam-altman.yaml
+```
+
+Both methods respect `skip_post: true` — the file will be silently skipped if it's set. Make sure it's `false` before triggering.
+
 ---
 
 ## Prediction file format
