@@ -44,7 +44,7 @@ prediction_text: |                 # required — verbatim or close paraphrase
 deadline: 2027-12-31               # optional — ISO date
 deadline_fuzzy: "by end of 2027"   # optional — human-readable form
 category: agi                      # required — must be in categories.yaml
-source_type: executive             # required — researcher | practitioner | executive | investor | expert
+source_type: executive             # required — researcher | practitioner | executive | investor | pundit
 conflict_of_interest: false        # required — true if source has financial stake in the prediction being believed
 status: pending                    # required — pending | expired | notable
 notes: |                           # optional — context, outcome notes
@@ -140,6 +140,8 @@ Deadline: during 2025
 
 #AIPredictions
 ```
+
+If `prediction_text` is too long to fit in 300 characters, it is truncated automatically — first at a sentence boundary (`.`, `!`, `?`) if one exists within budget, then at a word boundary. Store the full text in the YAML; the bot handles the rest.
 
 ### Reminder bot
 
