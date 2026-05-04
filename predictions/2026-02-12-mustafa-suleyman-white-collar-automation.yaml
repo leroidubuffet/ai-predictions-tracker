@@ -1,0 +1,23 @@
+prediction_date: 2026-02-12
+source_name: Mustafa Suleyman
+source_url: https://www.businessinsider.com/microsoft-ai-ceo-mustafa-suleyman-white-collar-tasks-automation-prediction-2026-2
+prediction_text: |
+  'I think that we're going to have a human-level performance on most, if not all, professional tasks'.
+  'So white-collar work, where you're sitting down at a computer, either being a lawyer or an accountant
+  or a project manager or a marketing person — most of those tasks will be fully automated by an AI within
+  the next 12 to 18 months.'
+deadline: 2027-08-12
+deadline_fuzzy: "within 12–18 months (by August 2027)"
+category: jobs
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Statement by Microsoft AI CEO Mustafa Suleyman in a Financial Times
+  interview, reported February 12, 2026. Deadline set to the outer bound
+  of the 12–18 month window. Conflict of interest: Suleyman leads Microsoft's
+  AI division and has a direct stake in AI capability claims being believed.
+post_excerpt: "AI will reach human-level performance on most, if not all, professional tasks within 12–18 months."
+hashtags: ""
+skip_post: false
+screenshot: ""
