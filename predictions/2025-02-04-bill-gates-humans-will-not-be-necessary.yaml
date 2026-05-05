@@ -1,0 +1,26 @@
+prediction_date: 2025-02-04
+source_name: Bill Gates
+source_url: https://youtu.be/uHY5i9-0tJM?t=482
+prediction_text: |
+  Humans will not be needed for most things. Over the next decade, AI will
+  make intelligence free and commonplace — great medical advice, great
+  tutoring — replacing humans in making things, moving things, and growing
+  food. There will be some things we reserve for ourselves, but those will
+  be the exception.
+deadline: 2035-02-04
+deadline_fuzzy: "within the next decade"
+category: jobs
+source_type: executive
+conflict_of_interest: false
+status: pending
+notes: |
+  Bill Gates is the co-founder of Microsoft and a prominent philanthropist.
+  The remark was made casually on The Tonight Show when host Jimmy Fallon
+  asked "Will we still need humans?" — Gates answered "Not for most things,"
+  prompting nervous laughter from the audience. Gates framed the shift
+  optimistically, citing benefits in healthcare and education access.
+hashtags: "#BillGates #AIPredictions"
+skip_post: false
+importance: high
+post_excerpt: "Humans will not be needed for most things as AI makes intelligence free and commonplace within the next decade."
+screenshot: ""
