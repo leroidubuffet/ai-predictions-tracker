@@ -1,0 +1,23 @@
+prediction_date: 2026-05-05
+source_name: Adrien Ecoffet
+source_url: https://x.com/AdrienLE/status/1965950820354322739
+prediction_text: |
+  OpenAI's stated estimate is that automated AI research will be developed
+  around March 2028.
+deadline: 2028-03-31
+deadline_fuzzy: "around March 2028"
+category: capabilities
+source_type: researcher
+conflict_of_interest: true
+status: pending
+notes: |
+  Adrien Ecoffet is a researcher at OpenAI. The tweet is notable because
+  he frames this not as a personal opinion but as OpenAI's institutional
+  estimate, giving it significant weight as an internal forecast from one
+  of the leading frontier labs. The claim was made in reply to Jack Clark's
+  Import AI essay on the same topic.
+hashtags: "#AIresearch #AIpredictions"
+skip_post: false
+importance: high
+post_excerpt: "OpenAI's stated estimate is that automated AI research will be developed around March 2028."
+screenshot: "predictions/assets/2026-05-05-adrien-ecoffet.png"
