@@ -1,0 +1,27 @@
+prediction_date: 2026-05-04
+source_name: Jack Clark
+source_url: https://importai.substack.com/p/import-ai-455-automating-ai-research
+prediction_text: |
+  I reluctantly come to the view that there's a likely chance (60%+) that
+  no-human-involved AI R&D — an AI system powerful enough that it could
+  plausibly autonomously build its own successor — happens by the end of
+  2028. If you had to push me for a 2027 probability, I'd say 30%. If we
+  don't see it by the end of 2028, then I think we will have revealed some
+  fundamental deficiency within the current technological paradigm.
+deadline: 2028-12-31
+deadline_fuzzy: "by end of 2028"
+category: capabilities
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Jack Clark is co-founder of Anthropic and author of the Import AI
+  newsletter. The prediction comes from a long-form essay reviewing
+  hundreds of public data sources on AI development. Clark describes the
+  view as "reluctant" given the civilisation-scale implications, and flags
+  serious alignment risks if recursive self-improvement occurs.
+hashtags: ""
+skip_post: false
+importance: high
+post_excerpt: "60%+ chance of no-human-involved AI R&D — a system that autonomously trains its own successor — by end of 2028."
+screenshot: "predictions/assets/2026-05-04-jack-clark.png"
