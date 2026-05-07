@@ -1,0 +1,24 @@
+prediction_date: 2026-01-01
+source_name: Dario Amodei
+source_url: https://www.darioamodei.com/essay/the-adolescence-of-technology
+prediction_text: |
+  Powerful AI — defined as a system smarter than a Nobel Prize winner across most
+  relevant fields, capable of autonomous multi-day tasks, running as millions of
+  simultaneous instances — could be as little as 1–2 years away, although it could
+  also be considerably further out.
+deadline: "2028-01-01"
+deadline_fuzzy: "within 1–2 years"
+category: timelines
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Dario Amodei is CEO and co-founder of Anthropic, one of the leading frontier AI
+  labs. He defines "powerful AI" in detail in the essay, making this more falsifiable
+  than a typical vague AGI claim. The conflict of interest flag is set because
+  Amodei leads the company building the very systems he is predicting.
+hashtags: "#AIPredictions #AITimelines #AGI"
+skip_post: false
+importance: high
+post_excerpt: "Powerful AI could be as little as 1–2 years away — a 'country of geniuses in a datacenter.'"
+screenshot: ""
