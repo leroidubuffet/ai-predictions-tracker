@@ -1,0 +1,22 @@
+prediction_date: 2026-05-08
+source_name: Ethan Mollick
+source_url: https://x.com/emollick/status/20...
+prediction_text: |
+  Expect similar exploit-finding capabilities from OpenAI & Google,
+  and from open models in 8 months.
+deadline: 2027-01-08
+deadline_fuzzy: "8 months from May 2026"
+category: capabilities
+source_type: researcher
+conflict_of_interest: false
+status: pending
+notes: |
+  Made in the context of Anthropic's Mythos model demonstrating
+  general-purpose capability at finding browser security exploits.
+  Mollick argues this is expected of strong general models broadly,
+  not a specialized capability.
+hashtags: ""
+skip_post: false
+importance: low
+post_excerpt: "#AIPredictions #Mythos #Cybersecurity"
+screenshot: "predictions/assets/2026-05-08-emollick-open-models-exploits.png"
