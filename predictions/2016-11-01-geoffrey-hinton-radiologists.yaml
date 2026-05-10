@@ -1,0 +1,22 @@
+prediction_date: 2016-11-01
+source_name: Geoffrey Hinton
+source_url: https://nautil.us/deep-learning-is-hitting-a-wall-238440
+prediction_text: |
+  It’s just completely obvious that in five years deep learning is going to do better than radiologists. It might be ten years”
+deadline: 2026-11-01
+deadline_fuzzy: "within 10 years of late 2016"
+category: capabilities
+source_type: researcher
+conflict_of_interest: false
+status: notable
+notes: |
+  Said at a leading AI conference in Toronto in 2016. By 2022,
+  the consensus had shifted: ML for radiology proved harder than
+  expected, and the prevailing view became that humans and machines
+  complement each other. No radiologists were replaced.
+  Source is a 2022 Gary Marcus article in Nautilus recounting the claim.
+hashtags: "#AIPredictions #Radiology"
+skip_post: true
+importance: low
+post_excerpt: ""
+screenshot: ""
