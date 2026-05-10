@@ -2,7 +2,7 @@ prediction_date: 2016-11-01
 source_name: Geoffrey Hinton
 source_url: https://nautil.us/deep-learning-is-hitting-a-wall-238440
 prediction_text: |
-  It’s just completely obvious that in five years deep learning is going to do better than radiologists. It might be ten years”
+  It’s just completely obvious that in five years deep learning is going to do better than radiologists. It might be ten years
 deadline: 2026-11-01
 deadline_fuzzy: "within 10 years of late 2016"
 category: capabilities
@@ -16,7 +16,7 @@ notes: |
   complement each other. No radiologists were replaced.
   Source is a 2022 Gary Marcus article in Nautilus recounting the claim.
 hashtags: "#AIPredictions #Radiology"
-skip_post: true
+skip_post: false
 importance: low
 post_excerpt: ""
 screenshot: ""
