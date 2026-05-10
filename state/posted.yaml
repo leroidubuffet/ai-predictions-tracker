@@ -1,6 +1,8 @@
 posts:
   1950-10-01-alan-turing-imitation-game.yaml:
     posted_at: '2026-05-01T18:32:50Z'
+  2016-11-01-geoffrey-hinton-radiologists.yaml:
+    posted_at: '2026-05-10T12:29:41Z'
   2020-07-09-elon-musk-tesla-level5-autonomy.yaml:
     posted_at: '2026-04-30T11:16:19Z'
   2020-10-01-wef-future-jobs-85m-displaced.yaml:
@@ -40,4 +42,4 @@ posts:
   2026-05-05-adrien-ecoffert.yaml:
     posted_at: '2026-05-06T14:19:52Z'
   2026-05-08-ethan-mollic-mythos.yaml:
-    posted_at: '2026-05-09T17:53:19Z'
+    posted_at: '2026-05-09T18:00:34Z'
