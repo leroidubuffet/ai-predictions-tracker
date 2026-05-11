@@ -1,0 +1,23 @@
+prediction_date: 2026-05-10
+source_name: Syd Steyerhart
+source_url: https://x.com/SydSteyerhart/status/...
+prediction_text: |
+  We are no longer in the realm of normal technological progress.
+  If the trend described in the graph below holds, superintelligence-
+  level systems are not decades away, we will see them at latest by 2029.
+deadline: 2029-12-31
+deadline_fuzzy: "by 2029"
+category: agi
+source_type: pundit
+conflict_of_interest: false
+status: pending
+notes: |
+  Based on METR benchmark data showing Claude Mythos Preview
+  achieving a time horizon of 2x+ the next best model on 80%
+  success rate software tasks. Steyerhart extrapolates the trend
+  line to argue superintelligence is imminent.
+hashtags: "#AIPredictions #AGI"
+skip_post: false
+importance: low
+post_excerpt: "If current AI trends hold, superintelligence-level systems will arrive at latest by 2029."
+screenshot: "predictions/assets/2026-05-10-steyerhart-superintelligence-2029.png"
