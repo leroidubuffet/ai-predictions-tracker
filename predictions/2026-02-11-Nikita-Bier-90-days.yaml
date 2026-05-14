@@ -1,0 +1,19 @@
+prediction_date: 2026-02-11
+source_name: Nikita Bier
+source_url: https://x.com/nikitabier/status/2021632774013432061
+prediction_text: |
+  In less than 90 days, all channels that we thought were safe from spam &
+  automation will be so flooded that they will no longer be usable in any
+  functional sense: iMessage, phone calls, Gmail. And we will have no way
+  to stop it.
+category: capabilities
+source_type: executive
+conflict_of_interest: false
+status: expired
+deadline: 2026-05-12
+deadline_fuzzy: "within 90 days of Feb 11, 2026"
+skip_post: false
+notes: |
+  Nothing has changed as of May 14th 2026.
+post_excerpt: "Within 90 days, iMessage, phone calls, and Gmail will be so flooded with AI-driven spam that they'll no longer be functionally usable — with no way to stop it."
+screenshot: predictions/assets/2026-02-11-nikitabier-spam-channels.png
