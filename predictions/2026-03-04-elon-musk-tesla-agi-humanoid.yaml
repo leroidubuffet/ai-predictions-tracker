@@ -1,0 +1,21 @@
+prediction_date: 2026-03-04
+source_name: Elon Musk
+source_url: https://x.com/elonmusk
+prediction_text: |
+  Tesla will be one of the companies to make AGI and probably the first to
+  make it in humanoid/atom-shaping form.
+deadline: ""
+deadline_fuzzy: ""
+category: agi
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Posted on X, March 4, 2026. "Atom-shaping form" likely refers to the
+  Optimus humanoid robot. Distinct from Musk's other AGI predictions via
+  xAI/Grok — here he's claiming Tesla (not xAI) will be first to embody AGI
+  physically. conflict_of_interest: true — Musk is CEO of Tesla.
+hashtags: ""
+skip_post: false
+importance: low
+screenshot: "predictions/assets/2026-03-04-elon-musk-tesla-agi-humanoid.png"
