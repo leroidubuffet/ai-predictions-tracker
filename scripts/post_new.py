@@ -53,9 +53,13 @@ def load_posted():
     return data
 
 
-def record_post(filename):
+def record_post(filename, prediction):
     data = load_posted()
-    data["posts"][filename] = {"posted_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")}
+    data["posts"][filename] = {
+        "posted_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "source_name": str(prediction.get("source_name") or "").strip(),
+        "prediction_text": str(prediction.get("prediction_text") or "").strip(),
+    }
     POSTED_FILE.parent.mkdir(exist_ok=True)
     with open(POSTED_FILE, "w") as f:
         yaml.dump(data, f, default_flow_style=False, allow_unicode=True)
@@ -337,7 +341,7 @@ def main():
     screenshot = str(prediction.get("screenshot") or "").strip()
     screenshot_path = (REPO_ROOT / screenshot) if screenshot else None
     post_to_bluesky(post, handle, app_password, url=url, screenshot_path=screenshot_path)
-    record_post(path.name)
+    record_post(path.name, prediction)
     print(f"Posted: {path.name}")
 
 

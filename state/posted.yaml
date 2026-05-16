@@ -1,51 +1,230 @@
 posts:
   1950-10-01-alan-turing-imitation-game.yaml:
     posted_at: '2026-05-01T18:32:50Z'
+    prediction_text: '[…] in about fifty years'' time it will be possible, to programme
+      computers […] to play the imitation game so well that an average interrogator
+
+      will not have more than 70 per cent chance of making the right identification
+      after five minutes of
+
+      questioning.'
+    source_name: Alan Turing
   2016-11-01-geoffrey-hinton-radiologists.yaml:
     posted_at: '2026-05-10T12:29:41Z'
+    prediction_text: It’s just completely obvious that in five years deep learning
+      is going to do better than radiologists. It might be ten years
+    source_name: Geoffrey Hinton
   2020-07-09-elon-musk-tesla-level5-autonomy.yaml:
     posted_at: '2026-04-30T11:16:19Z'
+    prediction_text: 'I think that I remain confident that we will have basic functionality
+
+      for level 5 autonomy this year.'
+    source_name: Elon Musk
   2020-10-01-wef-future-jobs-85m-displaced.yaml:
     posted_at: '2026-04-30T11:10:47Z'
+    prediction_text: 'By 2025, automation will displace 85 million jobs globally while
+      97 million
+
+      new roles will emerge. A net creation of 12 million jobs, but with massive
+
+      churn in between requiring large-scale reskilling of the workforce.'
+    source_name: World Economic Forum
   2020-10-01-wef-future-jobs-85m-displaced_2.yaml:
     posted_at: '2026-04-30T11:10:51Z'
+    prediction_text: 'By 2025, the capabilities of machines and algorithms will be
+      more broadly employed than in previous
+
+      years, and the work hours performed by machine will match the time spent working
+      by human beings.'
+    source_name: World Economic Forum
   2023-09-08-elon-musk-agi-2025.yaml:
     posted_at: '2026-04-28T16:55:05Z'
+    prediction_text: 'AI will probably be smarter than any single human next year.
+
+      By 2029, AI is probably smarter than all humans combined.'
+    source_name: Elon Musk
   2024-06-29-ray-kurzweil-agi-2029-guardian.yaml:
     posted_at: '2026-04-29T07:15:13Z'
+    prediction_text: Human-level intelligence and Artificial General Intelligence
+      will be achieved and the Turing test will be passed by 2029.
+    source_name: Ray Kurzweil
   2024-09-23-dario-amodei-powerful-ai-two-years.yaml:
     posted_at: '2026-04-28T17:50:42Z'
+    prediction_text: 'AI-enabled biology and medicine will allow us to compress the
+      progress that
+
+      human biologists would have achieved over the next 50–100 years into just
+
+      5–10 years after powerful AI is developed — a "compressed 21st century"
+
+      that delivers near-elimination of most cancers, prevention of Alzheimer''s,
+
+      effective cures for most genetic disease, and a doubling of the human
+
+      lifespan to around 150 years.'
+    source_name: Dario Amodei
   2025-02-04-bill-gates-humans-will-not-be-necessary.yaml:
     posted_at: '2026-05-05T18:23:57Z'
+    prediction_text: 'Humans will not be needed for most things. Over the next decade,
+      AI will
+
+      make intelligence free and commonplace — great medical advice, great
+
+      tutoring — replacing humans in making things, moving things, and growing
+
+      food. There will be some things we reserve for ourselves, but those will
+
+      be the exception.'
+    source_name: Bill Gates
   2025-03-17-demis-hassabis-agi-decade.yaml:
     posted_at: '2026-04-29T06:33:46Z'
+    prediction_text: 'over the next five to 10 years […]
+
+      we’ll start moving towards what we call artificial general intelligence'
+    source_name: Demis Hassabis
   2025-06-15-allison-kirkby-bt-deeper-cuts.yaml:
     posted_at: '2026-04-29T18:42:03Z'
+    prediction_text: 'BT''s existing plan to cut more than 40,000 jobs and strip out
+      £3 billion
+
+      in costs by end of the decade ''did not reflect the full potential of AI.''
+
+      Depending on what AI delivers, ''there may be an opportunity for BT to be
+
+      even smaller by the end of the decade.'''
+    source_name: Allison Kirkby
   2025-11-26-enrique-lores-hp-ai-layoffs.yaml:
     posted_at: '2026-04-29T18:31:32Z'
+    prediction_text: 'HP will lay off 4,000 to 6,000 employees in favor of AI deployments,
+
+      saving $1 billion in annualized gross run rate by the end of fiscal 2028.
+
+      The reductions will largely hit product development, internal operations,
+
+      and customer support.'
+    source_name: Enrique Lores
   2026-01-01-amodei-country-geniouses.yaml:
     posted_at: '2026-05-07T19:03:19Z'
+    prediction_text: 'Powerful AI — defined as a system smarter than a Nobel Prize
+      winner across most
+
+      relevant fields, capable of autonomous multi-day tasks, running as millions
+      of
+
+      simultaneous instances — could be as little as 1–2 years away, although it could
+
+      also be considerably further out.'
+    source_name: Dario Amodei
   2026-02-11-Nikita-Bier-90-days.yaml:
     posted_at: '2026-05-14T11:35:28Z'
+    prediction_text: 'In less than 90 days, all channels that we thought were safe
+      from spam &
+
+      automation will be so flooded that they will no longer be usable in any
+
+      functional sense: iMessage, phone calls, Gmail. And we will have no way
+
+      to stop it.'
+    source_name: Nikita Bier
   2026-02-12-mustafa-suleyman-white-collar-automation.yaml:
     posted_at: '2026-05-04T11:03:12Z'
+    prediction_text: '''I think that we''re going to have a human-level performance
+      on most, if not all, professional tasks''.
+
+      ''So white-collar work, where you''re sitting down at a computer, either being
+      a lawyer or an accountant
+
+      or a project manager or a marketing person — most of those tasks will be fully
+      automated by an AI within
+
+      the next 12 to 18 months.'''
+    source_name: Mustafa Suleyman
   2026-03-20-jensen-huang-nvidia-digital-employees.yaml:
     posted_at: '2026-04-30T06:45:51Z'
+    prediction_text: '"I have 42,000 biological employees, and I''m going to have
+      hundreds of
+
+      thousands of digital employees." Nvidia will one day employ hundreds of
+
+      thousands of AI agents, far outnumbering its human workforce.'
+    source_name: Jensen Huang
   2026-04-17-dario-amodei-jobs-wiped-out.yaml:
     posted_at: '2026-04-29T17:32:23Z'
+    prediction_text: '50% of all tech jobs, entry-level lawyers, consultants, and
+      finance
+
+      professionals will be completely wiped out within 1–5 years.'
+    source_name: Dario Amodei
   2026-04-26-sam-altman-gpt55-codex-polyphasic.yaml:
     posted_at: '2026-04-28T16:25:49Z'
+    prediction_text: 'post-AGI, no one is going to work and the economy is going to
+      collapse"
+
+      "i am switching to polyphasic sleep [because GPT-5.5 in codex is so good
+
+      that] i can''t afford to be sleeping for such long stretches and miss out on
+      working'
+    source_name: Sam Altman
   2026-04-29-Elon-Musk-AGI-2025.yaml:
     posted_at: '2026-04-29T06:56:46Z'
+    prediction_text: AGI by 2025
+    source_name: Elon Musk
   2026-04-29-benjamin-green-historial-llms.yaml:
     posted_at: '2026-05-01T18:10:10Z'
+    prediction_text: 'Historical LLMs will, by sometime in the 2030s, be part of an
+      entirely
+
+      new field of humanistic research.'
+    source_name: Benjamin Breen
   2026-05-04-jack-clark-auto-rd.yaml:
     posted_at: '2026-05-06T14:16:48Z'
+    prediction_text: 'I reluctantly come to the view that there''s a likely chance
+      (60%+) that
+
+      no-human-involved AI R&D — an AI system powerful enough that it could
+
+      plausibly autonomously build its own successor — happens by the end of
+
+      2028. If you had to push me for a 2027 probability, I''d say 30%. If we
+
+      don''t see it by the end of 2028, then I think we will have revealed some
+
+      fundamental deficiency within the current technological paradigm.'
+    source_name: Jack Clark
   2026-05-05-adrien-ecoffert.yaml:
     posted_at: '2026-05-06T14:19:52Z'
+    prediction_text: 'OpenAI''s stated estimate is that automated AI research will
+      be developed
+
+      around March 2028.'
+    source_name: Adrien Ecoffet
   2026-05-08-ethan-mollic-mythos.yaml:
     posted_at: '2026-05-09T18:00:34Z'
+    prediction_text: 'Expect similar exploit-finding capabilities from OpenAI & Google,
+
+      and from open models in 8 months.'
+    source_name: Ethan Mollick
   2026-05-10-steyerhart-superintelligence-2029.yaml:
     posted_at: '2026-05-11T07:10:17Z'
+    prediction_text: 'We are no longer in the realm of normal technological progress.
+
+      If the trend described in the graph below holds, superintelligence-
+
+      level systems are not decades away, we will see them at latest by 2029.'
+    source_name: Syd Steyerhart
   2026-05-12-Andrew-Ng-jobapalooza.yaml:
     posted_at: '2026-05-13T07:03:07Z'
+    prediction_text: 'Contrary to the predictions of an AI jobpocalypse, I predict
+      the opposite: There
+
+      will be an AI jobapalooza! AI will lead to a lot more good AI engineering jobs,
+      and
+
+      I''m also optimistic about the future of the overall job market. The trends
+      strongly
+
+      suggest the net job creation is vastly greater than the job destruction — just
+      like
+
+      earlier waves of technology.'
+    source_name: Andrew Ng
