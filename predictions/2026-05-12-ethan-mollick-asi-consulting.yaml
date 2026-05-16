@@ -1,0 +1,24 @@
+prediction_date: 2026-05-12
+source_name: Ethan Mollick
+source_url: https://x.com/emollick/status/2054036929461526984?s=20
+prediction_text: |
+  You will know that the AI labs believe in ASI when they disband their newly
+  formed consulting (sorry "forward deployed engineering") groups. As long as
+  people are required to figure out how AI is useful & do organizational change
+  & systems integration, jobs seem to be pretty safe.
+deadline: ""
+deadline_fuzzy: ""
+category: jobs
+source_type: researcher
+conflict_of_interest: false
+status: pending
+notes: |
+  A conditional signal rather than a hard deadline: Mollick frames the
+  persistence of AI labs' consulting/"forward deployed engineering" arms
+  as evidence that true ASI hasn't arrived. Disbanding them would be the
+  canary-in-the-coal-mine moment for job safety.
+hashtags: ""
+skip_post: false
+importance: low
+post_excerpt: "You will know that the AI labs believe in ASI when they disband their 'forward deployed engineering' groups. As long as people are required for organizational change & systems integration, jobs seem to be pretty safe."
+screenshot: "predictions/assets/2026-05-12-ethan-mollick-asi-consulting.png"
