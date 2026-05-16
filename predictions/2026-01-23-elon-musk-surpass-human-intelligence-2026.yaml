@@ -1,0 +1,23 @@
+prediction_date: 2026-01-23
+source_name: Elon Musk
+source_url: https://www.livemint.com/news/quote-of-the-day-elon-musk-says-ai-will-surpass-human-intelligence-by-end-of-2026-what-it-means-11774942460100.html
+prediction_text: |
+  AI systems will be smarter than any individual human by the end of 2026.
+  Within five years, AI will surpass the combined intelligence of all of
+  humanity.
+deadline: 2026-12-31
+deadline_fuzzy: "end of 2026"
+category: timelines
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Said at the World Economic Forum in Davos, January 2026. Separate from
+  and more aggressive than his 2023 prediction of "AGI by 2025" (already
+  tracked). Musk also posted on X around this period: "We have entered the
+  Singularity" and "2026 is the year of the Singularity."
+  conflict_of_interest: true — Musk runs xAI (Grok).
+hashtags: ""
+skip_post: false
+importance: low
+screenshot: ""
