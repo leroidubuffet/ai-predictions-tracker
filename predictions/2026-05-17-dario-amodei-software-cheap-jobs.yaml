@@ -1,0 +1,17 @@
+prediction_date: 2026-05-17
+source_name: Dario Amodei
+source_url: https://www.youtube.com/watch?v=K7F6ohcBJus
+prediction_text: |
+  Software is going to become cheap, maybe essentially free. The premise that you need to amortize a piece of software you build across millions of users, that may start to be false. But at the same time, there are whole jobs, whole careers that we've built for decades that may not be present. I don't think there's an awareness at all of what is coming here and the magnitude of it.
+deadline: ""
+deadline_fuzzy: ""
+category: jobs
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  From a Wall Street Journal interview. Amodei also predicted software will become essentially free as the cost of generating custom software collapses.
+hashtags: ""
+skip_post: false
+importance: high
+screenshot: predictions/assets/2026-05-17-dario-amodei-software-cheap-jobs.png
