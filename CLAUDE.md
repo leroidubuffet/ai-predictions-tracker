@@ -145,6 +145,22 @@ The campaign tag `#AIPredictions` appears on every post. Category-specific topic
 
 Per-prediction `hashtags` field takes full precedence — if set, it replaces everything (including the campaign tag). Leave it empty to use the category defaults.
 
+## Writing post_excerpt
+
+The `post_excerpt` field holds the raw text only — no surrounding quote marks. The posting script wraps it in `"..."` automatically. Adding quotes yourself produces doubled punctuation on Bluesky.
+
+Use single quotes inside the text for direct quotes: `'It will be decided in two years.'`
+
+Use a YAML block scalar (`>-`) if the value contains single quotes, to avoid parse errors:
+
+```yaml
+post_excerpt: >-
+  'It will be decided in the next two years.' Europe must act
+  or become America's AI 'vassal state'.
+```
+
+Avoid em dashes (`—`) and other Unicode punctuation in all free-text fields (`prediction_text`, `post_excerpt`, `notes`). Use a plain hyphen-minus (`-`) instead.
+
 ## What to avoid
 
 - Do not build any website or static site — this is a bot-only project
