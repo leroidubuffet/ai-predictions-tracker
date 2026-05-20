@@ -1,0 +1,28 @@
+prediction_date: 2026-05-12
+source_name: Arthur Mensch
+source_url: https://www.businessinsider.com/mistral-ceo-warns-europe-2-years-avoid-us-ai-dependence-2026-5
+prediction_text: |
+  "It will be decided in the next two years." Europe has a two-year window to build
+  its own AI infrastructure — chips, energy, and data center capacity — before
+  becoming permanently dependent on American tech giants. "Once supply is monopolized
+  by American players, suddenly we no longer have supply and we can no longer transform
+  electrons into tokens." Europe risks becoming "a vassal state" if it fails to
+  develop its own AI industry. "In a world where you import all your digital services
+  from the United States, you have no leverage over the United States."
+deadline: 2028-05-12
+deadline_fuzzy: "May 2028 (2 years from statement)"
+category: regulation
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Said at a hearing on digital sovereignty and AI at France's National Assembly, May 12 2026.
+  Mensch also said Mistral aims to build a gigawatt of AI computing capacity by 2029.
+  Conflict of interest: Mensch is CEO of Mistral AI (valuation ~$13.6B), a European AI
+  company that directly benefits from European AI sovereignty investment and from
+  governments choosing European over US AI providers.
+hashtags: ""
+skip_post: false
+importance: low
+post_excerpt: "'It will be decided in the next two years.' Europe must build its own AI infrastructure — chips, energy, compute — or become America's AI 'vassal state'."
+screenshot: ""
