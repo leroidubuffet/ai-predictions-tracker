@@ -1,0 +1,26 @@
+prediction_date: 2026-05-18
+source_name: Elon Musk
+source_url: https://www.marketwatch.com/story/elon-musk-compares-his-companys-work-to-that-of-jesus-65d952e6
+prediction_text: |
+  Neuralink expects to give a patient its Blindsight implant for the first time by
+  the end of 2026. Musk said the implant could, over time, not only restore patients'
+  sight but also give them "perhaps superhuman vision." He described Neuralink's work
+  restoring sight and motor control as "Jesus-level technologies."
+deadline: 2026-12-31
+deadline_fuzzy: "end of 2026"
+category: capabilities
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Said at the Samson International Smart Mobility Summit in Tel Aviv (virtual appearance).
+  In January 2026 Musk said Neuralink was still waiting for regulatory approval for
+  Blindsight. The article notes it is unclear whether approval has since been granted.
+  Neuralink's president DJ Seo separately said the company wants to implant a BCI in
+  an "otherwise healthy person" by end of the decade.
+  Conflict of interest: Musk is founder and controlling stakeholder of Neuralink.
+hashtags: ""
+skip_post: false
+importance: low
+post_excerpt: "Neuralink expects to give a patient its Blindsight vision-restoring implant for the first time by end of 2026 — and could eventually grant 'perhaps superhuman vision.'"
+screenshot: ""

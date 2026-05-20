@@ -1,0 +1,24 @@
+prediction_date: 2026-05-18
+source_name: Elon Musk
+source_url: https://www.marketwatch.com/story/elon-musk-compares-his-companys-work-to-that-of-jesus-65d952e6
+prediction_text: |
+  Tesla will have autonomous vehicles — without safety drivers behind the wheel —
+  operating in a "widespread" capacity across the U.S. by the end of 2026. At time
+  of statement, Tesla had driverless vehicles operating in three U.S. cities (all in
+  Texas) and aimed to expand to ride-hailing services in nine cities by end of June 2026.
+deadline: 2026-12-31
+deadline_fuzzy: "end of 2026"
+category: capabilities
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Said at the Samson International Smart Mobility Summit in Tel Aviv (virtual appearance).
+  "Widespread" is Musk's word and is undefined; interpret generously as operating in many
+  U.S. cities without safety drivers, not necessarily nationwide saturation.
+  Conflict of interest: Musk is CEO and largest shareholder of Tesla.
+hashtags: ""
+skip_post: false
+importance: low
+post_excerpt: "Tesla will have fully autonomous vehicles — no safety driver — operating in 'widespread' capacity across the U.S. by end of 2026."
+screenshot: ""
