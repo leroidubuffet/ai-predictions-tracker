@@ -1,0 +1,20 @@
+prediction_date: 2023-09-08
+source_name: Elon Musk
+source_url: https://x.com/elonmusk/status/1767738797276451090
+prediction_text: |
+  AI will probably be smarter than any single human next year.
+  By 2029, AI is probably smarter than all humans combined.
+deadline: 2029-12-31
+deadline_fuzzy: "by 2029"
+category: agi
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Made at the time Musk was building Grok at xAI. He has repeatedly revised
+  his AGI timeline predictions upward since co-founding OpenAI. The 2025
+  "smarter than any single human" claim has effectively expired with
+  a clear consensus that it was not met.
+hashtags: "#AIPredictions #AGI"
+skip_post: false
+screenshot: predictions/assets/2023-09-08-elon-musk-agi-2025.png
