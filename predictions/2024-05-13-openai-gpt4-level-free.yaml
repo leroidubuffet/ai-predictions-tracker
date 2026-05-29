@@ -1,0 +1,19 @@
+prediction_date: 2024-05-13
+source_name: Sam Altman
+source_url: https://x.com/sama/status/1790075827666796666
+prediction_text: |
+  GPT-4-level intelligence will be free for everyone within a couple of years.
+  The cost of intelligence is going to fall dramatically.
+deadline: 2029-05-13
+deadline_fuzzy: "within a couple of years of May 2024"
+category: capabilities
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Made during the GPT-4o launch. This is a testable prediction: GPT-4-class
+  capability available for free to all users by mid-2026. As of early 2026,
+  free tiers of ChatGPT, Gemini, and Claude have meaningfully improved but
+  the question is whether the capability threshold has been met.
+hashtags: "#AIPredictions #LLM #AITimelines"
+skip_post: true
