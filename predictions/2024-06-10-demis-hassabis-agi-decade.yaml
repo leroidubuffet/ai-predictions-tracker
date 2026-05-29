@@ -1,0 +1,20 @@
+prediction_date: 2024-06-10
+source_name: Demis Hassabis
+source_url: https://time.com/6983420/demis-hassabis-interview-agi-google-deepmind/
+prediction_text: |
+  AGI could be coming within the next 5 to 10 years. We could be approaching
+  very rapidly something that might be described as AGI, but we have to be
+  very careful about what we mean by that.
+deadline: 2034-06-10
+deadline_fuzzy: "within 5–10 years of mid-2024"
+category: agi
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Made in a TIME interview around the time Hassabis received the Nobel Prize
+  in Chemistry for AlphaFold. He has historically been more cautious than
+  others on timelines. By May 2026 he had significantly tightened his estimate
+  to "four years or sooner" (see 2026-05-26-demis-hassabis-agi-four-years.yaml).
+hashtags: "#AIPredictions #AGI #AITimelines"
+skip_post: true

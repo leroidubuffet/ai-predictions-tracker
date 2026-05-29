@@ -1,0 +1,25 @@
+prediction_date: 2026-05-26
+source_name: Demis Hassabis
+source_url: https://www.axios.com/2026/05/26/deepmind-ceo-demis-hassabis
+prediction_text: |
+  AGI could arrive in four years - or even sooner. Humanity is standing in
+  the "foothills of the singularity" with only a few years to prepare.
+deadline: 2030-05-26
+deadline_fuzzy: "four years or sooner from May 2026"
+category: agi
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Said in an Axios interview. Significant tightening from his March 2025 estimate
+  of "5 to 10 years." He now sees 2029 as a possibility. Attributes confidence to
+  the industry finding "the right technical path." Raised concern that economists
+  and policymakers are "still not taking this seriously enough." Supports mandatory
+  testing before model releases.
+hashtags: "#AIPredictions #AGI"
+skip_post: false
+importance: low
+post_excerpt: >-
+  AGI could arrive in four years, or even sooner. Humanity is standing
+  in the 'foothills of the singularity' with only a few years to prepare.
+screenshot: ""
