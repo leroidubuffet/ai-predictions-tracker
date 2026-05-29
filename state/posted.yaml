@@ -14,6 +14,15 @@ posts:
     prediction_text: It’s just completely obvious that in five years deep learning
       is going to do better than radiologists. It might be ten years
     source_name: Geoffrey Hinton
+  2016-11-04-elon-musk-ubi-automation.yaml:
+    posted_at: '2026-05-29T07:39:35Z'
+    prediction_text: '"There is a pretty good chance we end up with a universal basic
+      income,
+
+      or something like that, due to automation. Yeah, I am not sure what else
+
+      one would do. I think that is what would happen."'
+    source_name: Elon Musk
   2020-07-09-elon-musk-tesla-level5-autonomy.yaml:
     posted_at: '2026-04-30T11:16:19Z'
     prediction_text: 'I think that I remain confident that we will have basic functionality
