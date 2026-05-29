@@ -1,0 +1,25 @@
+prediction_date: 2016-11-04
+source_name: Elon Musk
+source_url: https://www.cnbc.com/2016/11/04/elon-musk-robots-will-take-your-jobs-government-will-have-to-pay-your-wage.html
+prediction_text: |
+  "There is a pretty good chance we end up with a universal basic income,
+  or something like that, due to automation. Yeah, I am not sure what else
+  one would do. I think that is what would happen."
+deadline: ""
+deadline_fuzzy: ""
+category: jobs
+source_type: executive
+conflict_of_interest: false
+status: pending
+notes: |
+  Statement to CNBC, November 2016. Musk argued automation would displace
+  enough workers that UBI would become a necessity, not a choice. He also
+  predicted self-driving trucks would eliminate many trucking jobs, with
+  some drivers transitioning to remote fleet operator roles.
+hashtags: "#AIpredictions #UBI"
+skip_post: false
+post_excerpt: >-
+  There is a pretty good chance we end up with a universal basic income, or something like
+  that, due to automation.
+importance: high
+screenshot: ""
