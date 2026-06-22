@@ -1,0 +1,23 @@
+prediction_date: 2026-06-22
+source_name: Elon Musk
+source_url: https://x.com/elonmusk
+prediction_text: |
+  AI probably exceeds the sum of all human intelligence in 4 or 5 years.
+deadline: 2031-06-22
+deadline_fuzzy: "4 or 5 years from June 2026"
+category: agi
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Posted on X as a reply to Peter H. Diamandis (@PeterDiamandis), who had
+  written about abundance, space, and the ceiling on human genius.
+  conflict_of_interest: true - Musk runs xAI (Grok).
+  Related to his January 2026 Davos statement that AI would surpass the
+  combined intelligence of humanity within five years.
+hashtags: ""
+skip_post: false
+importance: low
+post_excerpt: >-
+  AI probably exceeds the sum of all human intelligence in 4 or 5 years.
+screenshot: predictions/assets/2026-06-22-elon-musk-ai-exceeds-human-intelligence.png
