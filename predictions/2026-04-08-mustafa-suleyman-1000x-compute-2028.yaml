@@ -1,0 +1,31 @@
+prediction_date: 2026-04-08
+source_name: Mustafa Suleyman
+source_url: https://mustafa-suleyman.ai/the-exponential-compute-ramp
+prediction_text: |
+  By the end of 2028, we are looking at another 1000x increase in
+  effective compute. Another three orders of magnitude. The next phase
+  of the scaling era.
+deadline: 2028-12-31
+deadline_fuzzy: "by end of 2028"
+category: hardware
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Published in a personal essay titled "The Exponential Compute Ramp"
+  (April 8, 2026). The same claim appears in his X post from the same
+  date. "Effective compute" is not precisely defined - encompasses
+  hardware efficiency gains beyond raw FLOPs. The @scaling01 tweet
+  (June 2, 2026) summarizing a Microsoft Build 2026 slide ("3x more
+  orders of magnitude in the next 36 months") is consistent and may
+  be a separate restatement of the same prediction.
+  conflict_of_interest: true - Suleyman is CEO of Microsoft AI, a major
+  player in AI compute infrastructure.
+hashtags: ""
+skip_post: false
+importance: low
+post_excerpt: >-
+  By the end of 2028, we are looking at another 1000x increase in
+  effective compute. Another three orders of magnitude. The next phase
+  of the scaling era.
+screenshot: ""
