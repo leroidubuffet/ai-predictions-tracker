@@ -1,0 +1,26 @@
+prediction_date: 2026-07-14
+source_name: Demis Hassabis
+source_url: https://demishassabis.substack.com/p/a-framework-for-frontier-ai-and-the-dawning-of-a-new-age
+prediction_text: |
+  This is a pivotal moment in human history. Artificial General Intelligence (AGI), a system that exhibits all the cognitive capabilities the brain has, is probably only a few short years away. When we look back on this time in the decades to come, I think we will realise we were standing in the foothills of the singularity - nothing less than the dawning of a new age for humanity.
+deadline: 2030-07-14
+deadline_fuzzy: "a few short years away (from July 2026)"
+category: agi
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Opening of his essay "A Framework for Frontier AI and the Dawning of a New Age",
+  published July 14, 2026 simultaneously as an X Article
+  (https://x.com/demishassabis/status/2076957440109625718) and on his Substack
+  (canonical full text, used as source_url since X Articles are login-gated).
+  The essay is primarily a policy proposal for a FINRA-style US frontier AI
+  Standards Body; the timeline claim is the falsifiable core. Includes his
+  working definition of AGI. Restates his May 2026 Axios claim in essay form
+  (see 2026-05-26-demis-hassabis-agi-four-years.yaml); the 'foothills of the
+  singularity' framing repeats from that interview. Deadline set four years out,
+  matching the reading of "a few short years" used for that entry.
+hashtags: "#AIPredictions #AGI"
+skip_post: false
+importance: high
+post_excerpt: "Artificial General Intelligence (AGI), a system that exhibits all the cognitive capabilities the brain has, is probably only a few short years away."
