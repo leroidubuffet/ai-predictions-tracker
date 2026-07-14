@@ -1,0 +1,18 @@
+prediction_date: 2025-06-10
+source_name: Sam Altman
+source_url: https://blog.samaltman.com/the-gentle-singularity
+prediction_text: |
+  2026 will likely see the arrival of systems that can figure out novel insights.
+deadline: 2026-12-31
+deadline_fuzzy: "in 2026"
+category: timelines
+source_type: executive
+conflict_of_interest: true
+status: pending
+notes: |
+  Published on Altman's personal blog. Framed within a broader argument that AI
+  is entering a phase of accelerating capability gains. "Novel insights" refers
+  to AI-generated scientific or technical discoveries, not just synthesis of
+  existing knowledge.
+hashtags: "#AIPredictions #AITimelines"
+skip_post: false

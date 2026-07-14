@@ -1,0 +1,17 @@
+prediction_date: 2023-05-16
+source_name: Geoffrey Hinton
+source_url: https://www.theguardian.com/technology/2024/dec/27/godfather-of-ai-raises-odds-of-the-technology-wiping-out-humanity-over-next-30-years
+prediction_text: |
+  There is a 10-20% chance that AI development leads to human extinction or complete loss of human control within the next 30 years.
+deadline: 2053-05-16
+deadline_fuzzy: "within 30 years of May 2023"
+category: safety
+source_type: researcher
+conflict_of_interest: false
+status: pending
+notes: |
+  Made shortly after resigning from Google after a decade. Hinton said he
+  regretted his life's work for the first time. He reiterated and raised this
+  estimate in December 2024 Guardian reporting.
+hashtags: "#AIPredictions #AISafety #ExistentialRisk"
+skip_post: false
