@@ -46,6 +46,11 @@ posts:
       years, and the work hours performed by machine will match the time spent working
       by human beings.'
     source_name: World Economic Forum
+  2023-05-16-geoffrey-hinton-existential-risk.yaml:
+    posted_at: '2026-07-14T17:22:37Z'
+    prediction_text: There is a 10-20% chance that AI development leads to human extinction
+      or complete loss of human control within the next 30 years.
+    source_name: Geoffrey Hinton
   2023-09-08-elon-musk-agi-2025.yaml:
     posted_at: '2026-05-29T08:32:07Z'
     prediction_text: 'AI will probably be smarter than any single human next year.
@@ -91,6 +96,11 @@ posts:
 
       we’ll start moving towards what we call artificial general intelligence'
     source_name: Demis Hassabis
+  2025-06-10-sam-altman-gentle-singularity.yaml:
+    posted_at: '2026-07-14T17:22:38Z'
+    prediction_text: 2026 will likely see the arrival of systems that can figure out
+      novel insights.
+    source_name: Sam Altman
   2025-06-15-allison-kirkby-bt-deeper-cuts.yaml:
     posted_at: '2026-04-29T18:42:03Z'
     prediction_text: 'BT''s existing plan to cut more than 40,000 jobs and strip out
