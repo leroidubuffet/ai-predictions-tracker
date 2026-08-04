@@ -1,0 +1,24 @@
+prediction_date: 2026-08-04
+source_name: Gavin Baker
+source_url: https://x.com/openlabxorg/status/2084696639877570592
+prediction_text: |
+  Ilya Sutskever's Safe Superintelligence (SSI) could finally unveil its first AI model as early as August 2026.
+deadline: 2026-08-31
+deadline_fuzzy: "as early as August 2026"
+category: capabilities
+source_type: investor
+conflict_of_interest: false
+status: pending
+notes: |
+  Reported via @openlabxorg on X, summarizing comments made by investor Gavin Baker
+  (Atreides Management) during an interview with Patrick O'Shaughnessy on the
+  Invest Like the Best podcast. No direct link to the podcast episode was available
+  at entry time, so source_url is the secondhand tweet reporting the claim. SSI,
+  founded by former OpenAI chief scientist Ilya Sutskever in 2024, has published no
+  public models, benchmarks, or product demos despite raising billions of dollars
+  and reaching one of the highest valuations among AI startups. No evidence found
+  that Baker or Atreides Management holds a financial stake in SSI specifically.
+hashtags: ""
+skip_post: false
+importance: low
+screenshot: predictions/assets/2026-08-04-gavin-baker-ssi-first-model.png
