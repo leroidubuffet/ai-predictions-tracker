@@ -19,6 +19,7 @@ reminders:
   - elapsed_3111
   - elapsed_3294
   - elapsed_3477
+  - elapsed_3660
   2023-09-08-elon-musk-agi-2025.yaml:
   - anniversary_3
   2024-04-08-elon-musk-agi.yaml:
@@ -42,6 +43,8 @@ reminders:
   - elapsed_183
   2026-04-29-Elon-Musk-AGI-2025.yaml:
   - expired
+  2026-05-17-dario-amodei-software-cheap-jobs.yaml:
+  - elapsed_183
   2026-06-22-elon-musk-ai-exceeds-human-intelligence.yaml:
   - 1825
   2026-07-14-demis-hassabis-agi-few-years.yaml:
